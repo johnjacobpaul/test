@@ -1,0 +1,2891 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Ammu's Food Products</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  
+  :root {
+    /* Modern Foodie Color Palette - Pink Theme */
+    --primary: #e91e63;      /* Vibrant Pink */
+    --primary-hover: #c2185b; /* Darker Pink */
+    --bg-main: #f0ecf8;      /* Lavender Base */
+    --bg-surface: #f8f5fd;   /* Light Lavender for cards */
+    --bg-alt: #e4ddf2;       /* Deeper Lavender for alternate sections */
+    --text-main: #2c1f4a;    /* Deep Violet */
+    --text-muted: #6b5d88;   /* Muted Purple */
+    --accent-green: #3a5a40; /* Leaf Green */
+    --border: #cfc5e5;       /* Soft Lavender Border */
+    --radius-sm: 8px;
+    --radius-md: 16px;
+    --radius-pill: 50px;
+    --nav-height: 72px;
+    --shadow-soft: 0 8px 30px rgba(44, 31, 74, 0.07);
+    --shadow-hover: 0 12px 40px rgba(155, 39, 176, 0.12);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    /* Offset for sticky nav + some breathing room for the larger cutout logo */
+    scroll-padding-top: var(--nav-height); 
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-main);
+    /* Subtle SVG noise texture for parchment effect */
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.07'/%3E%3C/svg%3E");
+    color: var(--text-main);
+    line-height: 1.6;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3 {
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  /* NAV WHATSAPP LINK */
+  /* Desktop: inside nav-links row */
+  .nav-wa-link {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    text-decoration: none;
+    color: var(--text-muted);
+    font-size: 0.88rem;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+  .nav-wa-link:hover { color: #25D366; }
+  .wa-num { letter-spacing: 0.01em; font-size: 0.82rem; }
+
+  /* Mobile: centred element in the top nav row — hidden on desktop */
+  .nav-wa-mobile-center {
+    display: none;
+  }
+
+  /* NAVIGATION - Glassmorphism */
+  nav {
+    background: rgba(240, 236, 248, 0.88); /* Lavender glass */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    height: var(--nav-height);
+    padding: 0 5%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+
+  .nav-brand {
+    color: var(--text-main);
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    background: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: color 0.2s ease;
+    z-index: 2;
+  }
+
+  .nav-brand:hover {
+    color: var(--primary);
+  }
+
+  /* Center miniature logo - Cutout Effect */
+  .nav-logo {
+    position: absolute;
+    left: 50%;
+    bottom: -72px; /* Hangs perfectly halfway out of the nav bar */
+    transform: translateX(-50%);
+    height: 144px; 
+    width: 144px;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 10;
+    border-radius: 50%;
+    border: 6px solid var(--bg-main); /* Scaled up border */
+    box-shadow: 0 6px 16px rgba(54, 41, 34, 0.12); 
+    background: var(--bg-surface);
+  }
+  
+  .nav-logo img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+    /* Helps retain crispness when 4k images are scaled down */
+    image-rendering: high-quality;
+    image-rendering: -webkit-optimize-contrast;
+  }
+  
+  .nav-logo.visible {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .nav-logo.visible:hover {
+    transform: translateX(-50%) scale(1.05);
+    box-shadow: 0 8px 24px rgba(233, 30, 99, 0.25);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+    z-index: 2;
+    align-items: center;
+  }
+  /* WA link inside nav-links vertically centred with text links */
+  .nav-wa-item { display: flex; align-items: center; }
+
+  .nav-links a {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--text-main);
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.2s ease;
+  }
+
+  .nav-links a:hover, .nav-links a.active-link {
+    color: var(--primary);
+  }
+
+  .mobile-menu-btn {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--text-main);
+    cursor: pointer;
+    z-index: 2;
+  }
+
+  /* BUTTONS */
+  .btn {
+    padding: 14px 32px;
+    border-radius: var(--radius-pill);
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border: none;
+  }
+  .btn-primary {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 4px 15px rgba(233, 30, 99, 0.2);
+  }
+  .btn-primary:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(233, 30, 99, 0.3);
+  }
+  .btn-outline {
+    background: transparent;
+    color: var(--text-main);
+    border: 2px solid var(--text-main);
+  }
+  .btn-outline:hover {
+    background: var(--text-main);
+    color: white;
+  }
+
+  /* HERO SECTION */
+  #s-hero {
+    min-height: calc(100vh - var(--nav-height));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: center;
+    padding: 6px 20px 8vh 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .hero-logo {
+    width: 100%;
+    max-width: 350px; 
+    height: auto;
+    margin-bottom: 8px; 
+    z-index: 2; 
+    position: relative;
+  }
+
+  .badge {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--primary);
+    background: rgba(233, 30, 99, 0.1);
+    padding: 6px 16px;
+    border-radius: var(--radius-pill);
+    margin-bottom: 24px;
+    z-index: 2; 
+    position: relative;
+  }
+
+  /* Simple, subtle serif heading blended with background */
+  .htitle {
+    font-family: 'Lora', serif;
+    font-weight: 500;
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    line-height: 1.3;
+    margin-bottom: 16px;
+    color: #a81c4a; /* Warm deep pink/magenta */
+    z-index: 2; 
+    position: relative;
+  }
+  
+  .hsub {
+    font-size: clamp(1.1rem, 3vw, 1.2rem);
+    color: var(--text-muted);
+    margin-bottom: 40px;
+    max-width: 600px;
+    z-index: 2; 
+    position: relative;
+  }
+
+  .hbtns {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+    z-index: 2; 
+    position: relative;
+  }
+
+  /* --- INTRO ANIMATIONS --- */
+  @keyframes slideUpFade {
+    0% { opacity: 0; transform: translateY(30px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  
+  .hero-anim {
+    opacity: 0; /* Start hidden */
+    animation: slideUpFade 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  .hero-logo.hero-anim { animation-delay: 0.1s; }
+  .htitle.hero-anim { animation-delay: 0.3s; }
+  .hsub.hero-anim { animation-delay: 0.5s; }
+  .hbtns.hero-anim { animation-delay: 0.7s; }
+
+  /* Decorative blobs/leaves for Hero */
+  @keyframes pulseBlob {
+    0%, 100% { transform: scale(1); opacity: 0.4; }
+    50% { transform: scale(1.05); opacity: 0.55; }
+  }
+  .blob { position: absolute; filter: blur(60px); z-index: 0; opacity: 0.4; border-radius: 50%; animation: pulseBlob 12s ease-in-out infinite; }
+  .blob-1 { top: -10%; left: -10%; width: 400px; height: 400px; background: #e8d8f8; }
+  .blob-2 { bottom: -10%; right: -10%; width: 500px; height: 500px; background: #dde0f8; animation-delay: -6s; }
+
+  /* Floating Kerala Dish Animations */
+  .floating-dish {
+    position: absolute;
+    color: var(--primary);
+    opacity: 0.12;
+    pointer-events: none;
+    z-index: 1;
+    animation: floatDish 20s ease-in-out infinite;
+  }
+  @keyframes floatDish {
+    0% { transform: translateY(0px) rotate(0deg); }
+    33% { transform: translateY(-25px) rotate(8deg); }
+    66% { transform: translateY(15px) rotate(-8deg); }
+    100% { transform: translateY(0px) rotate(0deg); }
+  }
+  .fd-1 { top: 15%; left: 8%; animation-duration: 25s; }
+  .fd-2 { top: 60%; left: 5%; animation-duration: 22s; animation-delay: -5s; }
+  .fd-3 { top: 20%; right: 10%; animation-duration: 28s; animation-delay: -12s; }
+  .fd-4 { top: 70%; right: 6%; animation-duration: 24s; animation-delay: -3s; }
+  .fd-5 { bottom: 8%; left: 25%; animation-duration: 26s; animation-delay: -15s; }
+
+
+  /* SHARED SECTION STYLES */
+  .sec {
+    display: block; 
+  }
+
+  .section-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 80px 5%;
+  }
+  .sec-header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  .sec-title {
+    font-size: clamp(2rem, 4vw, 3rem);
+    color: var(--text-main);
+    margin-top: 10px;
+  }
+
+  /* HISTORY SECTION */
+  #s-history { background: var(--bg-alt); }
+  .story-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: flex-start;
+  }
+  .story-text p {
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+  }
+  .story-text strong { color: var(--primary); font-weight: 600; }
+  
+  /* Generations Timeline Setup */
+  .generations-container {
+    position: relative;
+    background: var(--bg-surface);
+    padding: 40px 40px 40px 30px;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-soft);
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
+  }
+  .generations-container h3 {
+    font-family: 'Lora', serif;
+    font-size: 1.6rem;
+    color: var(--primary);
+    margin-bottom: 10px;
+    margin-left: 10px;
+  }
+  /* The subtle vertical connecting line */
+  .gen-connector {
+    position: absolute;
+    left: 120px; /* Aligns with centre of 180px photos (30px padding + 90px half width) */
+    top: 150px;
+    bottom: 90px;
+    width: 2px;
+    background: var(--border);
+    z-index: 1;
+  }
+  .gen-item {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    position: relative;
+    z-index: 2;
+  }
+  .gen-photo {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    border: 4px solid var(--bg-surface);
+    background: var(--bg-alt);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4.8rem;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+    box-shadow: 0 8px 24px rgba(44, 31, 74, 0.15);
+  }
+  .gen-info h4 {
+    font-size: 1.3rem;
+    color: var(--text-main);
+    margin-bottom: 4px;
+  }
+  .gen-info p {
+    font-size: 0.95rem;
+    color: var(--primary);
+    font-weight: 500;
+    margin: 0;
+  }
+
+  /* --- FLOATING MENU CATEGORY NAV --- */
+  .floating-cat-nav {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(150px); /* Hidden initially */
+    background: rgba(240, 236, 248, 0.88);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    padding: 8px 12px;
+    border-radius: 50px;
+    display: flex;
+    gap: 6px;
+    box-shadow: 0 10px 40px rgba(54, 41, 34, 0.15);
+    border: 1px solid rgba(195, 181, 228, 0.6);
+    z-index: 100;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    width: max-content;
+    max-width: 90vw;
+    flex-wrap: nowrap; /* Ensure it stays strictly on one line */
+    justify-content: center;
+  }
+
+  .floating-cat-nav.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  .cat-link {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 30px;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .cat-link:hover {
+    background: rgba(233, 30, 99, 0.1);
+    color: var(--primary);
+  }
+
+  .cat-link.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 4px 12px rgba(233, 30, 99, 0.25);
+  }
+
+  /* PRODUCTS SECTION - MENU SCROLL STYLING */
+  .menu-category {
+    margin-bottom: 50px;
+    scroll-margin-top: calc(var(--nav-height) + 20px);
+  }
+  
+  .category-title {
+    font-family: 'Lora', serif;
+    font-size: 1.4rem;
+    color: var(--primary);
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--border);
+  }
+
+  .menu-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 24px; /* Reduced gap */
+  }
+  
+  .menu-item {
+    display: flex;
+    align-items: center;
+    gap: 12px; /* Reduced gap */
+    padding: 6px; /* Reduced padding */
+    background: transparent;
+    border-radius: var(--radius-sm);
+    transition: background 0.2s ease;
+  }
+  .menu-item:hover {
+    background: rgba(252, 246, 236, 0.6);
+  }
+  
+  /* Thumbnail — hidden by default; JS reveals view button when image loads */
+  .menu-thumb { display: none; }
+  .menu-thumb-real {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #f5f2fd, #e4ddf2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem; /* Scaled down emoji */
+    flex-shrink: 0;
+    box-shadow: inset 0 2px 4px rgba(255,255,255,0.7), 0 4px 12px rgba(54, 41, 34, 0.06);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s ease;
+  }
+
+  /* Image integration styling */
+  .img-missing { opacity: 0 !important; }
+  .thumb-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: inherit;
+    z-index: 2;
+    transition: opacity 0.3s ease;
+  }
+  .thumb-emoji {
+    position: absolute;
+    z-index: 1;
+    opacity: 0.35; /* Subtle fallback — actual image covers this at z-index 2 */
+  }
+  
+  .menu-thumb::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: radial-gradient(circle at top left, rgba(255,255,255,0.5), transparent);
+    pointer-events: none;
+    z-index: 3;
+    border-radius: inherit;
+  }
+
+  .menu-item:hover .menu-thumb {
+    transform: scale(1.05) rotate(-3deg);
+  }
+
+  .menu-info {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .menu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2px;
+    width: 100%;
+    gap: 4px;
+  }
+  .menu-name {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .menu-name {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-main);
+    white-space: normal;
+    word-break: break-word;
+    line-height: 1.3;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .menu-dots {
+    flex-grow: 1;
+    height: 1px;
+    border-bottom: 2px dotted var(--text-muted);
+    margin: 0 10px;
+    opacity: 0.3;
+  }
+
+  .menu-price {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--primary);
+    white-space: nowrap;
+  }
+
+  .menu-desc { display: none; }
+
+  /* ORDER SECTION */
+  #s-order { background: var(--bg-main); }
+  #s-order .section-inner { padding-top: 20px !important; padding-bottom: 60px; }
+  @media (min-width: 769px) { #s-order .section-inner { padding-top: 90px !important; } }
+  .order-grid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: var(--bg-surface);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-soft);
+    overflow: hidden;
+    padding: 32px;
+  }
+  .contact-info {
+    background: #6d3fa0; /* Amethyst */
+    color: white;
+    padding: 50px 40px;
+  }
+  .contact-info .sec-title { color: white; text-align: left; margin-bottom: 20px; font-size: 2.2rem;}
+  .contact-info p { color: rgba(255,255,255,0.8); margin-bottom: 40px; font-size: 1.05rem; }
+  
+  .c-item { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 24px; }
+  .c-icon { font-size: 1.5rem; }
+  .c-label { font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: rgba(255,255,255,0.6); margin-bottom: 4px; }
+  .c-val { font-size: 1.05rem; font-weight: 500; }
+  
+  .order-form-wrap { padding: 50px 40px; text-align: left; }
+  .fg { margin-bottom: 14px; }
+  .fg label { display: block; font-size: 0.78rem; font-weight: 600; color: var(--text-main); margin-bottom: 5px; }
+  .fg input, .fg textarea, .fg select {
+    width: 100%;
+    padding: 10px 14px;
+    background: var(--bg-main);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    color: var(--text-main);
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .fg input:focus, .fg textarea:focus, .fg select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.1);
+  }
+  .fg textarea { height: 90px; resize: vertical; }
+
+  .btn-whatsapp {
+    background: #25D366;
+    color: white;
+    width: 100%;
+    margin-top: 10px;
+  }
+  .btn-whatsapp:hover { background: #1ebd5c; box-shadow: 0 6px 20px rgba(37, 211, 102, 0.3); }
+  .btn-whatsapp svg { fill: white; width: 20px; height: 20px; }
+
+  /* ADD TO ORDER BUTTON on each menu item */
+  .add-to-order-btn {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1.5px solid var(--primary);
+    background: transparent;
+    color: var(--primary);
+    font-size: 1.2rem;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+  }
+  .add-to-order-btn:hover {
+    background: var(--primary);
+    color: white;
+    transform: scale(1.1);
+  }
+  .add-to-order-btn.added {
+    background: var(--primary);
+    color: white;
+  }
+
+  /* ORDER COUNT BADGE on nav */
+  .order-count-badge {
+    display: inline-block;
+    background: var(--primary);
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 700;
+    border-radius: 10px;
+    padding: 1px 6px;
+    margin-left: 4px;
+    line-height: 1.4;
+    vertical-align: middle;
+    min-width: 18px;
+    text-align: center;
+    display: none;
+  }
+
+  /* ORDER SUMMARY TABLE */
+  .order-items-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    margin-top: 8px;
+  }
+  .order-items-table th {
+    text-align: left;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    padding: 6px 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .order-items-table td {
+    padding: 8px 8px;
+    border-bottom: 1px solid rgba(214,197,170,0.4);
+    color: var(--text-main);
+    vertical-align: middle;
+  }
+  .order-items-table tr:last-child td { border-bottom: none; }
+  .order-item-name { font-weight: 500; }
+  .order-item-qty-wrap { display: flex; align-items: center; gap: 6px; }
+  .order-item-qty {
+    width: 52px;
+    padding: 4px 6px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--bg-main);
+    font-size: 0.88rem;
+    color: var(--text-main);
+    text-align: center;
+  }
+  .order-item-unit { font-size: 0.75rem; color: var(--text-muted); }
+  .order-item-delete {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-muted);
+    font-size: 1rem;
+    padding: 2px 6px;
+    border-radius: 4px;
+    transition: color 0.2s, background 0.2s;
+  }
+  .order-item-delete:hover { color: #c0392b; background: rgba(192,57,43,0.08); }
+  .order-total-row td {
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--text-main);
+    padding-top: 12px;
+    border-top: 2px solid var(--border) !important;
+  }
+  .order-total-amount { color: var(--primary); font-size: 1.1rem; }
+
+  .order-summary-box {
+    background: var(--bg-main);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 12px 16px;
+    margin-top: 8px;
+    min-height: 80px;
+  }
+  .order-empty-msg {
+    color: var(--text-muted);
+    font-size: 0.88rem;
+    text-align: center;
+    padding: 16px 0;
+  }
+  .order-actions-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+  }
+  .btn-clear-order {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    border-radius: var(--radius-pill);
+    padding: 6px 16px;
+    font-size: 0.82rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Inter', sans-serif;
+  }
+  .btn-clear-order:hover { border-color: #c0392b; color: #c0392b; background: rgba(192,57,43,0.06); }
+
+  /* ORDER NOTE */
+  .order-note {
+    margin-top: 16px;
+    padding: 14px 18px;
+    background: rgba(109, 63, 160, 0.07);
+    border-left: 3px solid rgba(109, 63, 160, 0.35);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  /* CUSTOM SEARCHABLE DROPDOWN */
+  .custom-select-wrap {
+    position: relative;
+    width: 100%;
+  }
+  .cs-trigger {
+    width: 100%;
+    padding: 14px 16px;
+    background: var(--bg-main);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    color: var(--text-main);
+    cursor: pointer;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .cs-trigger:focus, .cs-trigger.open {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.1);
+  }
+  .cs-trigger-text { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .cs-trigger-text.placeholder { color: var(--text-muted); }
+  .cs-arrow { font-size: 0.75rem; color: var(--text-muted); transition: transform 0.2s; flex-shrink: 0; }
+  .cs-trigger.open .cs-arrow { transform: rotate(180deg); }
+
+  .cs-panel {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    right: 0;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    box-shadow: 0 12px 40px rgba(54, 41, 34, 0.14);
+    z-index: 500;
+    display: none;
+    overflow: hidden;
+  }
+  .cs-panel.open { display: block; }
+
+  .cs-search-wrap {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg-surface);
+    position: sticky;
+    top: 0;
+  }
+  .cs-search {
+    width: 100%;
+    padding: 9px 12px 9px 38px;
+    background: var(--bg-main);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    color: var(--text-main);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .cs-search:focus { border-color: var(--primary); }
+  .cs-search-icon {
+    position: absolute;
+    left: 21px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+  }
+  .cs-search-wrap { position: relative; }
+
+  .cs-list {
+    max-height: 240px;
+    overflow-y: auto;
+    padding: 6px 0;
+  }
+  .cs-group-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--primary);
+    padding: 10px 14px 4px;
+  }
+  .cs-option {
+    padding: 9px 14px;
+    font-size: 0.9rem;
+    color: var(--text-main);
+    cursor: pointer;
+    transition: background 0.15s;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+  }
+  .cs-option:hover, .cs-option.focused { background: rgba(233, 30, 99, 0.07); }
+  .cs-option.selected { background: rgba(233, 30, 99, 0.1); font-weight: 600; }
+  .cs-option-name { flex: 1; }
+  .cs-option-price { font-size: 0.8rem; color: var(--primary); font-weight: 600; white-space: nowrap; }
+  .cs-no-results {
+    padding: 16px 14px;
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    text-align: center;
+  }
+
+  /* Item picker row tweak for custom select */
+  .item-picker-row {
+    display: flex;
+    gap: 8px;
+    align-items: flex-end;
+    flex-wrap: wrap;
+  }
+  .item-picker-row .custom-select-wrap { flex: 1; min-width: 150px; }
+  .item-picker-row .fg { flex: 1; min-width: 150px; margin-bottom: 0; }
+  .item-picker-row .fg-qty { width: 90px; flex-shrink: 0; margin-bottom: 0; }
+  .btn-add-item {
+    flex-shrink: 0;
+    padding: 13px 18px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+    white-space: nowrap;
+  }
+  .btn-add-item:hover { background: var(--primary-hover); }
+
+  /* LIGHTBOX */
+  .lightbox-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(20, 10, 40, 0.82);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    backdrop-filter: blur(4px);
+  }
+  .lightbox-overlay.open { display: flex; }
+  .lightbox-inner {
+    background: var(--bg-surface);
+    border-radius: var(--radius-md);
+    padding: 24px;
+    max-width: 420px;
+    width: 100%;
+    position: relative;
+    box-shadow: 0 24px 80px rgba(20,10,40,0.4);
+    text-align: center;
+  }
+  .lightbox-close {
+    position: absolute;
+    top: 12px; right: 14px;
+    background: none;
+    border: none;
+    font-size: 1.4rem;
+    cursor: pointer;
+    color: var(--text-muted);
+    line-height: 1;
+    transition: color 0.2s;
+  }
+  .lightbox-close:hover { color: var(--primary); }
+  .lightbox-img {
+    width: 100%;
+    max-height: 280px;
+    object-fit: cover;
+    border-radius: var(--radius-sm);
+    margin-bottom: 14px;
+  }
+  .lightbox-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-main);
+    margin-bottom: 6px;
+  }
+  .lightbox-price {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 10px;
+  }
+  .lightbox-desc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+  
+  /* View-image button injected into menu name */
+  .img-view-btn {
+    background: none;
+    border: 1px solid var(--primary);
+    border-radius: 4px;
+    cursor: pointer;
+    color: var(--primary);
+    padding: 2px 5px;
+    margin-right: 6px;
+    gap: 3px;
+    transition: all 0.2s ease;
+    display: none;
+    align-items: center;
+    flex-shrink: 0;
+    line-height: 1;
+  }
+  .img-view-btn.has-img { display: inline-flex; }
+  .img-view-btn:hover { background: var(--primary); color: white; }
+
+
+  /* CREATE / REVIEW ORDER BUTTON */
+  .btn-create-order {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 13px 20px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+    margin-bottom: 16px;
+    justify-content: center;
+    letter-spacing: 0.01em;
+  }
+  .btn-create-order:hover { background: var(--primary-hover); transform: translateY(-1px); }
+
+  /* ORDER BUILDER MODAL */
+  .ob-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(20, 10, 40, 0.78);
+    z-index: 3000;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    backdrop-filter: blur(4px);
+  }
+  .ob-overlay.open { display: flex; }
+  .ob-modal {
+    background: var(--bg-surface);
+    border-radius: var(--radius-md);
+    width: 100%;
+    max-width: 680px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 24px 80px rgba(20,10,40,0.45);
+    display: flex;
+    flex-direction: column;
+  }
+  .ob-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px 16px;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    background: var(--bg-surface);
+    z-index: 2;
+  }
+  .ob-header h3 {
+    font-size: 1.15rem;
+    color: var(--text-main);
+    font-weight: 600;
+  }
+  .ob-close {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: var(--text-muted);
+    transition: color 0.2s;
+    padding: 4px 8px;
+    border-radius: 6px;
+  }
+  .ob-close:hover { color: var(--primary); background: rgba(233,30,99,0.08); }
+  .ob-picker-row {
+    display: flex;
+    gap: 8px;
+    align-items: flex-end;
+    padding: 16px 24px;
+    background: var(--bg-alt);
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+  .ob-select { flex: 1; min-width: 200px; }
+  .ob-qty-input {
+    width: 72px;
+    flex-shrink: 0;
+    padding: 10px 8px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    background: var(--bg-main);
+    color: var(--text-main);
+    text-align: center;
+  }
+  .ob-qty-input:focus { outline: none; border-color: var(--primary); }
+  .ob-add-btn {
+    padding: 10px 18px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.2s;
+    flex-shrink: 0;
+  }
+  .ob-add-btn:hover { background: var(--primary-hover); }
+  .ob-table-wrap {
+    padding: 16px 24px;
+    flex: 1;
+    min-height: 160px;
+  }
+  .ob-empty {
+    color: var(--text-muted);
+    font-size: 0.88rem;
+    text-align: center;
+    padding: 32px 0;
+  }
+  .ob-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+  }
+  .ob-table th {
+    text-align: left;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    padding: 6px 10px;
+    border-bottom: 2px solid var(--border);
+  }
+  .ob-table td {
+    padding: 10px 10px;
+    border-bottom: 1px solid rgba(207,197,229,0.4);
+    vertical-align: middle;
+    color: var(--text-main);
+  }
+  .ob-table tr:last-child td { border-bottom: none; }
+  .ob-item-name { font-weight: 500; }
+  .ob-item-sub { font-size: 0.72rem; color: var(--text-muted); display: block; }
+  .ob-qty-cell {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .ob-qty-cell input {
+    width: 52px;
+    padding: 4px 6px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--bg-main);
+    font-size: 0.85rem;
+    color: var(--text-main);
+    text-align: center;
+  }
+  .ob-unit { font-size: 0.7rem; color: var(--text-muted); }
+  .ob-del-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-muted);
+    font-size: 1rem;
+    padding: 3px 7px;
+    border-radius: 4px;
+    transition: color 0.2s, background 0.2s;
+  }
+  .ob-del-btn:hover { color: #c0392b; background: rgba(192,57,43,0.08); }
+  .ob-total-row td { font-weight: 700; padding-top: 14px; border-top: 2px solid var(--border) !important; }
+  .ob-grand-total { font-size: 1rem; color: var(--primary); font-weight: 700; }
+  .ob-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 24px;
+    border-top: 1px solid var(--border);
+    background: var(--bg-surface);
+    position: sticky;
+    bottom: 0;
+  }
+  .ob-btn-clear {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    border-radius: var(--radius-pill);
+    padding: 8px 16px;
+    font-size: 0.82rem;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.2s;
+  }
+  .ob-btn-clear:hover { border-color: #c0392b; color: #c0392b; background: rgba(192,57,43,0.06); }
+  .ob-btn-save {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 10px 22px;
+    background: #3d2472;
+    color: white;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .ob-btn-save:hover { background: #2c1a54; }
+  @media (max-width: 480px) {
+    .ob-picker-row { flex-direction: column; align-items: stretch; }
+    .ob-select, .ob-qty-input, .ob-add-btn { width: 100%; }
+    .ob-table th:nth-child(3), .ob-table td:nth-child(3) { display: none; }
+  }
+
+  /* FOOTER */
+  footer {
+    background: #3d2472;
+    color: rgba(255, 255, 255, 0.85);
+    text-align: center;
+    padding: 28px 20px;
+    font-size: 0.9rem;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  footer strong { color: #fff; font-weight: 600; }
+  .footer-main { margin-bottom: 6px; color: rgba(255,255,255,0.9); }
+  .footer-sub { font-size: 0.78rem; color: rgba(255,255,255,0.55); letter-spacing: 0.02em; }
+
+  /* =========================================
+     MOBILE RESPONSIVENESS
+     ========================================= */
+  @media (max-width: 900px) {
+    .story-grid, .order-grid { grid-template-columns: 1fr; gap: 40px; }
+    .order-grid { display: flex; flex-direction: column-reverse; }
+    .contact-info, .order-form-wrap { padding: 40px 20px; }
+  }
+
+  @media (max-width: 768px) {
+    .desktop-addr { display: none !important; }
+    .mobile-addr { display: inline-flex !important; }
+
+    /* Nav structure */
+    nav {
+      flex-direction: column;
+      padding: 14px 20px 12px;
+      height: auto;
+      gap: 14px;
+      align-items: center;
+    }
+    .nav-brand {
+      align-self: flex-start;
+      width: auto; /* Don't stretch full width — stops it blocking WA tap area */
+      display: flex;
+      align-items: center;
+      height: 22px;
+    }
+    
+    /* Centre badge on mobile */
+    .nav-logo { 
+      left: 50%;
+      right: auto;
+      transform: translateX(-50%);
+      top: 10px;
+      bottom: auto;
+      height: 48px;
+      width: 48px;
+      border-width: 2px;
+    }
+    
+    .nav-logo.visible:hover {
+      transform: translateX(-50%) scale(1.05); 
+    }
+
+    .nav-links {
+      width: 100%;
+      justify-content: space-between;
+      gap: 5px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(0,0,0,0.08);
+      flex-direction: row;
+      position: static;
+      background: transparent;
+      box-shadow: none;
+      clip-path: none; 
+    }
+    .nav-links li { width: auto; text-align: center; }
+    .nav-links a { display: inline-block; font-size: 0.95rem; padding: 6px 4px; border-top: none; }
+
+    .section-inner { padding: 60px 20px; }
+    .hbtns { flex-direction: column; width: 100%; max-width: 300px; gap: 12px; }
+    .hbtns .btn { width: 100%; }
+    
+    #s-hero { padding: 6px 20px 4vh 20px; justify-content: flex-start; padding-top: 6px; }
+    .hero-logo { max-width: 300px; margin-bottom: 4px; }
+    .htitle { font-size: 1.8rem; margin-bottom: 6px; }
+    .hsub { font-size: 0.9rem; margin-bottom: 16px; }
+
+    /* Tighter menu items on mobile */
+    .menu-name { font-size: 0.85rem; }
+    .menu-price { font-size: 0.82rem; }
+    .menu-dots { margin: 0 6px; }
+
+    .menu-grid { grid-template-columns: 1fr; gap: 12px; }
+
+    /* Floating Timeline adjustments */
+    .gen-connector { left: 105px; }
+    .gen-photo {
+      width: 150px;
+      height: 150px;
+      font-size: 3.9rem;
+    }
+
+    .floating-cat-nav {
+      bottom: 16px;
+      border-radius: 30px;
+      padding: 6px 8px;
+      width: 96vw;
+      max-width: 400px;
+      justify-content: space-evenly;
+      gap: 2px;
+    }
+    .cat-link {
+      font-size: 0.7rem;
+      padding: 6px 8px;
+      letter-spacing: -0.02em;
+    }
+    /* Centre all section content on mobile */
+    /* WA: hide desktop nav-links item on mobile, show mobile-center element */
+    .nav-wa-desktop { display: none !important; }
+    .nav-wa-mobile-center {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      text-decoration: none;
+      color: var(--text-main);
+      font-size: 0.72rem;
+      font-weight: 500;
+      position: absolute;
+      right: 16px;
+      left: auto;
+      top: 14px;
+      height: 22px;
+      white-space: nowrap;
+      z-index: 10; /* Above nav-brand so tap registers correctly */
+      pointer-events: all;
+    }
+    .nav-wa-mobile-center:hover { color: #25D366; }
+
+    .wa-num { display: none; }
+    .section-inner { text-align: center; }
+    .story-text, .story-text p { text-align: left; } /* keep story text left */
+    .contact-info { text-align: center; }
+    .c-item { justify-content: center; }
+    .menu-header { text-align: left; } /* keep menu headers left-aligned */
+    
+    /* Responsive overrides for Order summary table & form */
+    .order-form-wrap { text-align: left; } /* Ensures choose item is left aligned */
+    .cs-trigger { text-align: left; }
+    .order-summary-box {
+      padding: 10px 8px;
+      overflow-x: auto; /* allow horizontal scroll if still overflows */
+    }
+    .order-items-table {
+      font-size: 0.75rem;
+    }
+    .order-items-table th {
+      font-size: 0.65rem;
+      padding: 4px 4px;
+    }
+    .order-items-table td {
+      padding: 6px 4px;
+    }
+    .order-item-qty {
+      width: 44px;
+      padding: 3px 4px;
+      font-size: 0.8rem;
+    }
+    .order-item-name {
+      font-size: 0.8rem;
+    }
+    .order-item-unit {
+      font-size: 0.65rem;
+    }
+    .order-total-row td {
+      font-size: 0.85rem;
+    }
+    .order-total-amount {
+      font-size: 0.95rem;
+    }
+    .btn-clear-order {
+       padding: 4px 10px;
+       font-size: 0.75rem;
+    }
+    /* === MOBILE ORDER FORM FIXES === */
+    /* Reduce order-grid padding so content isn't cramped */
+    .order-grid { padding: 14px 12px; }
+    .order-form-wrap { padding: 0 !important; width: 100%; }
+
+    /* Item picker: stack vertically, full width */
+    .item-picker-row { flex-direction: column; align-items: stretch; gap: 6px; }
+    .item-picker-row .custom-select-wrap { width: 100%; min-width: 0; }
+    .item-picker-row .fg-qty { width: 100%; flex-shrink: 0; }
+    .btn-add-item { width: 100%; }
+
+    /* All inputs/selects full width */
+    .fg input, .fg textarea, .fg select, .cs-trigger { width: 100% !important; box-sizing: border-box; }
+
+    /* Order Details table: prevent overflow */
+    .order-summary-box { overflow-x: hidden; padding: 8px; }
+    .order-items-table { table-layout: fixed; width: 100%; font-size: 0.72rem; }
+    .order-items-table th { font-size: 0.62rem; padding: 3px 3px; }
+    .order-items-table td { padding: 5px 3px; font-size: 0.72rem; }
+    .order-item-name { font-size: 0.72rem; word-break: break-word; }
+    .order-item-unit { font-size: 0.6rem; display: block; }
+    .order-item-qty { width: 36px; font-size: 0.72rem; padding: 2px 3px; }
+    .order-total-row td { font-size: 0.78rem; }
+
+    /* Send us a message heading — ensure it stays at top */
+    .order-form-wrap > h3 { margin-bottom: 12px; }
+
+  }
+
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="https://maps.app.goo.gl/uY43ovSrwQoLWNsS8" target="_blank" class="nav-brand" title="Open in Google Maps">
+    <span style="font-size: 1.4rem; margin-right: 4px; display: flex; align-items: center;">📍</span>
+    <span class="desktop-addr" style="font-size: 0.85rem; line-height: 1.3; font-weight: 500; text-align: left; letter-spacing: 0.02em; display: flex; align-items: center; gap: 6px;">
+      <span>Thudien House, Kandanad<br>Ernakulam 682305</span>
+    </span>
+    <span class="mobile-addr" style="display: none; font-size: 1rem; font-weight: 500; letter-spacing: 0.02em; align-items: center; gap: 6px;">
+      <span>Map</span>
+    </span>
+  </a>
+
+  <!-- Mobile-only: WhatsApp centred between map and badge -->
+  <a href="https://wa.me/919778538410" target="_blank" class="nav-wa-mobile-center" title="WhatsApp">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="#25D366" style="flex-shrink:0;"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    <span>+91 97785 38410</span>
+  </a>
+
+  <a href="#s-hero" class="nav-logo" id="navLogo">
+    <img src="badge-logo.png" alt="Ammu's Food Products Logo" onerror="this.onerror=null; this.src='https://placehold.co/150x150/e91e63/ffffff?text=Ammu\'s&font=inter'">
+  </a>
+  
+  <ul class="nav-links" id="navLinks">
+    <li class="nav-wa-item nav-wa-desktop"><a href="https://wa.me/919778538410" target="_blank" class="nav-wa-link" title="WhatsApp"><svg viewBox="0 0 24 24" width="16" height="16" fill="#25D366" style="flex-shrink:0;"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg><span class="wa-num">+91 97785 38410</span></a></li>
+    <li><a href="#s-history">Our Heritage</a></li>
+    <li><a href="#s-products">Menu</a></li>
+    <li><a href="#s-order" id="navOrderLink">Place an Order<span class="order-count-badge" id="orderCountBadge"></span></a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div id="s-hero" class="sec">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+
+  <!-- Traditional Food Floating SVGs -->
+  <div class="floating-dish fd-1" title="Banana Chips">
+    <svg viewBox="0 0 110 90" width="90" height="72" stroke="currentColor" stroke-width="2.5" fill="none">
+      <!-- Scattered oval banana chips -->
+      <ellipse cx="30" cy="45" rx="22" ry="14" transform="rotate(-20 30 45)"/>
+      <ellipse cx="55" cy="30" rx="22" ry="14" transform="rotate(10 55 30)"/>
+      <ellipse cx="78" cy="50" rx="22" ry="14" transform="rotate(-10 78 50)"/>
+      <ellipse cx="45" cy="62" rx="20" ry="13" transform="rotate(15 45 62)"/>
+      <!-- ridges on chips -->
+      <line x1="22" y1="40" x2="38" y2="52" stroke-width="1.5" opacity="0.5"/>
+      <line x1="47" y1="25" x2="63" y2="37" stroke-width="1.5" opacity="0.5"/>
+    </svg>
+  </div>
+  
+  <div class="floating-dish fd-2" title="Cheeda">
+    <svg viewBox="0 0 80 100" width="50" height="80" stroke="currentColor" stroke-width="2.5" fill="none">
+      <!-- Bundle of cheeda sticks -->
+      <rect x="20" y="10" width="8" height="80" rx="4"/>
+      <rect x="30" y="6" width="8" height="80" rx="4"/>
+      <rect x="40" y="10" width="8" height="80" rx="4"/>
+      <rect x="50" y="8" width="8" height="80" rx="4"/>
+      <!-- band holding the bundle -->
+      <path d="M18 48 Q50 44 60 48" stroke-width="3"/>
+    </svg>
+  </div>
+
+  <div class="floating-dish fd-3" title="Sharkara Unda">
+    <svg viewBox="0 0 100 100" width="70" height="70" stroke="currentColor" stroke-width="2.5" fill="none">
+      <!-- Round jaggery ball -->
+      <circle cx="50" cy="50" r="38"/>
+      <!-- Jaggery coating texture -->
+      <path d="M20 35 Q35 28 50 32 Q65 28 80 35" stroke-width="1.5" opacity="0.6"/>
+      <path d="M15 50 Q32 42 50 46 Q68 42 85 50" stroke-width="1.5" opacity="0.6"/>
+      <path d="M20 65 Q35 58 50 62 Q65 58 80 65" stroke-width="1.5" opacity="0.6"/>
+      <!-- Sesame seeds dots -->
+      <circle cx="38" cy="40" r="2" fill="currentColor" opacity="0.5"/>
+      <circle cx="55" cy="38" r="2" fill="currentColor" opacity="0.5"/>
+      <circle cx="45" cy="56" r="2" fill="currentColor" opacity="0.5"/>
+      <circle cx="62" cy="54" r="2" fill="currentColor" opacity="0.5"/>
+    </svg>
+  </div>
+
+  <div class="floating-dish fd-4" title="Achappam">
+    <svg viewBox="0 0 100 100" width="80" height="80" stroke="currentColor" stroke-width="2.5" fill="none">
+      <!-- Achappam (rose cookie) — 8-petal flower shape -->
+      <path d="M50 15 C55 28 65 30 72 22 C64 35 68 46 80 46 C67 51 68 62 76 70 C63 65 55 70 55 84 C50 71 44 70 28 76 C36 65 32 52 20 50 C33 48 36 36 28 24 C40 30 46 26 50 15 Z"/>
+      <circle cx="50" cy="50" r="10"/>
+      <circle cx="50" cy="50" r="4" fill="currentColor" opacity="0.3"/>
+    </svg>
+  </div>
+
+  <div class="floating-dish fd-5" title="Neyyappam">
+    <svg viewBox="0 0 120 80" width="96" height="64" stroke="currentColor" stroke-width="2.5" fill="none">
+      <!-- Three neyyappam balls with dome shape -->
+      <ellipse cx="28" cy="55" rx="22" ry="14"/>
+      <path d="M6 55 Q28 30 50 55" />
+      <circle cx="28" cy="42" r="3" fill="currentColor" opacity="0.25"/>
+      
+      <ellipse cx="60" cy="52" rx="22" ry="14"/>
+      <path d="M38 52 Q60 26 82 52" />
+      <circle cx="60" cy="39" r="3" fill="currentColor" opacity="0.25"/>
+
+      <ellipse cx="93" cy="55" rx="22" ry="14"/>
+      <path d="M71 55 Q93 29 115 55" />
+      <circle cx="93" cy="42" r="3" fill="currentColor" opacity="0.25"/>
+    </svg>
+  </div>
+  
+  <img src="logo.png" alt="Ammu's Food Products Logo" class="hero-logo hero-anim" onerror="this.onerror=null; this.src='https://placehold.co/350x350/e91e63/ffffff?text=Ammu\'s+Logo&font=inter'">
+  
+  <h1 class="htitle hero-anim">Welcome to Ammu's Food Products</h1>
+  <p class="hsub hero-anim">Traditional Kerala flavours, freshly crafted in small batches.</p>
+  
+  <div class="hbtns hero-anim">
+    <a href="#s-products" class="btn btn-primary">Explore Menu</a>
+    <a href="#s-order" class="btn btn-outline">Place an Order</a>
+  </div>
+</div>
+
+<!-- HISTORY -->
+<div id="s-history" class="sec">
+  <div class="section-inner">
+    <div class="sec-header">
+      <span class="badge">Our Heritage</span>
+      <h2 class="sec-title">A Family Recipe Passed Down</h2>
+    </div>
+    
+    <div class="story-grid">
+      <div class="story-text">
+        <p style="font-size: 10pt;">Growing up in a close-knit nuclear family, Ammu often heard stories from her grandmother about <strong>Vavamma</strong>, her great grandmother, and the beautiful food traditions she created in the family. In those days, tea time was always accompanied by freshly prepared snacks from the kitchen. <strong>Vavamma</strong> prepared everything with great care and lots of love.</p>
+        <p style="font-size: 10pt;">As the years passed, Ammu’s grandmother, affectionately known as <strong> Pushpa Kunjamma </strong>, felt that these flavours were too special to remain only within the family. With courage and determination, she began making and selling their traditional snacks is small packs.</p>
+          <p style="font-size: 10pt;"> For the next <strong>25 years</strong> she slowly built the business with care and dedication. Every batch of <strong> Achappam </strong> and <strong> Kuzhalappam </strong> carried a piece of her love and effort. She named the business <strong> Ammu’s Food Products </strong> after her dear granddaughter,with the hope that the family legacy would continue for generations.</p>
+       <p style="font-size: 10pt;">Today, that journey continues with the same pride and gratitude. While much has evolved and the menu has expanded, the core products still follow the old recipes that were passed down in our family.No preservatives, no shortcuts, only time, patience and honest tradition.</p>
+      </div>
+      
+      <!-- 3 Generations Timeline Block -->
+      <div class="generations-container">
+        <div class="gen-connector"></div>
+        <h3>The Women Behind the Recipe</h3>
+        
+        <div class="gen-item">
+          <div class="gen-photo">
+            <span class="thumb-emoji">👵</span>
+            <img src="images/vavamma.jpeg" alt="Vavamma" class="thumb-img" onload="this.classList.remove('img-missing');this.style.opacity='1';" onerror="this.classList.add('img-missing')">
+          </div>
+          <div class="gen-info">
+            <h4>Vavamma</h4>
+             <p style="font-size: 8.5pt;">The beginning of our family’s kitchen story.</p>
+          </div>
+        </div>
+        
+        <div class="gen-item">
+          <div class="gen-photo">
+            <span class="thumb-emoji">👵</span>
+            <img src="images/pushpa-jacob.jpg" alt="Pushpa Jacob" class="thumb-img" onload="this.classList.remove('img-missing');this.style.opacity='1';" onerror="this.classList.add('img-missing')">
+          </div>
+          <div class="gen-info">
+            <h4>Pushpa Jacob</h4>
+            <p style="font-size: 8.5pt;">The loving grandmother who founded <strong> Ammu's Food Products </strong></p>
+          </div>
+        </div>
+        
+        <div class="gen-item">
+          <div class="gen-photo">
+            <span class="thumb-emoji">👩</span>
+            <img src="images/hanna-paul.jpg" alt="Hanna Paul" class="thumb-img" onload="this.classList.remove('img-missing');this.style.opacity='1';" onerror="this.classList.add('img-missing')">
+          </div>
+          <div class="gen-info">
+            <h4>Hanna Paul</h4>
+            <p style="font-size: 8.5pt;">Affectionately known as <strong> Ammu </strong> carrying forward the love and tradition.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- PRODUCTS -->
+<div id="s-products" class="sec">
+  <div class="section-inner">
+    <div class="sec-header" style="margin-bottom: 30px;">
+      <span class="badge">Menu</span>
+      <h2 class="sec-title">Our Products</h2>
+      <p style="color:var(--text-muted); margin-top:10px;">Authentic Kerala items made fresh in our family kitchen</p>
+    </div>
+
+    <!-- Download Menu Card Button -->
+    <div style="text-align: center; margin-bottom: 50px;">
+      <button id="downloadMenuBtn" onclick="downloadMenuCard()" class="btn btn-outline" style="background: var(--bg-surface); padding: 10px 24px;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+        Download Menu Card
+      </button>
+    </div>
+
+    <!-- Categories rendered dynamically by renderMenu() from CS_DATA -->
+    <div class="menu-category" id="cat-snacks">
+      <h3 class="category-title">4PM Kadi</h3>
+      <div class="menu-grid" id="grid-cat-snacks"></div>
+    </div>
+
+    <!-- Podi -->
+    <div class="menu-category" id="cat-podi">
+      <h3 class="category-title">Podi</h3>
+      <div class="menu-grid" id="grid-cat-podi"></div>
+    </div>
+
+    <!-- Pickles -->
+    <div class="menu-category" id="cat-pickles">
+      <h3 class="category-title">Pickles</h3>
+      <div class="menu-grid" id="grid-cat-pickles"></div>
+    </div>
+
+    <!-- Ready to Eat -->
+    <div class="menu-category" id="cat-specials">
+      <h3 class="category-title">Ready to Eat</h3>
+      <div class="menu-grid" id="grid-cat-specials"></div>
+    </div>
+
+    </div>
+</div>
+
+<!-- Floating Category Navigation Pane (Subtle, Centered) -->
+<div class="floating-cat-nav" id="floatingNav">
+  <a href="#cat-snacks" class="cat-link active">4PM Kadi</a>
+  <a href="#cat-podi" class="cat-link">Podi</a>
+  <a href="#cat-pickles" class="cat-link">Pickles</a>
+  <a href="#cat-specials" class="cat-link">Ready to Eat</a>
+</div>
+
+<!-- ORDER -->
+<div id="s-order" class="sec">
+  <div class="section-inner">
+    <div class="sec-header" style="margin-bottom: 24px;">
+      <h2 class="sec-title" style="font-size: clamp(1.5rem, 3vw, 2rem); margin-top: 0;">Place Your Order</h2>
+    </div>
+
+    <div class="order-grid">
+      <div class="order-form-wrap" style="max-width: 600px; margin: 0 auto; width: 100%;">
+        <h3 style="font-size: 1.15rem; margin-bottom: 16px; color: var(--text-main);">Send us a message</h3>
+        
+        <div class="fg">
+          <label>Your Name</label>
+          <input type="text" id="fname" placeholder="e.g. Hanna Paul">
+        </div>
+        <div class="fg">
+          <label>Phone / WhatsApp</label>
+          <input type="tel" id="fphone" placeholder="+91 ">
+        </div>
+        <div class="fg">
+          <label>Preferred Collection Date</label>
+          <input type="date" id="fdate" onchange="validateDeliveryDate(this)">
+          <span id="fdate-hint" style="font-size:0.78rem; color:var(--text-muted); margin-top:4px; display:block;">Earliest available: <strong id="fdate-earliest"></strong> &nbsp;·&nbsp; Sundays unavailable</span>
+        </div>
+
+        <!-- CREATE ORDER BUTTON -->
+        <button class="btn-create-order" onclick="openOrderBuilder()" type="button">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          Create / Review Order
+        </button>
+
+        <!-- ORDER DETAILS (read-only summary, populated on Save) -->
+        <div class="fg" id="orderDetailsFg" style="display:none;">
+          <label>Order Details</label>
+          <div class="order-summary-box" id="orderSummaryBox">
+            <p class="order-empty-msg" id="orderEmptyMsg">No items saved yet.</p>
+            <table class="order-items-table" id="orderTable" style="display:none;">
+              <thead>
+                <tr>
+                  <th>Item</th>
+                  <th>Qty</th>
+                  <th style="text-align:right;">Total</th>
+                </tr>
+              </thead>
+              <tbody id="orderTableBody"></tbody>
+              <tfoot>
+                <tr class="order-total-row">
+                  <td colspan="2">Grand Total</td>
+                  <td style="text-align:right;" class="order-total-amount" id="orderGrandTotal">₹0</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+        
+        <button class="btn btn-primary btn-whatsapp" onclick="sendWA()">
+          <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          <span>Request Order via WhatsApp</span>
+        </button>
+        <p class="order-note">🏡 We are a small family kitchen. Everything is prepared fresh in small batches, made only on request. We will do our best to have your order ready by your preferred date. Delivery is available on request across Ernakulam for a small additional fee. We'll confirm all details with you on WhatsApp before we begin.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p class="footer-main">© 2025 <strong>Ammu's Food Products</strong> · Kerala</p>
+  <p class="footer-sub">Made with love, served with tradition</p>
+</footer>
+
+<!-- ORDER BUILDER MODAL -->
+<div id="orderBuilderOverlay" class="ob-overlay" onclick="if(event.target===this)closeOrderBuilder()">
+  <div class="ob-modal">
+    <div class="ob-header">
+      <h3>Create Your Order</h3>
+      <button class="ob-close" onclick="closeOrderBuilder()">✕</button>
+    </div>
+
+    <!-- Item picker inside modal -->
+    <div class="ob-picker-row">
+      <div class="custom-select-wrap ob-select" id="csWrap">
+        <input type="hidden" id="fitem-val" value="">
+        <button type="button" class="cs-trigger" id="csTrigger" onclick="toggleCS()">
+          <span class="cs-trigger-text placeholder" id="csTriggerText">— Select an item —</span>
+          <span class="cs-arrow">▾</span>
+        </button>
+        <div class="cs-panel" id="csPanel">
+          <div class="cs-search-wrap">
+            <input type="text" class="cs-search" id="csSearch" placeholder="Search items…" oninput="filterCS(this.value)" autocomplete="off" style="padding-left:12px;">
+          </div>
+          <div class="cs-list" id="csList"></div>
+        </div>
+      </div>
+      <input type="number" id="obQty" class="ob-qty-input" placeholder="Qty" min="0.5" step="0.5" value="1">
+      <button class="ob-add-btn" onclick="obAddItem()">+ Add</button>
+    </div>
+
+    <!-- Live order table inside modal -->
+    <div class="ob-table-wrap" id="obTableWrap">
+      <p class="ob-empty" id="obEmpty">No items added yet. Choose an item above.</p>
+      <table class="ob-table" id="obTable" style="display:none;">
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Qty</th>
+            <th>Unit Price</th>
+            <th>Total</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="obBody"></tbody>
+        <tfoot>
+          <tr class="ob-total-row">
+            <td colspan="3"><strong>Grand Total</strong></td>
+            <td class="ob-grand-total" id="obGrandTotal">₹0</td>
+            <td></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <!-- Action bar -->
+    <div class="ob-actions">
+      <button class="ob-btn-clear" onclick="obClearAll()">🗑 Clear All</button>
+      <div style="flex:1"></div>
+      <button class="ob-btn-save" onclick="obSaveOrder()">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+        Save Order
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- LIGHTBOX MODAL -->
+<div id="imgLightbox" class="lightbox-overlay" onclick="if(event.target===this)closeLightbox()">
+  <div class="lightbox-inner">
+    <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+    <img id="lightboxImg" class="lightbox-img" src="" alt="">
+    <div class="lightbox-name" id="lightboxName"></div>
+    <div class="lightbox-price" id="lightboxPrice"></div>
+    <div class="lightbox-desc" id="lightboxDesc"></div>
+  </div>
+</div>
+
+<script>
+// ===== DYNAMIC SCROLL MARGIN =====
+function setScrollMargins() {
+  var navH = document.querySelector('nav').getBoundingClientRect().height;
+  // Set scroll-padding-top dynamically on html to match actual nav height
+  document.documentElement.style.scrollPaddingTop = navH + 'px';
+  // Order section: no extra margin — scroll-padding-top already clears the nav
+  var orderSec = document.getElementById('s-order');
+  if (orderSec) orderSec.style.scrollMarginTop = '0px';
+  // Other sections get small extra breathing room
+  var others = ['s-history', 's-products'];
+  others.forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.style.scrollMarginTop = '0px';
+  });
+  var cats = ['cat-snacks','cat-podi','cat-pickles','cat-specials'];
+  cats.forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.style.scrollMarginTop = '20px';
+  });
+}
+window.addEventListener('load', setScrollMargins);
+window.addEventListener('resize', setScrollMargins);
+
+// ===== LIGHTBOX =====
+function openLightbox(src, name, price, desc) {
+  document.getElementById('lightboxImg').src = src;
+  document.getElementById('lightboxName').textContent = name;
+  document.getElementById('lightboxPrice').textContent = price ? '₹' + price : '';
+  document.getElementById('lightboxDesc').textContent = desc || '';
+  document.getElementById('imgLightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeLightbox() {
+  document.getElementById('imgLightbox').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeLightbox();
+});
+
+// ===== IMAGE VIEW BUTTONS (injected when image loads) =====
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.menu-item').forEach(function(item) {
+    var img = item.querySelector('.thumb-img');
+    var nameEl = item.querySelector('.menu-name');
+    var priceEl = item.querySelector('.menu-price');
+    var descEl = item.querySelector('.menu-desc');
+    if (!img || !nameEl) return;
+
+    var viewBtn = document.createElement('button');
+    viewBtn.className = 'img-view-btn';
+    viewBtn.title = 'Click to view image';
+    viewBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5" fill="currentColor" stroke="none"/><polyline points="21 15 16 10 5 21"/></svg><span style="font-size:0.68rem;font-weight:600;letter-spacing:0.02em;">tap</span>';
+
+    viewBtn.onclick = function(e) {
+      e.stopPropagation();
+      var name = Array.from(nameEl.childNodes).filter(function(n){return n.nodeType===3;}).map(function(n){return n.textContent.trim();}).join("").trim();
+      var price = priceEl ? priceEl.textContent.trim() : '';
+      var desc = descEl ? descEl.textContent.trim() : '';
+      openLightbox(img.src, name, price, desc);
+    };
+
+    // Prepend the button strictly at the beginning of the product name
+    nameEl.insertBefore(viewBtn, nameEl.firstChild);
+
+    img.addEventListener('load', function() {
+      if (img.naturalWidth > 0) {
+        viewBtn.classList.add('has-img');
+      }
+    });
+    // If already cached and loaded
+    if (img.complete && img.naturalWidth > 0) {
+      viewBtn.classList.add('has-img');
+    }
+  });
+});
+
+// ===== RENDER MENU FROM CS_DATA (single source of truth) =====
+function renderMenu() {
+  CS_DATA.forEach(function(group) {
+    var grid = document.getElementById('grid-' + group.catId);
+    if (!grid) return;
+    grid.innerHTML = '';
+
+    // Optional note row (e.g. Ready to Eat pp explanation)
+    if (group.note) {
+      var noteDiv = document.createElement('div');
+      noteDiv.style.cssText = 'grid-column:1/-1;font-size:0.85rem;color:var(--text-muted);text-align:center;margin-bottom:10px;';
+      noteDiv.textContent = group.note;
+      grid.appendChild(noteDiv);
+    }
+
+    group.items.forEach(function(item) {
+      var imgSrc  = item.img ? 'images/' + item.img : '';
+      var unitDisp = item.unit === 'person' ? 'pp' : item.unit;
+      var priceDisp = item.price + '/' + unitDisp;
+
+      var div = document.createElement('div');
+      div.className = 'menu-item';
+      div.innerHTML =
+        '<div class="menu-thumb-real"><span class="thumb-emoji">' + item.emoji + '</span>' +
+        (imgSrc ? '<img src="' + imgSrc + '" alt="' + item.name + '" class="thumb-img img-missing"' +
+          ' onload="this.classList.remove(&quot;img-missing&quot;);this.style.opacity=&quot;1&quot;;"' +
+          ' onerror="this.classList.add(&quot;img-missing&quot;)">' : '') +
+        '</div>' +
+        '<div class="menu-info">' +
+          '<div class="menu-header">' +
+            '<div class="menu-name">' + item.name + '</div>' +
+            '<div class="menu-dots"></div>' +
+            '<div class="menu-price">' + priceDisp + '</div>' +
+          '</div>' +
+          (item.desc ? '<div class="menu-desc">' + item.desc + '</div>' : '') +
+        '</div>';
+      grid.appendChild(div);
+    });
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.thumb-img').forEach(function(img) {
+    if (!img.complete || img.naturalWidth === 0) {
+      // Re-trigger by appending cache-bust param — forces browser to retry
+      var src = img.getAttribute('src');
+      if (src) img.src = src + '?v=' + Date.now();
+    }
+  });
+});
+
+// ===== ORDER STATE =====
+var orderItems = []; // [{name, price, unit, qty}]
+
+// ===== ADD + BUTTONS TO ALL MENU ITEMS =====
+document.addEventListener("DOMContentLoaded", function() {
+  renderMenu(); // build menu HTML from CS_DATA first
+  // Build custom dropdown options list on load
+  buildCSList('');
+
+  // Inject + Add to Order buttons on every menu item
+  document.querySelectorAll('.menu-item').forEach(function(item) {
+    var nameEl = item.querySelector('.menu-name');
+    var priceEl = item.querySelector('.menu-price');
+    if (!nameEl || !priceEl) return;
+
+    var name = Array.from(nameEl.childNodes).filter(function(n){return n.nodeType===3;}).map(function(n){return n.textContent.trim();}).join("").trim();
+    var priceText = priceEl.textContent.trim(); // e.g. "720/kg"
+    var parts = priceText.split('/');
+    var price = parseFloat(parts[0]);
+    var unit = parts[1] || 'unit';
+
+    var btn = document.createElement('button');
+    btn.className = 'add-to-order-btn';
+    btn.title = 'Add to Order';
+    btn.innerHTML = '+';
+    btn.setAttribute('data-name', name);
+    btn.setAttribute('data-price', price);
+    btn.setAttribute('data-unit', unit);
+    btn.onclick = function() {
+      addItemByData(name, price, unit);
+      flashBtn(btn);
+    };
+    item.appendChild(btn);
+  });
+});
+
+function flashBtn(btn) {
+  btn.classList.add('added');
+  btn.innerHTML = '✓';
+  setTimeout(function() {
+    btn.classList.remove('added');
+    btn.innerHTML = '+';
+  }, 900);
+}
+
+// ===== ADD ITEM FROM MENU + BUTTON =====
+function addItemByData(name, price, unit) {
+  var existing = orderItems.find(function(i) { return i.name === name; });
+  if (existing) {
+    existing.qty += 1;
+  } else {
+    orderItems.push({ name: name, price: price, unit: unit, qty: 1 });
+  }
+  renderOrderTable();
+  updateOrderCount();
+}
+
+// ===== CUSTOM SEARCHABLE DROPDOWN DATA =====
+// ==========================================================================
+// CS_DATA — SINGLE SOURCE OF TRUTH
+// Edit prices, names, descriptions here. Everything updates automatically:
+// the website menu, order builder, WhatsApp total, and downloaded menu card.
+//
+// Fields per item:
+//   name  — display name
+//   price — number (₹)
+//   unit  — 'kg' | 'piece' | 'person'  (person shows as 'pp')
+//   emoji — fallback thumbnail emoji
+//   img   — filename inside images/ folder (leave '' if no image)
+//   desc  — short description shown on the website (leave '' to hide)
+// ==========================================================================
+var CS_DATA = [
+  { group: '4PM Kadi', catId: 'cat-snacks', items: [
+    { name: 'Sharkara Unda',       price: 720,  unit: 'kg',     emoji: '🍯', img: 'sharkara-unda.jpeg',       desc: 'Sweet jaggery balls with a crispy rice exterior' },
+    { name: 'Panjasara Unda',      price: 700,  unit: 'kg',     emoji: '🍚', img: 'panjasara-unda.jpeg',      desc: 'Melt-in-the-mouth sugar-coated rice flour balls' },
+    { name: 'Achappam',            price: 700,  unit: 'kg',     emoji: '🍘', img: 'achappam.jpeg',            desc: 'Delicate flower-shaped rose cookies' },
+    { name: 'Kuzhalappam',         price: 700,  unit: 'kg',     emoji: '🥖', img: 'kuzhalappam.jpeg',         desc: 'Crispy hollow rice flour rolls with cumin' },
+    { name: 'Cheeda',              price: 650,  unit: 'kg',     emoji: '🍟', img: 'cheeda.jpeg',              desc: 'Thin, crunchy fried rice sticks' },
+    { name: 'Cheeda Vilayichathu', price: 700,  unit: 'kg',     emoji: '🍯', img: 'cheeda-vilayichathu.jpeg', desc: 'Cheeda tossed in sweet jaggery' },
+    { name: 'Banana Chips',        price: 700,  unit: 'kg',     emoji: '🍌', img: 'banana-chips.jpeg',        desc: 'Thick-cut raw Kerala banana fried golden' },
+    { name: 'Chakka Chips',        price: 800,  unit: 'kg',     emoji: '🍈', img: 'chakka-chips.jpeg',        desc: 'Crispy jackfruit chips — a seasonal delicacy' },
+    { name: 'Neyyappam',           price: 600,  unit: 'kg',     emoji: '🥞', img: 'neyyappam.jpeg',           desc: 'Deep-fried jaggery & rice pancake balls in ghee' },
+    { name: 'Aval Vilayichathu',   price: 600,  unit: 'kg',     emoji: '🥣', img: 'aval-vilayichathu.jpeg',   desc: 'Flattened rice tossed with jaggery and coconut' },
+    { name: 'Vattayappam',         price: 80,   unit: 'piece',  emoji: '🥮', img: 'vattayappam.jpeg',         desc: 'Steamed rice and coconut cake' },
+    { name: 'Kinnathappam',        price: 90,   unit: 'piece',  emoji: '🍮', img: 'kinnathappam.jpeg',        desc: 'Steamed plate cake made with rice & coconut milk' }
+  ]},
+  { group: 'Podi', catId: 'cat-podi', items: [
+    { name: 'Appam Podi',          price: 120,  unit: 'kg',     emoji: '🌾', img: 'appam-podi.jpeg',          desc: 'Finely milled rice flour for lacy Kerala appams' },
+    { name: 'Puttu Podi',          price: 120,  unit: 'kg',     emoji: '🌾', img: 'puttu-podi.jpeg',          desc: 'Classic rice flour for the iconic steamed cake' },
+    { name: 'Chemba Puttu Podi',   price: 120,  unit: 'kg',     emoji: '🤎', img: 'chemba-puttu-podi.jpeg',   desc: 'Nutritious red rice flour for earthier puttu' },
+    { name: 'Chammandi Podi',      price: 900,  unit: 'kg',     emoji: '🥥', img: 'chammandi-podi.jpeg',      desc: 'Roasted coconut & spice chutney powder' },
+    { name: 'Avalose Podi',        price: 600,  unit: 'kg',     emoji: '🥣', img: 'avalose-podi.jpeg',        desc: 'Sweet roasted rice and coconut powder' },
+    { name: 'Chemba Avalose Podi', price: 600,  unit: 'kg',     emoji: '🥣', img: 'chemba-avalose-podi.jpeg', desc: 'Red rice version for wholesome goodness' }
+  ]},
+  { group: 'Pickles', catId: 'cat-pickles', items: [
+    { name: 'Mango Pickle',         price: 360,  unit: 'kg',    emoji: '🥭', img: 'mango-pickle.jpeg',         desc: '' },
+    { name: 'Chethu Manga Pickle',  price: 360,  unit: 'kg',    emoji: '🥭', img: 'chethu-manga-pickle.jpeg',  desc: '' },
+    { name: 'Nellikka Pickle',      price: 370,  unit: 'kg',    emoji: '🟢', img: 'nellikka-pickle.jpeg',      desc: '' },
+    { name: 'Garlic Pickle',        price: 400,  unit: 'kg',    emoji: '🧄', img: 'garlic-pickle.jpeg',        desc: '' },
+    { name: 'Beef Pickle',          price: 1500, unit: 'kg',    emoji: '🥩', img: 'beef-pickle.jpeg',          desc: '' },
+    { name: 'Fish (Choora) Pickle', price: 1100, unit: 'kg',    emoji: '🐟', img: 'fish-choora-pickle.jpeg',   desc: '' },
+    { name: 'Fish (Kera) Pickle',   price: 1300, unit: 'kg',    emoji: '🐟', img: 'fish-kera-pickle.jpeg',     desc: '' },
+    { name: 'Prawns Pickle',        price: 1500, unit: 'kg',    emoji: '🍤', img: 'prawns-pickle.jpeg',        desc: '' },
+    { name: 'Vadukapuli Pickle',    price: 360,  unit: 'kg',    emoji: '🍋', img: 'vadukapuli-pickle.jpeg',    desc: '' },
+    { name: 'Naranga Pickle',       price: 360,  unit: 'kg',    emoji: '🍋', img: 'naranga-pickle.jpeg',       desc: '' },
+    { name: 'Chena Pickle',         price: 400,  unit: 'kg',    emoji: '🍠', img: 'chena-pickle.jpeg',         desc: '' },
+    { name: 'Dates & Lime Pickle',  price: 400,  unit: 'kg',    emoji: '🌴', img: 'dates-lime-pickle.jpeg',    desc: '' },
+    { name: 'Dates Pickle',         price: 600,  unit: 'kg',    emoji: '🌴', img: 'dates-pickle.jpeg',         desc: '' },
+    { name: 'Pindi Pickle',         price: 300,  unit: 'kg',    emoji: '🎋', img: 'pindi-pickle.jpeg',         desc: '' },
+    { name: 'Pavakka Pickle',       price: 300,  unit: 'kg',    emoji: '🥒', img: 'pavakka-pickle.jpeg',       desc: '' }
+  ]},
+  { group: 'Ready to Eat', catId: 'cat-specials', note: 'Note: All per-person (pp) items include 400g of food (Pidi or Fried Rice) & curry.', items: [
+    { name: 'Fried Rice & Chilli Gobi',         price: 200,  unit: 'person', emoji: '🍚', img: 'fried-rice-chilli-gobi.jpeg',  desc: '' },
+    { name: 'Fried Rice & Paneer Butter Masala', price: 250, unit: 'person', emoji: '🍚', img: 'fried-rice-paneer.jpeg',        desc: '' },
+    { name: 'Pidi & Chicken Varuthara',          price: 250, unit: 'person', emoji: '🍲', img: 'pidi-chicken.jpeg',             desc: '' },
+    { name: 'Pidi & Beef Curry',                 price: 375, unit: 'person', emoji: '🍲', img: 'pidi-beef.jpeg',                desc: '' },
+    { name: 'Pidi & Mushroom Varuthara',         price: 375, unit: 'person', emoji: '🍲', img: 'pidi-mushroom.jpeg',            desc: '' },
+    { name: 'Fried Rice & Chilli Chicken',       price: 225, unit: 'person', emoji: '🍚', img: 'fried-rice-chicken.jpeg',       desc: '' },
+    { name: 'Beef Fry',       price: 1500, unit: 'kg',     emoji: '🥩', img: 'beef-fry.jpeg',             desc: '' },
+    { name: 'Beef Curry',     price: 1000, unit: 'kg',     emoji: '🥩', img: 'beef-curry.jpeg',           desc: '' },
+    { name: 'Fish Curry',     price: 600,  unit: 'kg',     emoji: '🐟', img: 'fish-curry.jpeg',           desc: '' },
+    { name: 'Chicken Curry',  price: 450,  unit: 'kg',     emoji: '🍗', img: 'chicken-curry.jpeg',        desc: '' },
+    { name: 'Mushroom Fry',   price: 2000, unit: 'kg',     emoji: '🍄', img: 'mushroom-fry.jpeg',         desc: '' },
+    { name: 'Prawns Fry',     price: 1500, unit: 'kg',     emoji: '🍤', img: 'prawns-fry.jpeg',           desc: '' },
+    { name: 'Puli Inji',      price: 600,  unit: 'kg',     emoji: '🥣', img: 'puli-inji.jpeg',            desc: '' },
+    { name: 'Paal Kappa',     price: 250,  unit: 'kg',     emoji: '🥥', img: 'paal-kappa.jpeg',           desc: '' },
+    { name: 'Paal Kappa & Beef Curry',     price: 375,  unit: 'pp',     emoji: '🥥', img: 'paal-kappa-beef.jpeg',           desc: '' },
+    { name: 'Thenga Varuthathu', price: 600, unit: 'kg',   emoji: '🥥', img: 'thenga-varuthathu.jpeg',    desc: '' }
+  ]}
+];
+
+var csSelectedVal = ''; // "name|price|unit"
+
+function buildCSList(filter) {
+  var list = document.getElementById('csList');
+  list.innerHTML = '';
+  var q = (filter || '').toLowerCase();
+  var hasAny = false;
+  CS_DATA.forEach(function(group) {
+    var matched = group.items.filter(function(it) {
+      return !q || it.name.toLowerCase().indexOf(q) !== -1;
+    });
+    if (matched.length === 0) return;
+    hasAny = true;
+    var gl = document.createElement('div');
+    gl.className = 'cs-group-label';
+    gl.textContent = group.group;
+    list.appendChild(gl);
+    matched.forEach(function(it) {
+      var unitLabel = it.unit === 'person' ? 'pp' : '/' + it.unit;
+      var val = it.name + '|' + it.price + '|' + it.unit;
+      var opt = document.createElement('div');
+      opt.className = 'cs-option' + (val === csSelectedVal ? ' selected' : '');
+      opt.setAttribute('data-val', val);
+      opt.innerHTML = '<span class="cs-option-name">' + it.name + '</span>' +
+                      '<span class="cs-option-price">₹' + it.price + unitLabel + '</span>';
+      opt.onclick = function() { selectCSItem(val, it.name, it.price, it.unit); };
+      list.appendChild(opt);
+    });
+  });
+  if (!hasAny) {
+    list.innerHTML = '<div class="cs-no-results">No items found for "' + filter + '"</div>';
+  }
+}
+
+function toggleCS() {
+  var panel = document.getElementById('csPanel');
+  var trigger = document.getElementById('csTrigger');
+  var isOpen = panel.classList.contains('open');
+  if (isOpen) {
+    closeCS();
+  } else {
+    panel.classList.add('open');
+    trigger.classList.add('open');
+    buildCSList('');
+    // Do NOT auto-focus search — avoids keyboard popping up on mobile
+  }
+}
+
+function closeCS() {
+  document.getElementById('csPanel').classList.remove('open');
+  document.getElementById('csTrigger').classList.remove('open');
+  document.getElementById('csSearch').value = '';
+}
+
+function filterCS(q) {
+  buildCSList(q);
+}
+
+function selectCSItem(val, name, price, unit) {
+  csSelectedVal = val;
+  document.getElementById('fitem-val').value = val;
+  var triggerText = document.getElementById('csTriggerText');
+  var unitLabel = unit === 'person' ? '/pp' : '/' + unit;
+  triggerText.textContent = name + ' — ₹' + price + unitLabel;
+  triggerText.classList.remove('placeholder');
+  closeCS();
+}
+
+// Close dropdown when clicking outside
+document.addEventListener('click', function(e) {
+  var wrap = document.getElementById('csWrap');
+  if (wrap && !wrap.contains(e.target)) closeCS();
+});
+
+// ===== ADD ITEM FROM DROPDOWN IN ORDER FORM =====
+function addItemToOrder() {
+  var val = document.getElementById('fitem-val').value;
+  var qtyInput = document.getElementById('fqty');
+  if (!val) { alert('Please select an item first.'); return; }
+  var parts = val.split('|');
+  var name = parts[0];
+  var price = parseFloat(parts[1]);
+  var unit = parts[2];
+  var qty = parseFloat(qtyInput.value) || 1;
+
+  var existing = orderItems.find(function(i) { return i.name === name; });
+  if (existing) {
+    existing.qty += qty;
+  } else {
+    orderItems.push({ name: name, price: price, unit: unit, qty: qty });
+  }
+  // Reset picker
+  csSelectedVal = '';
+  document.getElementById('fitem-val').value = '';
+  var t = document.getElementById('csTriggerText');
+  t.textContent = '— Select an item —';
+  t.classList.add('placeholder');
+  qtyInput.value = '1';
+  renderOrderTable();
+  updateOrderCount();
+}
+
+// ===== RENDER ORDER TABLE =====
+function renderOrderTable() {
+  var tbody      = document.getElementById('orderTableBody');
+  var table      = document.getElementById('orderTable');
+  var emptyMsg   = document.getElementById('orderEmptyMsg');
+  var actionsRow = document.getElementById('orderActionsRow'); // may not exist — guard every access
+  var grandTotalEl = document.getElementById('orderGrandTotal');
+
+  if (orderItems.length === 0) {
+    if (table)      table.style.display = 'none';
+    if (emptyMsg)   emptyMsg.style.display = 'block';
+    if (actionsRow) actionsRow.style.display = 'none';
+    return;
+  }
+
+  if (emptyMsg)   emptyMsg.style.display = 'none';
+  if (table)      table.style.display = 'table';
+  if (actionsRow) actionsRow.style.display = 'flex';
+
+  if (!tbody) return;
+  tbody.innerHTML = '';
+  var grandTotal = 0;
+
+  orderItems.forEach(function(item, idx) {
+    var lineTotal = item.price * item.qty;
+    grandTotal += lineTotal;
+    var tr = document.createElement('tr');
+    tr.innerHTML =
+      '<td class="order-item-name">' + item.name + '<br><span class="order-item-unit">₹' + item.price + '/' + item.unit + '</span></td>' +
+      '<td>' +
+        '<div class="order-item-qty-wrap">' +
+          '<input class="order-item-qty" type="number" min="0.5" step="0.5" value="' + item.qty + '" onchange="updateQty(' + idx + ', this.value)">' +
+          '<span class="order-item-unit">' + item.unit + '</span>' +
+        '</div>' +
+      '</td>' +
+      '<td style="text-align:right; font-weight:600; color:var(--primary);">₹' + lineTotal.toLocaleString() + '</td>' +
+      '';
+    tbody.appendChild(tr);
+  });
+
+  if (grandTotalEl) grandTotalEl.textContent = '₹' + grandTotal.toLocaleString();
+}
+
+function updateQty(idx, val) {
+  var q = parseFloat(val);
+  if (isNaN(q) || q <= 0) { removeItem(idx); return; }
+  orderItems[idx].qty = q;
+  renderOrderTable();
+  updateOrderCount();
+}
+
+function removeItem(idx) {
+  orderItems.splice(idx, 1);
+  renderOrderTable();
+  updateOrderCount();
+}
+
+function clearAllOrderItems() {
+  if (orderItems.length === 0) return;
+  if (confirm('Clear all items from your order?')) {
+    orderItems = [];
+    renderOrderTable();
+    updateOrderCount();
+  }
+}
+
+// ===== UPDATE NAV COUNT BADGE =====
+function updateOrderCount() {
+  var badge = document.getElementById('orderCountBadge');
+  if (!badge) return;
+  var total = orderItems.reduce(function(s, i) { return s + i.qty; }, 0);
+  if (total > 0) {
+    badge.textContent = total % 1 === 0 ? total : total.toFixed(1);
+    badge.style.display = 'inline-block';
+  } else {
+    badge.style.display = 'none';
+  }
+}
+
+// ===== SCROLL BEHAVIOURS =====
+window.addEventListener('scroll', function() {
+  var navLogo = document.getElementById('navLogo');
+  var floatingNav = document.getElementById('floatingNav');
+  var productsSec = document.getElementById('s-products');
+  
+  if (window.scrollY > 100) {
+    navLogo.classList.add('visible');
+  } else {
+    navLogo.classList.remove('visible');
+  }
+  
+  if (productsSec) {
+    var rect = productsSec.getBoundingClientRect();
+    if (rect.top < window.innerHeight * 0.8 && rect.bottom > window.innerHeight * 0.2) {
+      floatingNav.classList.add('visible');
+    } else {
+      floatingNav.classList.remove('visible');
+    }
+  }
+});
+
+// ===== SCROLLSPY =====
+document.addEventListener("DOMContentLoaded", function() {
+  var sections = document.querySelectorAll(".menu-category");
+  var navLinks = document.querySelectorAll(".floating-cat-nav .cat-link");
+
+  var observerOptions = {
+    root: null,
+    rootMargin: "-20% 0px -70% 0px",
+    threshold: 0
+  };
+
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        navLinks.forEach(function(link) {
+          link.classList.remove("active");
+          if (link.getAttribute("href") === "#" + entry.target.id) {
+            link.classList.add("active");
+          }
+        });
+      }
+    });
+  }, observerOptions);
+
+  sections.forEach(function(sec) { observer.observe(sec); });
+});
+
+// ===== DELIVERY DATE SETUP =====
+function setupDeliveryDate() {
+  var dateInput = document.getElementById('fdate');
+  var earliestEl = document.getElementById('fdate-earliest');
+  if (!dateInput) return;
+
+  function addDays(d, n) {
+    var r = new Date(d);
+    r.setDate(r.getDate() + n);
+    return r;
+  }
+
+  function isSunday(d) { return d.getDay() === 0; }
+
+  function nextValid(d) {
+    var r = new Date(d);
+    while (isSunday(r)) r.setDate(r.getDate() + 1);
+    return r;
+  }
+
+  function toYMD(d) {
+    var y = d.getFullYear();
+    var m = String(d.getMonth()+1).padStart(2,'0');
+    var dd = String(d.getDate()).padStart(2,'0');
+    return y+'-'+m+'-'+dd;
+  }
+
+  function toDisplay(d) {
+    return d.toLocaleDateString('en-IN', { weekday:'short', day:'numeric', month:'short', year:'numeric' });
+  }
+
+  var today = new Date();
+  today.setHours(0,0,0,0);
+  var earliest = nextValid(addDays(today, 2));
+  dateInput.min = toYMD(earliest);
+  if (earliestEl) earliestEl.textContent = toDisplay(earliest);
+
+  // Default to earliest valid date
+  dateInput.value = toYMD(earliest);
+}
+
+function validateDeliveryDate(input) {
+  var d = new Date(input.value);
+  if (d.getDay() === 0) {
+    alert('Sundays are unavailable. Please choose another day.');
+    input.value = '';
+  }
+}
+
+document.addEventListener('DOMContentLoaded', setupDeliveryDate);
+
+// ===== WHATSAPP SEND =====
+function sendWA() {
+  var n = document.getElementById('fname').value.trim();
+  var p = document.getElementById('fphone').value.trim();
+  
+  if (!n) {
+    alert('Please enter your name.');
+    return;
+  }
+  if (orderItems.length === 0) {
+    alert('Please add at least one item to your order.');
+    return;
+  }
+
+  var orderLines = orderItems.map(function(item) {
+    return '  • ' + item.name + ' × ' + item.qty + ' ' + item.unit + ' = ₹' + (item.price * item.qty).toLocaleString();
+  }).join('\n');
+
+  var grandTotal = orderItems.reduce(function(s, i) { return s + i.price * i.qty; }, 0);
+
+  var dateInput = document.getElementById('fdate');
+  var delivDate = dateInput && dateInput.value ? new Date(dateInput.value).toLocaleDateString('en-IN', {weekday:'long', day:'numeric', month:'long', year:'numeric'}) : '';
+
+  var t = 'Hello Ammu\'s Food Products! 👋\n\n' +
+          '*Name:* ' + n +
+          (p ? '\n*Phone:* ' + p : '') +
+          (delivDate ? '\n*Requested Collection Date:* ' + delivDate : '') +
+          '\n\n*My Order:*\n' + orderLines +
+          '\n\n*Estimated Total:* ₹' + grandTotal.toLocaleString() +
+          '\n\n_(Please confirm availability & order collection date.)_';
+          
+  window.open('https://wa.me/919778538410?text=' + encodeURIComponent(t), '_blank');
+}
+
+// ===== ORDER BUILDER MODAL =====
+var obItems = []; // draft items in modal — only committed on Save
+
+function openOrderBuilder() {
+  var name = document.getElementById('fname').value.trim();
+  var phone = document.getElementById('fphone').value.trim();
+  var date = document.getElementById('fdate').value;
+  var missing = [];
+  if (!name)  missing.push('Your Name');
+  if (!phone) missing.push('Phone / WhatsApp');
+  if (!date)  missing.push('Preferred Collection Date');
+  if (missing.length) {
+    alert('Please fill in the following before creating your order:\n\n• ' + missing.join('\n• '));
+    return;
+  }
+  // Pre-populate modal with any already-saved items
+  obItems = orderItems.map(function(i) {
+    return { name: i.name, price: i.price, unit: i.unit, qty: i.qty };
+  });
+  obRender();
+  document.getElementById('orderBuilderOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  // Build dropdown inside modal
+  buildCSList('');
+}
+
+function closeOrderBuilder() {
+  document.getElementById('orderBuilderOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+  // Reset modal picker state
+  csSelectedVal = '';
+  document.getElementById('fitem-val').value = '';
+  var t = document.getElementById('csTriggerText');
+  t.textContent = '— Select an item —';
+  t.classList.add('placeholder');
+  document.getElementById('obQty').value = '1';
+}
+
+function obAddItem() {
+  var val = document.getElementById('fitem-val').value;
+  var qty = parseFloat(document.getElementById('obQty').value) || 1;
+  if (!val) { alert('Please select an item first.'); return; }
+  var parts = val.split('|');
+  var name = parts[0], price = parseFloat(parts[1]), unit = parts[2];
+  var existing = obItems.find(function(i) { return i.name === name; });
+  if (existing) { existing.qty += qty; }
+  else { obItems.push({ name: name, price: price, unit: unit, qty: qty }); }
+  // Reset picker
+  csSelectedVal = '';
+  document.getElementById('fitem-val').value = '';
+  var t = document.getElementById('csTriggerText');
+  t.textContent = '— Select an item —';
+  t.classList.add('placeholder');
+  document.getElementById('obQty').value = '1';
+  closeCS();
+  obRender();
+}
+
+function obRender() {
+  var empty = document.getElementById('obEmpty');
+  var table = document.getElementById('obTable');
+  var body  = document.getElementById('obBody');
+  var grand = document.getElementById('obGrandTotal');
+  if (obItems.length === 0) {
+    empty.style.display = 'block';
+    table.style.display = 'none';
+    grand.textContent = '₹0';
+    return;
+  }
+  empty.style.display = 'none';
+  table.style.display = 'table';
+  body.innerHTML = '';
+  var total = 0;
+  obItems.forEach(function(item, idx) {
+    var line = item.price * item.qty;
+    total += line;
+    var unitLabel = item.unit === 'person' ? 'pp' : item.unit;
+    var tr = document.createElement('tr');
+    tr.innerHTML =
+      '<td class="ob-item-name">' + item.name + '<span class="ob-item-sub">₹' + item.price + '/' + unitLabel + '</span></td>' +
+      '<td><div class="ob-qty-cell">' +
+        '<input type="number" min="0.5" step="0.5" value="' + item.qty + '" onchange="obUpdateQty(' + idx + ',this.value)">' +
+        '<span class="ob-unit">' + unitLabel + '</span>' +
+      '</div></td>' +
+      '<td style="color:var(--text-muted);font-size:0.82rem;">₹' + item.price + '</td>' +
+      '<td style="font-weight:600;color:var(--primary);">₹' + line.toLocaleString() + '</td>' +
+      '<td><button class="ob-del-btn" onclick="obRemove(' + idx + ')" title="Remove">✕</button></td>';
+    body.appendChild(tr);
+  });
+  grand.textContent = '₹' + total.toLocaleString();
+}
+
+function obUpdateQty(idx, val) {
+  var q = parseFloat(val);
+  if (isNaN(q) || q <= 0) { obRemove(idx); return; }
+  obItems[idx].qty = q;
+  obRender();
+}
+
+function obRemove(idx) {
+  obItems.splice(idx, 1);
+  obRender();
+}
+
+function obClearAll() {
+  if (obItems.length === 0) return;
+  if (confirm('Clear all items from this order?')) {
+    obItems = [];
+    orderItems = [];           // wipe committed order too
+    renderOrderTable();        // clear the Order Details summary
+    updateOrderCount();        // reset nav badge
+    var fg = document.getElementById('orderDetailsFg'); if (fg) fg.style.display = 'none';
+    obRender();                // refresh modal table
+  }
+}
+
+function obSaveOrder() {
+  if (obItems.length === 0) {
+    alert('Please add at least one item before saving.');
+    return;
+  }
+  // Commit to main orderItems
+  orderItems = obItems.map(function(i) {
+    return { name: i.name, price: i.price, unit: i.unit, qty: i.qty };
+  });
+  renderOrderTable();
+  updateOrderCount();
+  // Show the Order Details section
+  var fg = document.getElementById('orderDetailsFg'); if (fg) fg.style.display = 'block';
+  // Close modal — use class only, never inline style (inline overrides class on reopen)
+  closeOrderBuilder();
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeOrderBuilder();
+});
+
+// ===== DYNAMIC MENU CARD DOWNLOAD =====
+function downloadMenuCard() {
+  var btn = document.getElementById('downloadMenuBtn');
+  var btnHTML = btn ? btn.innerHTML : '';
+  if (btn) { btn.disabled = true; btn.innerHTML = '⏳ Generating…'; }
+
+  var MAPS_PATH = 'M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z';
+  var WA_PATH   = 'M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z';
+
+  function drawIcon(ctx, pathData, x, y, size, color, fillRule) {
+    var sc = size / 24;
+    ctx.save();
+    ctx.translate(x, y); ctx.scale(sc, sc);
+    ctx.fillStyle = color;
+    ctx.fill(new Path2D(pathData), fillRule || 'nonzero');
+    ctx.restore();
+  }
+
+  // Load logo + 5 line-sketch decorations
+  var sketchSrcs = [
+    'linesketch/linesketch-achappam.png',
+    'linesketch/linesketch-appam.png',
+    'linesketch/linesketch-cheeda.png',
+    'linesketch/linesketch-kuzhalappam.png',
+    'linesketch/linesketch-unda.png'
+  ];
+  var sketches = sketchSrcs.map(function(src) {
+    var img = new Image(); img.src = src; return img;
+  });
+  var logo    = new Image();
+  var total   = sketchSrcs.length + 2;  // 5 sketches + logo + header bg
+  var settled = 0;
+  var rendered = false;
+
+  function onSettled() {
+    settled++;
+    if (settled >= total && !rendered) doRender();
+  }
+  function doRender() {
+    rendered = true;
+    setTimeout(function() {
+      document.fonts.ready.then(function() {
+        setTimeout(function() { renderCard(headerBg.naturalWidth > 0 ? headerBg : null); }, 20);
+      });
+    }, 60);
+  }
+
+  var headerBg = new Image();
+  logo.onload = logo.onerror = onSettled;
+  headerBg.onload = headerBg.onerror = onSettled;
+  sketches.forEach(function(img) { img.onload = img.onerror = onSettled; });
+  logo.src = 'logo.png';
+  headerBg.src = 'images/header.png';
+  setTimeout(function() { if (!rendered) doRender(); }, 2500);
+
+  // -----------------------------------------------------------------------
+  function renderCard(headerImg) {
+    var logoImg    = logo.naturalWidth     > 0 ? logo     : null;
+    var sketchImgs = sketches.map(function(s) { return s.naturalWidth > 0 ? s : null; });
+
+    var W        = 1120;
+    var HPAD     = 36;
+    var COL_GAP  = 20;
+    var COL_W    = 336;
+    var LOGO_H   = 276;   // 230 * 1.20
+    var HEADER_H = 300;   // header image zone height
+    var FOOTER_H = 123;
+    var SPAD_TOP = 18;
+    var CAT_H    = 38;
+    var ITEM_H   = 28;
+    var CAT_GAP  = 14;
+    var H        = 1220;
+
+    var CX = [HPAD, HPAD + COL_W + COL_GAP, HPAD + 2*(COL_W + COL_GAP)];
+
+    var c = document.createElement('canvas');
+    var SCALE = 2;           // 2× resolution for crisp download
+    c.width  = W * SCALE;
+    c.height = H * SCALE;
+    var ctx = c.getContext('2d');
+    ctx.scale(SCALE, SCALE); // all draw coords stay at logical size
+
+    // ==================================================================
+    // BACKGROUND
+    // ==================================================================
+    ctx.fillStyle = '#f0ecf8';
+    ctx.fillRect(0, 0, W, H);
+
+    // Gentle blob accents
+    ctx.save(); ctx.globalAlpha = 0.10;
+    var b1 = ctx.createRadialGradient(0, H * 0.42, 0, 0, H * 0.42, 340);
+    b1.addColorStop(0, '#e8d8f8'); b1.addColorStop(1, 'rgba(240,236,248,0)');
+    ctx.fillStyle = b1; ctx.beginPath(); ctx.arc(0, H*0.42, 340, 0, Math.PI*2); ctx.fill();
+    var b2 = ctx.createRadialGradient(W, H * 0.68, 0, W, H * 0.68, 380);
+    b2.addColorStop(0, '#dde0f8'); b2.addColorStop(1, 'rgba(240,236,248,0)');
+    ctx.fillStyle = b2; ctx.beginPath(); ctx.arc(W, H*0.68, 380, 0, Math.PI*2); ctx.fill();
+    ctx.restore();
+
+    // ==================================================================
+    // SKETCH DECORATIONS — multiply blend, soft-faded edges
+    // ==================================================================
+
+    // Helper: renders sketch onto offscreen canvas, fades edges with
+    // destination-out radial gradient, then composites with multiply.
+    // Elliptical fade matching the CSS:
+    // radial-gradient(ellipse 62% 62% at center, black 30%, transparent 75%)
+    // Scale trick: squash the offscreen context vertically so the circular
+    // gradient becomes an ellipse matching the image's aspect ratio.
+    function drawSketchFaded(img, cx, cy, sw, sh, deg, alpha) {
+      if (!img) return;
+      var oc = document.createElement('canvas');
+      oc.width = sw; oc.height = sh;
+      var ox = oc.getContext('2d');
+      ox.drawImage(img, 0, 0, sw, sh);
+      // destination-out with elliptical gradient via scale
+      ox.globalCompositeOperation = 'destination-out';
+      ox.save();
+      ox.translate(sw / 2, sh / 2);
+      ox.scale(1, sh / sw);                   // stretch circle → ellipse
+      var r = sw * 0.62;                       // 62% of width, matching CSS
+      var gr = ox.createRadialGradient(0, 0, r * 0.38, 0, 0, r * 0.75);
+      gr.addColorStop(0,   'rgba(0,0,0,0)');   // 0–30%: fully visible
+      gr.addColorStop(1,   'rgba(0,0,0,1)');   // 75%+: fully erased
+      ox.fillStyle = gr;
+      ox.fillRect(-sw / 2, -sw / 2, sw, sw);  // square fill covers after scale
+      ox.restore();
+      // Composite with multiply
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      ctx.globalCompositeOperation = 'multiply';
+      ctx.translate(cx + sw / 2, cy + sh / 2);
+      ctx.rotate(deg * Math.PI / 180);
+      ctx.drawImage(oc, -sw / 2, -sh / 2, sw, sh);
+      ctx.restore();
+    }
+
+    // Only achappam (left) and unda (right)
+    var FY_approx = H - FOOTER_H;
+    drawSketchFaded(sketchImgs[0], -30,  FY_approx - 275,  300, 300, -12, 0.72);  // achappam  — bottom-left (boosted: lighter artwork)
+    drawSketchFaded(sketchImgs[4], 870,  FY_approx - 270,  280, 280,  13, 0.44);  // unda      — right
+
+    // ==================================================================
+    // HEADER IMAGE — drawn before logo, with multi-stop fade
+    // ==================================================================
+    var LX = W / 2 + 20;
+    if (headerImg) {
+      // Cover-crop to fill header zone
+      ctx.save();
+      ctx.beginPath(); ctx.rect(0, 0, W, HEADER_H); ctx.clip();
+      ctx.globalAlpha = 0.52;
+      var ia = headerImg.naturalWidth / headerImg.naturalHeight;
+      var ha = W / HEADER_H;
+      var dw, dh, dx, dy;
+      if (ia > ha) { dh = HEADER_H; dw = dh * ia; dx = (W-dw)/2; dy = 0; }
+      else         { dw = W; dh = W/ia; dx = 0; dy = (HEADER_H-dh)/2; }
+      ctx.drawImage(headerImg, dx, dy, dw, dh);
+      ctx.restore();
+      // Bottom fade — long, multi-stop dissolve into lavender
+      ctx.save();
+      var fadeH = Math.round(HEADER_H * 0.80);
+      var fgBot = ctx.createLinearGradient(0, HEADER_H - fadeH, 0, HEADER_H);
+      fgBot.addColorStop(0,    'rgba(240,236,248,0)');
+      fgBot.addColorStop(0.45, 'rgba(240,236,248,0.35)');
+      fgBot.addColorStop(0.78, 'rgba(240,236,248,0.80)');
+      fgBot.addColorStop(1,    'rgba(240,236,248,1)');
+      ctx.fillStyle = fgBot;
+      ctx.fillRect(0, HEADER_H - fadeH, W, fadeH);
+      // Side fades
+      var sw2 = Math.round(W * 0.07);
+      var fgL = ctx.createLinearGradient(0, 0, sw2, 0);
+      fgL.addColorStop(0, 'rgba(240,236,248,1)'); fgL.addColorStop(1, 'rgba(240,236,248,0)');
+      ctx.fillStyle = fgL; ctx.fillRect(0, 0, sw2, HEADER_H);
+      var fgR = ctx.createLinearGradient(W-sw2, 0, W, 0);
+      fgR.addColorStop(0, 'rgba(240,236,248,0)'); fgR.addColorStop(1, 'rgba(240,236,248,1)');
+      ctx.fillStyle = fgR; ctx.fillRect(W-sw2, 0, sw2, HEADER_H);
+      ctx.restore();
+    }
+
+    // LOGO — drawn on top of header image
+    var logoTopY = (HEADER_H - LOGO_H) / 2;
+    if (logoImg) {
+      var logoW = Math.round(LOGO_H * logoImg.naturalWidth / logoImg.naturalHeight);
+      ctx.drawImage(logoImg, LX - logoW/2, logoTopY, logoW, LOGO_H);
+    }
+
+    // No separator line — header fades cleanly into content
+
+    // ==================================================================
+    // CONTENT — 3 columns
+    // ==================================================================
+    var contentTop = HEADER_H + SPAD_TOP;
+
+    // Vertical column dividers
+    [1, 2].forEach(function(i) {
+      var dx = CX[i] - COL_GAP/2;
+      ctx.save();
+      ctx.strokeStyle = 'rgba(207,197,229,0.55)'; ctx.lineWidth = 1;
+      ctx.setLineDash([5, 9]);
+      ctx.beginPath(); ctx.moveTo(dx, contentTop); ctx.lineTo(dx, H - FOOTER_H - 20);
+      ctx.stroke();
+      ctx.restore();
+    });
+
+    function drawCategory(gx, y, group, noteLines) {
+      ctx.save();
+      ctx.fillStyle = '#c2185b';
+      ctx.font = 'italic bold 20px "Lora",Georgia,serif';
+      ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+      ctx.fillText(group.group, gx + COL_W/2, y);
+      ctx.strokeStyle = 'rgba(194,24,91,0.28)'; ctx.lineWidth = 1.2;
+      ctx.setLineDash([]);
+      ctx.beginPath(); ctx.moveTo(gx, y+24); ctx.lineTo(gx+COL_W, y+24); ctx.stroke();
+      ctx.restore();
+      y += CAT_H;
+
+      if (noteLines && noteLines.length) {
+        ctx.save();
+        ctx.fillStyle = '#6b5d88'; ctx.font = 'italic 10.5px "Inter",sans-serif';
+        ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+        noteLines.forEach(function(l) { ctx.fillText(l, gx, y); y += 13; });
+        ctx.restore();
+        y += 4;
+      }
+
+      group.items.forEach(function(item, idx) {
+        var ul = item.unit === 'person' ? 'pp' : item.unit;
+        var ps = '\u20B9 ' + item.price + ' / ' + ul;
+
+        if (idx % 2 === 0) {
+          ctx.fillStyle = 'rgba(207,197,229,0.10)';
+          ctx.fillRect(gx, y+1, COL_W, ITEM_H-1);
+        }
+
+        ctx.save();
+        ctx.font = '500 12px "Inter",sans-serif';
+        var pW = ctx.measureText(ps).width;
+        ctx.fillStyle = '#c2185b'; ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+        ctx.fillText(ps, gx+COL_W, y+ITEM_H/2);
+
+        var maxW = COL_W - pW - 18;
+        ctx.font = '600 13px "Inter",sans-serif';
+        ctx.fillStyle = '#2c1f4a'; ctx.textAlign = 'left';
+        var nd = item.name;
+        while (ctx.measureText(nd).width > maxW && nd.length > 1) nd = nd.slice(0,-1);
+        if (nd.length < item.name.length) nd += '\u2026';
+        ctx.fillText(nd, gx, y+ITEM_H/2);
+
+        var nW = ctx.measureText(nd).width;
+        ctx.save();
+        ctx.setLineDash([1,5]); ctx.strokeStyle='#6b5d88'; ctx.globalAlpha=0.18; ctx.lineWidth=1;
+        ctx.beginPath(); ctx.moveTo(gx+nW+6, y+ITEM_H/2+1); ctx.lineTo(gx+COL_W-pW-6, y+ITEM_H/2+1); ctx.stroke();
+        ctx.restore();
+
+        ctx.restore();
+        y += ITEM_H;
+      });
+      return y;
+    }
+
+    drawCategory(CX[0], contentTop, CS_DATA[0], null);
+
+    var y2 = contentTop;
+    y2 = drawCategory(CX[1], y2, CS_DATA[1], null);
+    drawCategory(CX[1], y2 + CAT_GAP, CS_DATA[2], null);
+
+    drawCategory(CX[2], contentTop, CS_DATA[3], [
+      'Note: Per-person (pp) items include',
+      '400g food (Pidi or Fried Rice) + curry.'
+    ]);
+
+    // ==================================================================
+    // FOOTER — dark purple
+    // ==================================================================
+    var FY = H - FOOTER_H;
+    ctx.fillStyle = '#3d2472';
+    ctx.fillRect(0, FY, W, FOOTER_H);
+    ctx.fillStyle = '#e91e63';
+    ctx.fillRect(0, FY, W, 3);
+
+    ctx.save();
+    ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+    ctx.fillStyle = 'rgba(255,255,255,0.90)';
+    ctx.font = 'bold 13px "Inter",sans-serif';
+    ctx.fillText('For Orders Contact:', W/2, FY + 12);
+    ctx.restore();
+
+    ctx.save();
+    ctx.font = '600 14px "Inter",sans-serif';
+    var fNumW = ctx.measureText('+91 97785 38410').width;
+    ctx.restore();
+    var fWABlockW = 22 + 8 + fNumW;
+    drawIcon(ctx, WA_PATH, W/2 - fWABlockW/2, FY + 34, 22, '#25D366');
+    ctx.save();
+    ctx.textBaseline = 'top'; ctx.textAlign = 'left';
+    ctx.fillStyle = '#ffffff'; ctx.font = '600 14px "Inter",sans-serif';
+    ctx.fillText('+91 97785 38410', W/2 - fWABlockW/2 + 30, FY + 35);
+    ctx.restore();
+
+    ctx.save();
+    ctx.font = '400 11.5px "Inter",sans-serif';
+    var addrTxt = "Ammu\u2019s Food Products, Kandanad, Ernakulam, Kerala 682305";
+    var addrW = ctx.measureText(addrTxt).width;
+    ctx.restore();
+    var fAddrBlockW = 18 + 6 + addrW;
+    drawIcon(ctx, MAPS_PATH, W/2 - fAddrBlockW/2, FY + 62, 18, '#ea4335', 'evenodd');
+    ctx.save();
+    ctx.textBaseline = 'top'; ctx.textAlign = 'left';
+    ctx.fillStyle = 'rgba(255,255,255,0.78)'; ctx.font = '400 11.5px "Inter",sans-serif';
+    ctx.fillText(addrTxt, W/2 - fAddrBlockW/2 + 24, FY + 64);
+    ctx.restore();
+
+
+    ctx.save();
+    ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+    ctx.fillStyle = 'rgba(255,255,255,0.35)'; ctx.font = '400 10px "Inter",sans-serif';
+    ctx.fillText('\u00A9 2025 Ammu\u2019s Food Products \u00B7 Made with love, served with tradition', W/2, FY + 97);
+    ctx.restore();
+
+    // ---- Download ----
+    requestAnimationFrame(function() {
+      c.toBlob(function(blob) {
+        if (!blob) {
+          alert('Could not generate the menu card. Please try again.');
+          if (btn) { btn.disabled = false; btn.innerHTML = btnHTML; }
+          return;
+        }
+        var url = URL.createObjectURL(blob);
+        var a   = document.createElement('a');
+        a.href = url; a.download = 'ammus-menu-card.png';
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        if (btn) { btn.disabled = false; btn.innerHTML = btnHTML; }
+      }, 'image/png');
+    });
+  }
+}
+
+
+</script>
+</body>
+</html>
