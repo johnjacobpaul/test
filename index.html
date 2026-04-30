@@ -212,6 +212,16 @@
     color: white;
   }
 
+  /* Download Menu Card — stays pink on click/tap, never goes white */
+  #downloadMenuBtn:hover,
+  #downloadMenuBtn:focus,
+  #downloadMenuBtn:active {
+    background: transparent !important;
+    color: var(--primary) !important;
+    border-color: var(--primary) !important;
+    box-shadow: none;
+  }
+
   /* HERO SECTION */
   #s-hero {
     min-height: calc(100vh - var(--nav-height));
@@ -507,6 +517,13 @@
   .menu-item:hover {
     background: rgba(252, 246, 236, 0.6);
   }
+  .menu-item.in-cart {
+    background: rgba(233, 30, 99, 0.06);
+    border-radius: var(--radius-sm);
+  }
+  .menu-item.in-cart:hover {
+    background: rgba(233, 30, 99, 0.11);
+  }
   
   /* Thumbnail — hidden by default; JS reveals view button when image loads */
   .menu-thumb { display: none; }
@@ -539,6 +556,13 @@
     border-radius: inherit;
     z-index: 2;
     transition: opacity 0.3s ease;
+  }
+  .menu-thumb-real.thumb-clickable {
+    cursor: pointer;
+  }
+  .menu-thumb-real.thumb-clickable:hover {
+    transform: scale(1.08);
+    box-shadow: 0 6px 18px rgba(233, 30, 99, 0.2);
   }
   .thumb-emoji {
     position: absolute;
@@ -614,6 +638,9 @@
   #s-order { background: var(--bg-main); }
   #s-order .section-inner { padding-top: 20px !important; padding-bottom: 60px; }
   @media (min-width: 769px) { #s-order .section-inner { padding-top: 90px !important; } }
+  /* Products section: compact top so items are visible immediately */
+  #s-products .section-inner { padding-top: 40px; padding-bottom: 80px; }
+  @media (max-width: 768px) { #s-products .section-inner { padding-top: 28px; } }
   .order-grid {
     display: flex;
     flex-direction: column;
@@ -696,6 +723,119 @@
     color: white;
   }
 
+  /* REMOVE FROM CART BUTTON on each menu item */
+  .remove-from-order-btn {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1.5px solid var(--text-muted);
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 1.3rem;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+  }
+  .remove-from-order-btn:hover {
+    border-color: #c0392b;
+    color: #c0392b;
+    background: rgba(192,57,43,0.08);
+    transform: scale(1.1);
+  }
+  .menu-item-btns {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    flex-shrink: 0;
+  }
+  .menu-item-qty-badge {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--primary);
+    min-width: 18px;
+    text-align: center;
+    display: none;
+    line-height: 1;
+  }
+  .menu-item-qty-badge.visible {
+    display: inline-block;
+  }
+
+  /* WHATSAPP ORDER DETAILS MODAL */
+  .wa-modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(20, 10, 40, 0.78);
+    z-index: 3500;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    backdrop-filter: blur(4px);
+  }
+  .wa-modal-overlay.open { display: flex; }
+  .wa-modal {
+    background: var(--bg-surface);
+    border-radius: var(--radius-md);
+    width: 100%;
+    max-width: 440px;
+    box-shadow: 0 24px 80px rgba(20,10,40,0.45);
+    overflow: hidden;
+  }
+  .wa-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 24px 14px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg-surface);
+  }
+  .wa-modal-header h3 {
+    font-size: 1.05rem;
+    color: var(--text-main);
+  }
+  .wa-modal-close {
+    background: none;
+    border: none;
+    font-size: 1.3rem;
+    cursor: pointer;
+    color: var(--text-muted);
+    padding: 4px 8px;
+    border-radius: 6px;
+    transition: color 0.2s;
+  }
+  .wa-modal-close:hover { color: var(--primary); }
+  .wa-modal-body {
+    padding: 20px 24px 24px;
+  }
+  .wa-modal-body .fg { margin-bottom: 12px; }
+  /* Fix date input stretching on iOS */
+  .wa-modal-body input[type="date"] {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  /* NAV CART ICON */
+  #navCartLink {
+    color: var(--text-main);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+  #navCartLink:hover { color: var(--primary); }
+  #navCartLink .order-count-badge {
+    position: relative;
+    top: -1px;
+  }
+
   /* ORDER COUNT BADGE on nav */
   .order-count-badge {
     display: inline-block;
@@ -719,6 +859,7 @@
     border-collapse: collapse;
     font-size: 0.9rem;
     margin-top: 8px;
+    table-layout: fixed;
   }
   .order-items-table th {
     text-align: left;
@@ -730,6 +871,11 @@
     padding: 6px 8px;
     border-bottom: 1px solid var(--border);
   }
+  /* Column widths: Item gets the bulk, others are fixed-narrow */
+  .order-items-table th:nth-child(1) { width: auto; }
+  .order-items-table th:nth-child(2) { width: 110px; }
+  .order-items-table th:nth-child(3) { width: 70px; text-align: right; }
+  .order-items-table th:nth-child(4) { width: 30px; }
   .order-items-table td {
     padding: 8px 8px;
     border-bottom: 1px solid rgba(214,197,170,0.4);
@@ -737,7 +883,17 @@
     vertical-align: middle;
   }
   .order-items-table tr:last-child td { border-bottom: none; }
-  .order-item-name { font-weight: 500; }
+  .order-item-name {
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .order-item-rate {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    margin-top: 1px;
+  }
   .order-item-qty-wrap { display: flex; align-items: center; gap: 6px; }
   .order-item-qty {
     width: 52px;
@@ -1255,7 +1411,107 @@
     .ob-table th:nth-child(3), .ob-table td:nth-child(3) { display: none; }
   }
 
-  /* FOOTER */
+  /* SECONDARY HERO BUTTONS */
+  .hbtns-secondary {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 10px;
+    z-index: 2;
+    position: relative;
+  }
+  .btn-secondary-purple {
+    background: transparent;
+    color: #6d3fa0;
+    border: 2px solid #6d3fa0;
+    font-size: 0.85rem;
+    padding: 10px 22px;
+    border-radius: var(--radius-pill);
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+  }
+  .btn-secondary-purple:hover {
+    background: #6d3fa0;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(109, 63, 160, 0.25);
+  }
+  @media (max-width: 768px) {
+    .hbtns-secondary { max-width: 320px; gap: 8px; }
+    .btn-secondary-purple { font-size: 0.78rem; padding: 9px 14px; flex: 1; text-align: center; }
+  }
+
+  /* CENTRED BROWSE MENU IN NAV (visible only in Our Story section) */
+  .nav-browse-center {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--text-main);
+    text-decoration: none;
+    display: none;
+    z-index: 2;
+    white-space: nowrap;
+    transition: color 0.2s;
+    letter-spacing: -0.01em;
+  }
+  .nav-browse-center:hover { color: var(--primary); }
+  @media (max-width: 768px) {
+    .nav-browse-center {
+      top: 14px;
+      transform: translateX(-50%);
+      font-size: 0.85rem;
+    }
+  }
+
+  /* MENU CATEGORY TABS */
+  .menu-cat-tabs {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 36px;
+    margin-top: 4px;
+  }
+  .menu-cat-tab {
+    padding: 9px 22px;
+    border-radius: var(--radius-pill);
+    border: 2px solid var(--border);
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.88rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    background: var(--bg-surface);
+    white-space: nowrap;
+    cursor: pointer;
+  }
+  .menu-cat-tab:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    background: rgba(233, 30, 99, 0.05);
+  }
+  .menu-cat-tab.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+    box-shadow: 0 4px 12px rgba(233, 30, 99, 0.2);
+  }
+  @media (max-width: 520px) {
+    .menu-cat-tab { font-size: 0.76rem; padding: 7px 14px; }
+    .menu-cat-tabs { gap: 6px; }
+  }
+
+
   footer {
     background: #3d2472;
     color: rgba(255, 255, 255, 0.85);
@@ -1452,9 +1708,12 @@
     /* Order Details table: prevent overflow */
     .order-summary-box { overflow-x: hidden; padding: 8px; }
     .order-items-table { table-layout: fixed; width: 100%; font-size: 0.72rem; }
+    .order-items-table th:nth-child(2) { width: 88px; }
+    .order-items-table th:nth-child(3) { width: 54px; }
+    .order-items-table th:nth-child(4) { width: 24px; }
     .order-items-table th { font-size: 0.62rem; padding: 3px 3px; }
     .order-items-table td { padding: 5px 3px; font-size: 0.72rem; }
-    .order-item-name { font-size: 0.72rem; word-break: break-word; }
+    .order-item-name { font-size: 0.72rem; }
     .order-item-unit { font-size: 0.6rem; display: block; }
     .order-item-qty { width: 36px; font-size: 0.72rem; padding: 2px 3px; }
     .order-total-row td { font-size: 0.78rem; }
@@ -1489,11 +1748,17 @@
     <img src="badge-logo.png" alt="Ammu's Food Products Logo" onerror="this.onerror=null; this.src='https://placehold.co/150x150/e91e63/ffffff?text=Ammu\'s&font=inter'">
   </a>
   
+  <!-- Centred Browse Menu - shown only when in Our Story section -->
+  <a href="#s-products" id="navBrowseMenu" class="nav-browse-center">Browse Menu</a>
+
   <ul class="nav-links" id="navLinks">
     <li class="nav-wa-item nav-wa-desktop"><a href="https://wa.me/919778538410" target="_blank" class="nav-wa-link" title="WhatsApp"><svg viewBox="0 0 24 24" width="16" height="16" fill="#25D366" style="flex-shrink:0;"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg><span class="wa-num">+91 97785 38410</span></a></li>
-    <li><a href="#s-history">Our Heritage</a></li>
-    <li><a href="#s-products">Menu</a></li>
-    <li><a href="#s-order" id="navOrderLink">Place an Order<span class="order-count-badge" id="orderCountBadge"></span></a></li>
+    <li id="navCartItem" style="display:none;">
+      <a href="#s-order" id="navCartLink" style="display:inline-flex;align-items:center;gap:5px;" title="View Cart">
+        <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        <span class="order-count-badge" id="orderCountBadge"></span>
+      </a>
+    </li>
   </ul>
 </nav>
 
@@ -1576,8 +1841,11 @@
   <p class="hsub hero-anim">Traditional Kerala flavours, freshly crafted in small batches.</p>
   
   <div class="hbtns hero-anim">
-    <a href="#s-products" class="btn btn-primary">Explore Menu</a>
-    <a href="#s-order" class="btn btn-outline">Place an Order</a>
+    <a href="#s-products" class="btn btn-primary">Browse Menu &amp; Order</a>
+  </div>
+  <div class="hbtns-secondary hero-anim" style="animation-delay: 0.85s;">
+    <a href="#s-history" class="btn-secondary-purple">Our Story</a>
+    <a href="#s-generations" class="btn-secondary-purple">Women behind the Recipe</a>
   </div>
 </div>
 
@@ -1585,7 +1853,7 @@
 <div id="s-history" class="sec">
   <div class="section-inner">
     <div class="sec-header">
-      <span class="badge">Our Heritage</span>
+      <span class="badge">Our Story</span>
       <h2 class="sec-title">A Family Recipe Passed Down</h2>
     </div>
     
@@ -1598,7 +1866,7 @@
       </div>
       
       <!-- 3 Generations Timeline Block -->
-      <div class="generations-container">
+      <div class="generations-container" id="s-generations">
         <div class="gen-connector"></div>
         <h3>The Women Behind the Recipe</h3>
         
@@ -1643,14 +1911,21 @@
 <!-- PRODUCTS -->
 <div id="s-products" class="sec">
   <div class="section-inner">
-    <div class="sec-header" style="margin-bottom: 30px;">
+    <div class="sec-header" style="margin-bottom: 16px;">
       <span class="badge">Menu</span>
       <h2 class="sec-title">Our Products</h2>
-      <p style="color:var(--text-muted); margin-top:10px;">Authentic Kerala items made fresh in our family kitchen</p>
+    </div>
+
+    <!-- Category Tabs -->
+    <div class="menu-cat-tabs" id="menuCatTabs">
+      <a href="#cat-snacks" class="menu-cat-tab active">4PM Kadi</a>
+      <a href="#cat-podi" class="menu-cat-tab">Podi</a>
+      <a href="#cat-pickles" class="menu-cat-tab">Pickles</a>
+      <a href="#cat-specials" class="menu-cat-tab">Ready to Eat</a>
     </div>
 
     <!-- Download Menu Card Button -->
-    <div style="text-align: center; margin-bottom: 50px;">
+    <div style="text-align: center; margin-bottom: 36px;">
       <button id="downloadMenuBtn" onclick="downloadMenuCard()" class="btn btn-outline" style="background: var(--bg-surface); padding: 10px 24px;">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
         Download Menu Card
@@ -1696,44 +1971,30 @@
 <div id="s-order" class="sec">
   <div class="section-inner">
     <div class="sec-header" style="margin-bottom: 24px;">
-      <h2 class="sec-title" style="font-size: clamp(1.5rem, 3vw, 2rem); margin-top: 0;">Place Your Order</h2>
+      <h2 class="sec-title" style="font-size: clamp(1.5rem, 3vw, 2rem); margin-top: 0;">Your Order</h2>
     </div>
 
     <div class="order-grid">
       <div class="order-form-wrap" style="max-width: 600px; margin: 0 auto; width: 100%;">
-        <h3 style="font-size: 1.15rem; margin-bottom: 16px; color: var(--text-main);">Send us a message</h3>
-        
-        <div class="fg">
-          <label>Your Name</label>
-          <input type="text" id="fname" placeholder="e.g. Hanna Paul">
-        </div>
-        <div class="fg">
-          <label>Phone / WhatsApp</label>
-          <input type="tel" id="fphone" placeholder="+91 ">
-        </div>
-        <div class="fg">
-          <label>Preferred Collection Date</label>
-          <input type="date" id="fdate" onchange="validateDeliveryDate(this)">
-          <span id="fdate-hint" style="font-size:0.78rem; color:var(--text-muted); margin-top:4px; display:block;">Earliest available: <strong id="fdate-earliest"></strong> &nbsp;·&nbsp; Sundays unavailable</span>
-        </div>
 
-        <!-- CREATE ORDER BUTTON -->
-        <button class="btn-create-order" onclick="openOrderBuilder()" type="button">
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-          Create / Review Order
+        <!-- ADD MORE BUTTON — takes user back to menu -->
+        <button class="btn-create-order" id="cartBtn" onclick="document.getElementById('s-products').scrollIntoView({behavior:'smooth'})" type="button">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+          <span id="cartBtnText">Browse Menu &amp; Add More</span>
         </button>
 
-        <!-- ORDER DETAILS (read-only summary, populated on Save) -->
-        <div class="fg" id="orderDetailsFg" style="display:none;">
-          <label>Order Details</label>
+        <!-- CART SUMMARY (always visible) -->
+        <div class="fg" id="orderDetailsFg">
+          <label>Cart</label>
           <div class="order-summary-box" id="orderSummaryBox">
-            <p class="order-empty-msg" id="orderEmptyMsg">No items saved yet.</p>
+            <p class="order-empty-msg" id="orderEmptyMsg">No items in cart yet. Browse the menu above and tap <strong>+</strong> on any item to add it.</p>
             <table class="order-items-table" id="orderTable" style="display:none;">
               <thead>
                 <tr>
                   <th>Item</th>
                   <th>Qty</th>
                   <th style="text-align:right;">Total</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody id="orderTableBody"></tbody>
@@ -1741,13 +2002,18 @@
                 <tr class="order-total-row">
                   <td colspan="2">Grand Total</td>
                   <td style="text-align:right;" class="order-total-amount" id="orderGrandTotal">₹0</td>
+                  <td></td>
                 </tr>
               </tfoot>
             </table>
+            <div id="orderClearAllRow" style="display:none; margin-top:10px; text-align:right;">
+              <button class="btn-clear-order" onclick="clearAllOrderItems()">🗑 Clear All</button>
+            </div>
           </div>
         </div>
-        
-        <button class="btn btn-primary btn-whatsapp" onclick="sendWA()">
+
+        <!-- REQUEST ORDER VIA WHATSAPP -->
+        <button class="btn btn-primary btn-whatsapp" onclick="openWAModal()">
           <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
           <span>Request Order via WhatsApp</span>
         </button>
@@ -1836,6 +2102,36 @@
   </div>
 </div>
 
+<!-- WHATSAPP ORDER DETAILS MODAL -->
+<div id="waModalOverlay" class="wa-modal-overlay" onclick="if(event.target===this)closeWAModal()">
+  <div class="wa-modal">
+    <div class="wa-modal-header">
+      <h3>📋 Your Details</h3>
+      <button class="wa-modal-close" onclick="closeWAModal()">✕</button>
+    </div>
+    <div class="wa-modal-body">
+      <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:16px;">Please enter your details so we can confirm your order on WhatsApp.</p>
+      <div class="fg">
+        <label>Your Name *</label>
+        <input type="text" id="waName" placeholder="e.g. Hanna Paul">
+      </div>
+      <div class="fg">
+        <label>Phone / WhatsApp *</label>
+        <input type="tel" id="waPhone" placeholder="+91 ">
+      </div>
+      <div class="fg">
+        <label>Preferred Collection Date</label>
+        <input type="date" id="waDate" onchange="validateDeliveryDate(this)" style="width:100%;max-width:100%;box-sizing:border-box;-webkit-appearance:none;appearance:none;">
+        <span id="waDate-hint" style="font-size:0.78rem; color:var(--text-muted); margin-top:4px; display:block;">Earliest available: <strong id="waDate-earliest"></strong> &nbsp;·&nbsp; Sundays unavailable</span>
+      </div>
+      <button class="btn btn-primary btn-whatsapp" onclick="sendWAFromModal()" style="margin-top:4px;">
+        <svg viewBox="0 0 24 24" style="fill:white;width:18px;height:18px;"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Send via WhatsApp
+      </button>
+    </div>
+  </div>
+</div>
+
 <script>
 // ===== DYNAMIC SCROLL MARGIN =====
 function setScrollMargins() {
@@ -1868,6 +2164,12 @@ function openLightbox(src, name, price, desc) {
   document.getElementById('lightboxDesc').textContent = desc || '';
   document.getElementById('imgLightbox').classList.add('open');
   document.body.style.overflow = 'hidden';
+}
+
+function openThumbLightbox(thumbEl, name) {
+  var img = thumbEl.querySelector('.thumb-img');
+  if (!img || img.naturalWidth === 0) return;
+  openLightbox(img.src, name, '', '');
 }
 function closeLightbox() {
   document.getElementById('imgLightbox').classList.remove('open');
@@ -1936,8 +2238,10 @@ function renderMenu() {
 
       var div = document.createElement('div');
       div.className = 'menu-item';
+      var thumbClass = imgSrc ? 'menu-thumb-real thumb-clickable' : 'menu-thumb-real';
+      var thumbClick = imgSrc ? ' onclick="openThumbLightbox(this,\'' + item.name.replace(/'/g, "\\'") + '\')"' : '';
       div.innerHTML =
-        '<div class="menu-thumb-real"><span class="thumb-emoji">' + item.emoji + '</span>' +
+        '<div class="' + thumbClass + '"' + thumbClick + '><span class="thumb-emoji">' + item.emoji + '</span>' +
         (imgSrc ? '<img src="' + imgSrc + '" alt="' + item.name + '" class="thumb-img img-missing"' +
           ' onload="this.classList.remove(&quot;img-missing&quot;);this.style.opacity=&quot;1&quot;;"' +
           ' onerror="this.classList.add(&quot;img-missing&quot;)">' : '') +
@@ -1968,13 +2272,37 @@ document.addEventListener('DOMContentLoaded', function() {
 // ===== ORDER STATE =====
 var orderItems = []; // [{name, price, unit, qty}]
 
+// ===== LOCAL STORAGE =====
+var CART_KEY = 'ammus_cart_v1';
+
+function saveCartToStorage() {
+  try { localStorage.setItem(CART_KEY, JSON.stringify(orderItems)); } catch(e) {}
+}
+
+function loadCartFromStorage() {
+  try {
+    var raw = localStorage.getItem(CART_KEY);
+    if (raw) {
+      var parsed = JSON.parse(raw);
+      if (Array.isArray(parsed)) { orderItems = parsed; }
+    }
+  } catch(e) {}
+}
+
+function clearCartStorage() {
+  try { localStorage.removeItem(CART_KEY); } catch(e) {}
+}
+
 // ===== ADD + BUTTONS TO ALL MENU ITEMS =====
 document.addEventListener("DOMContentLoaded", function() {
   renderMenu(); // build menu HTML from CS_DATA first
   // Build custom dropdown options list on load
   buildCSList('');
 
-  // Inject + Add to Order buttons on every menu item
+  // Load persisted cart from localStorage
+  loadCartFromStorage();
+
+  // Inject + / - buttons on every menu item
   document.querySelectorAll('.menu-item').forEach(function(item) {
     var nameEl = item.querySelector('.menu-name');
     var priceEl = item.querySelector('.menu-price');
@@ -1986,9 +2314,15 @@ document.addEventListener("DOMContentLoaded", function() {
     var price = parseFloat(parts[0]);
     var unit = parts[1] || 'unit';
 
+    // Wrapper for both buttons
+    var btnGroup = document.createElement('div');
+    btnGroup.className = 'menu-item-btns';
+    btnGroup.setAttribute('data-item-name', name);
+
+    // Add (+) button
     var btn = document.createElement('button');
     btn.className = 'add-to-order-btn';
-    btn.title = 'Add to Order';
+    btn.title = 'Add to Cart';
     btn.innerHTML = '+';
     btn.setAttribute('data-name', name);
     btn.setAttribute('data-price', price);
@@ -1997,8 +2331,42 @@ document.addEventListener("DOMContentLoaded", function() {
       addItemByData(name, price, unit);
       flashBtn(btn);
     };
-    item.appendChild(btn);
+
+    // Quantity badge (shown between + and -)
+    var badge = document.createElement('span');
+    badge.className = 'menu-item-qty-badge';
+
+    // Remove (-) button
+    var rmBtn = document.createElement('button');
+    rmBtn.className = 'remove-from-order-btn';
+    rmBtn.title = 'Remove from Cart';
+    rmBtn.innerHTML = '&minus;';
+    rmBtn.setAttribute('data-name', name);
+    rmBtn.onclick = function() {
+      var existing = orderItems.find(function(i) { return i.name === name; });
+      if (!existing) return;
+      if (existing.qty > 1) {
+        existing.qty -= 1;
+      } else {
+        orderItems.splice(orderItems.indexOf(existing), 1);
+      }
+      renderOrderTable();
+      updateOrderCount();
+      updateMenuBadges();
+    };
+
+    btnGroup.appendChild(btn);
+    btnGroup.appendChild(badge);
+    btnGroup.appendChild(rmBtn);
+    item.appendChild(btnGroup);
   });
+
+  // Restore cart UI from loaded localStorage data
+  if (orderItems.length > 0) {
+    renderOrderTable();
+    updateOrderCount();
+    updateMenuBadges();
+  }
 });
 
 function flashBtn(btn) {
@@ -2020,6 +2388,7 @@ function addItemByData(name, price, unit) {
   }
   renderOrderTable();
   updateOrderCount();
+  updateMenuBadges();
 }
 
 // ===== CUSTOM SEARCHABLE DROPDOWN DATA =====
@@ -2205,17 +2574,21 @@ function renderOrderTable() {
   var emptyMsg   = document.getElementById('orderEmptyMsg');
   var actionsRow = document.getElementById('orderActionsRow'); // may not exist — guard every access
   var grandTotalEl = document.getElementById('orderGrandTotal');
+  var clearAllRow  = document.getElementById('orderClearAllRow');
 
   if (orderItems.length === 0) {
     if (table)      table.style.display = 'none';
     if (emptyMsg)   emptyMsg.style.display = 'block';
     if (actionsRow) actionsRow.style.display = 'none';
+    if (clearAllRow) clearAllRow.style.display = 'none';
+    saveCartToStorage();
     return;
   }
 
   if (emptyMsg)   emptyMsg.style.display = 'none';
   if (table)      table.style.display = 'table';
   if (actionsRow) actionsRow.style.display = 'flex';
+  if (clearAllRow) clearAllRow.style.display = 'block';
 
   if (!tbody) return;
   tbody.innerHTML = '';
@@ -2226,7 +2599,8 @@ function renderOrderTable() {
     grandTotal += lineTotal;
     var tr = document.createElement('tr');
     tr.innerHTML =
-      '<td class="order-item-name">' + item.name + '<br><span class="order-item-unit">₹' + item.price + '/' + item.unit + '</span></td>' +
+      '<td><div class="order-item-name">' + item.name + '</div>' +
+        '<div class="order-item-rate">₹' + item.price + ' / ' + item.unit + '</div></td>' +
       '<td>' +
         '<div class="order-item-qty-wrap">' +
           '<input class="order-item-qty" type="number" min="0.5" step="0.5" value="' + item.qty + '" onchange="updateQty(' + idx + ', this.value)">' +
@@ -2234,11 +2608,12 @@ function renderOrderTable() {
         '</div>' +
       '</td>' +
       '<td style="text-align:right; font-weight:600; color:var(--primary);">₹' + lineTotal.toLocaleString() + '</td>' +
-      '';
+      '<td><button class="order-item-delete" onclick="removeItem(' + idx + ')" title="Remove">✕</button></td>';
     tbody.appendChild(tr);
   });
 
   if (grandTotalEl) grandTotalEl.textContent = '₹' + grandTotal.toLocaleString();
+  saveCartToStorage();
 }
 
 function updateQty(idx, val) {
@@ -2247,48 +2622,93 @@ function updateQty(idx, val) {
   orderItems[idx].qty = q;
   renderOrderTable();
   updateOrderCount();
+  updateMenuBadges();
 }
 
 function removeItem(idx) {
   orderItems.splice(idx, 1);
   renderOrderTable();
   updateOrderCount();
+  updateMenuBadges();
 }
 
 function clearAllOrderItems() {
   if (orderItems.length === 0) return;
   if (confirm('Clear all items from your order?')) {
     orderItems = [];
+    clearCartStorage();
     renderOrderTable();
     updateOrderCount();
+    updateMenuBadges();
   }
 }
 
-// ===== UPDATE NAV COUNT BADGE =====
+// ===== UPDATE PER-ITEM QUANTITY BADGES IN MENU =====
+function updateMenuBadges() {
+  document.querySelectorAll('.menu-item-btns[data-item-name]').forEach(function(group) {
+    var name = group.getAttribute('data-item-name');
+    var badge = group.querySelector('.menu-item-qty-badge');
+    var menuItem = group.closest('.menu-item');
+    if (!badge) return;
+    var found = orderItems.find(function(i) { return i.name === name; });
+    if (found && found.qty > 0) {
+      badge.textContent = found.qty % 1 === 0 ? found.qty : found.qty.toFixed(1);
+      badge.classList.add('visible');
+      if (menuItem) menuItem.classList.add('in-cart');
+    } else {
+      badge.textContent = '';
+      badge.classList.remove('visible');
+      if (menuItem) menuItem.classList.remove('in-cart');
+    }
+  });
+}
 function updateOrderCount() {
   var badge = document.getElementById('orderCountBadge');
+  var navCartLink = document.getElementById('navCartLink');
+  var navCartItem = document.getElementById('navCartItem');
   if (!badge) return;
   var total = orderItems.reduce(function(s, i) { return s + i.qty; }, 0);
   if (total > 0) {
     badge.textContent = total % 1 === 0 ? total : total.toFixed(1);
     badge.style.display = 'inline-block';
+    if (navCartItem) navCartItem.style.display = 'list-item';
+    if (navCartLink) navCartLink.style.color = 'var(--primary)';
   } else {
     badge.style.display = 'none';
+    if (navCartItem) navCartItem.style.display = 'none';
+    if (navCartLink) navCartLink.style.color = '';
   }
 }
 
 // ===== SCROLL BEHAVIOURS =====
 window.addEventListener('scroll', function() {
-  var navLogo = document.getElementById('navLogo');
-  var floatingNav = document.getElementById('floatingNav');
-  var productsSec = document.getElementById('s-products');
-  
+  var navLogo       = document.getElementById('navLogo');
+  var floatingNav   = document.getElementById('floatingNav');
+  var productsSec   = document.getElementById('s-products');
+  var historySec    = document.getElementById('s-history');
+  var navBrowseMenu = document.getElementById('navBrowseMenu');
+
+  // Logo: show after 100px
   if (window.scrollY > 100) {
     navLogo.classList.add('visible');
   } else {
     navLogo.classList.remove('visible');
   }
-  
+
+  // Browse Menu: show when Our Story section is in view
+  if (historySec && navBrowseMenu) {
+    var hRect = historySec.getBoundingClientRect();
+    var inStory = hRect.top < window.innerHeight * 0.85 && hRect.bottom > 0;
+    navBrowseMenu.style.display = inStory ? 'block' : 'none';
+    // On mobile, hide the small logo when Browse Menu is showing to avoid overlap
+    if (window.innerWidth <= 768) {
+      if (inStory) {
+        navLogo.classList.remove('visible');
+      }
+    }
+  }
+
+  // Floating bottom pill nav: show when in products section
   if (productsSec) {
     var rect = productsSec.getBoundingClientRect();
     if (rect.top < window.innerHeight * 0.8 && rect.bottom > window.innerHeight * 0.2) {
@@ -2302,7 +2722,8 @@ window.addEventListener('scroll', function() {
 // ===== SCROLLSPY =====
 document.addEventListener("DOMContentLoaded", function() {
   var sections = document.querySelectorAll(".menu-category");
-  var navLinks = document.querySelectorAll(".floating-cat-nav .cat-link");
+  var floatLinks = document.querySelectorAll(".floating-cat-nav .cat-link");
+  var tabLinks   = document.querySelectorAll(".menu-cat-tab");
 
   var observerOptions = {
     root: null,
@@ -2313,11 +2734,12 @@ document.addEventListener("DOMContentLoaded", function() {
   var observer = new IntersectionObserver(function(entries) {
     entries.forEach(function(entry) {
       if (entry.isIntersecting) {
-        navLinks.forEach(function(link) {
-          link.classList.remove("active");
-          if (link.getAttribute("href") === "#" + entry.target.id) {
-            link.classList.add("active");
-          }
+        var targetHref = "#" + entry.target.id;
+        floatLinks.forEach(function(link) {
+          link.classList.toggle("active", link.getAttribute("href") === targetHref);
+        });
+        tabLinks.forEach(function(tab) {
+          tab.classList.toggle("active", tab.getAttribute("href") === targetHref);
         });
       }
     });
@@ -2326,47 +2748,7 @@ document.addEventListener("DOMContentLoaded", function() {
   sections.forEach(function(sec) { observer.observe(sec); });
 });
 
-// ===== DELIVERY DATE SETUP =====
-function setupDeliveryDate() {
-  var dateInput = document.getElementById('fdate');
-  var earliestEl = document.getElementById('fdate-earliest');
-  if (!dateInput) return;
-
-  function addDays(d, n) {
-    var r = new Date(d);
-    r.setDate(r.getDate() + n);
-    return r;
-  }
-
-  function isSunday(d) { return d.getDay() === 0; }
-
-  function nextValid(d) {
-    var r = new Date(d);
-    while (isSunday(r)) r.setDate(r.getDate() + 1);
-    return r;
-  }
-
-  function toYMD(d) {
-    var y = d.getFullYear();
-    var m = String(d.getMonth()+1).padStart(2,'0');
-    var dd = String(d.getDate()).padStart(2,'0');
-    return y+'-'+m+'-'+dd;
-  }
-
-  function toDisplay(d) {
-    return d.toLocaleDateString('en-IN', { weekday:'short', day:'numeric', month:'short', year:'numeric' });
-  }
-
-  var today = new Date();
-  today.setHours(0,0,0,0);
-  var earliest = nextValid(addDays(today, 2));
-  dateInput.min = toYMD(earliest);
-  if (earliestEl) earliestEl.textContent = toDisplay(earliest);
-
-  // Default to earliest valid date
-  dateInput.value = toYMD(earliest);
-}
-
+// ===== DELIVERY DATE VALIDATION =====
 function validateDeliveryDate(input) {
   var d = new Date(input.value);
   if (d.getDay() === 0) {
@@ -2375,57 +2757,78 @@ function validateDeliveryDate(input) {
   }
 }
 
-document.addEventListener('DOMContentLoaded', setupDeliveryDate);
-
-// ===== WHATSAPP SEND =====
-function sendWA() {
-  var n = document.getElementById('fname').value.trim();
-  var p = document.getElementById('fphone').value.trim();
-  
-  if (!n) {
-    alert('Please enter your name.');
-    return;
-  }
+// ===== WHATSAPP MODAL =====
+function openWAModal() {
   if (orderItems.length === 0) {
-    alert('Please add at least one item to your order.');
+    alert('Please add at least one item to your cart first.');
     return;
   }
+  document.getElementById('waModalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  setupWADate();
+}
+
+function closeWAModal() {
+  document.getElementById('waModalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function setupWADate() {
+  var dateInput = document.getElementById('waDate');
+  var earliestEl = document.getElementById('waDate-earliest');
+  if (!dateInput) return;
+  function addDays(d, n) { var r = new Date(d); r.setDate(r.getDate() + n); return r; }
+  function isSunday(d) { return d.getDay() === 0; }
+  function nextValid(d) { var r = new Date(d); while (isSunday(r)) r.setDate(r.getDate() + 1); return r; }
+  function toYMD(d) { return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
+  function toDisplay(d) { return d.toLocaleDateString('en-IN', { weekday:'short', day:'numeric', month:'short', year:'numeric' }); }
+  var today = new Date(); today.setHours(0,0,0,0);
+  var earliest = nextValid(addDays(today, 2));
+  dateInput.min = toYMD(earliest);
+  if (earliestEl) earliestEl.textContent = toDisplay(earliest);
+  if (!dateInput.value) dateInput.value = toYMD(earliest);
+}
+
+function sendWAFromModal() {
+  var n = document.getElementById('waName').value.trim();
+  var p = document.getElementById('waPhone').value.trim();
+  var dateInput = document.getElementById('waDate');
+
+  if (!n) { alert('Please enter your name.'); return; }
+  if (!p) { alert('Please enter your phone / WhatsApp number.'); return; }
+  if (orderItems.length === 0) { alert('Your cart is empty.'); return; }
 
   var orderLines = orderItems.map(function(item) {
-    return '  • ' + item.name + ' × ' + item.qty + ' ' + item.unit + ' = ₹' + (item.price * item.qty).toLocaleString();
+    return '  \u2022 ' + item.name + ' \u00D7 ' + item.qty + ' ' + item.unit + ' = \u20B9' + (item.price * item.qty).toLocaleString();
   }).join('\n');
 
   var grandTotal = orderItems.reduce(function(s, i) { return s + i.price * i.qty; }, 0);
-
-  var dateInput = document.getElementById('fdate');
   var delivDate = dateInput && dateInput.value ? new Date(dateInput.value).toLocaleDateString('en-IN', {weekday:'long', day:'numeric', month:'long', year:'numeric'}) : '';
 
-  var t = 'Hello Ammu\'s Food Products! 👋\n\n' +
+  var t = 'Hello Ammu\'s Food Products! \uD83D\uDC4B\n\n' +
           '*Name:* ' + n +
-          (p ? '\n*Phone:* ' + p : '') +
+          '\n*Phone:* ' + p +
           (delivDate ? '\n*Requested Collection Date:* ' + delivDate : '') +
           '\n\n*My Order:*\n' + orderLines +
-          '\n\n*Estimated Total:* ₹' + grandTotal.toLocaleString() +
+          '\n\n*Estimated Total:* \u20B9' + grandTotal.toLocaleString() +
           '\n\n_(Please confirm availability & order collection date.)_';
-          
+
+  closeWAModal();
+  orderItems = [];
+  clearCartStorage();
+  renderOrderTable();
+  updateOrderCount();
+  updateMenuBadges();
   window.open('https://wa.me/919778538410?text=' + encodeURIComponent(t), '_blank');
 }
+
+// Legacy stub (kept for safety, not used)
+function sendWA() { openWAModal(); }
 
 // ===== ORDER BUILDER MODAL =====
 var obItems = []; // draft items in modal — only committed on Save
 
 function openOrderBuilder() {
-  var name = document.getElementById('fname').value.trim();
-  var phone = document.getElementById('fphone').value.trim();
-  var date = document.getElementById('fdate').value;
-  var missing = [];
-  if (!name)  missing.push('Your Name');
-  if (!phone) missing.push('Phone / WhatsApp');
-  if (!date)  missing.push('Preferred Collection Date');
-  if (missing.length) {
-    alert('Please fill in the following before creating your order:\n\n• ' + missing.join('\n• '));
-    return;
-  }
   // Pre-populate modal with any already-saved items
   obItems = orderItems.map(function(i) {
     return { name: i.name, price: i.price, unit: i.unit, qty: i.qty };
@@ -2519,11 +2922,12 @@ function obClearAll() {
   if (obItems.length === 0) return;
   if (confirm('Clear all items from this order?')) {
     obItems = [];
-    orderItems = [];           // wipe committed order too
-    renderOrderTable();        // clear the Order Details summary
-    updateOrderCount();        // reset nav badge
-    var fg = document.getElementById('orderDetailsFg'); if (fg) fg.style.display = 'none';
-    obRender();                // refresh modal table
+    orderItems = [];
+    clearCartStorage();
+    renderOrderTable();
+    updateOrderCount();
+    updateMenuBadges();
+    obRender();
   }
 }
 
@@ -2532,20 +2936,20 @@ function obSaveOrder() {
     alert('Please add at least one item before saving.');
     return;
   }
-  // Commit to main orderItems
   orderItems = obItems.map(function(i) {
     return { name: i.name, price: i.price, unit: i.unit, qty: i.qty };
   });
   renderOrderTable();
   updateOrderCount();
-  // Show the Order Details section
-  var fg = document.getElementById('orderDetailsFg'); if (fg) fg.style.display = 'block';
-  // Close modal — use class only, never inline style (inline overrides class on reopen)
+  updateMenuBadges();
   closeOrderBuilder();
 }
 
 document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') closeOrderBuilder();
+  if (e.key === 'Escape') {
+    closeOrderBuilder();
+    closeWAModal();
+  }
 });
 
 // ===== DYNAMIC MENU CARD DOWNLOAD =====
@@ -2614,7 +3018,7 @@ function downloadMenuCard() {
     var COL_W    = 336;
     var LOGO_H   = 276;   // 230 * 1.20
     var HEADER_H = 300;   // header image zone height
-    var FOOTER_H = 123;
+    var FOOTER_H = 136;
     var SPAD_TOP = 18;
     var CAT_H    = 38;
     var ITEM_H   = 28;
@@ -2864,6 +3268,13 @@ function downloadMenuCard() {
     ctx.textAlign = 'center'; ctx.textBaseline = 'top';
     ctx.fillStyle = 'rgba(255,255,255,0.35)'; ctx.font = '400 10px "Inter",sans-serif';
     ctx.fillText('\u00A9 2025 Ammu\u2019s Food Products \u00B7 Made with love, served with tradition', W/2, FY + 97);
+    ctx.restore();
+
+    // Website URL
+    ctx.save();
+    ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+    ctx.fillStyle = 'rgba(255,255,255,0.55)'; ctx.font = '500 11px "Inter",sans-serif';
+    ctx.fillText('www.ammusfoodproducts.com', W/2, FY + 109);
     ctx.restore();
 
     // ---- Download ----
