@@ -162,8 +162,11 @@
     transition: color 0.2s ease;
   }
 
-  .nav-links a:hover, .nav-links a.active-link {
+  .nav-links a:hover, .nav-links a.active-link, .nav-links a.active {
     color: var(--primary);
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
 
   .mobile-menu-btn {
@@ -1738,7 +1741,7 @@
   
   <div class="hbtns hero-anim">
     <a href="#s-products" class="btn btn-primary">Browse Menu &amp; Order</a>
-    <a href="#s-history" class="btn btn-outline" style="background:var(--bg-surface);">Our Story</a>
+    <a href="#s-history" class="btn btn-outline" style="background:#3d2472; color:white; border-color:#3d2472;">Our Story</a>
   </div>
 </div>
 
