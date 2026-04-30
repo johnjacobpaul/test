@@ -764,128 +764,7 @@
     display: inline-block;
   }
 
-  /* ===== OUR STORY MODAL ===== */
-  .story-modal-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(20, 10, 40, 0.78);
-    z-index: 3600;
-    align-items: flex-end;
-    justify-content: center;
-    padding: 0;
-    backdrop-filter: blur(4px);
-  }
-  .story-modal-overlay.open { display: flex; }
-  .story-modal {
-    background: var(--bg-surface);
-    border-radius: 20px 20px 0 0;
-    width: 100%;
-    max-width: 520px;
-    max-height: 82vh;
-    overflow-y: auto;
-    box-shadow: 0 -12px 60px rgba(20,10,40,0.4);
-    animation: slideUp 0.32s cubic-bezier(0.34,1.1,0.64,1) both;
-  }
-  @keyframes slideUp {
-    from { transform: translateY(100%); opacity: 0; }
-    to   { transform: translateY(0);    opacity: 1; }
-  }
-  .story-modal-handle {
-    width: 36px; height: 4px;
-    background: var(--border);
-    border-radius: 2px;
-    margin: 12px auto 0;
-  }
-  .story-modal-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 16px 20px 12px;
-    border-bottom: 1px solid var(--border);
-  }
-  .story-modal-header h3 {
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--text-main);
-  }
-  .story-modal-close {
-    background: none; border: none;
-    font-size: 1.2rem; cursor: pointer;
-    color: var(--text-muted); padding: 4px 8px;
-    border-radius: 6px;
-  }
-  .story-modal-close:hover { color: var(--primary); }
-  .story-modal-body {
-    padding: 18px 20px 24px;
-  }
-  .story-modal-body p {
-    font-size: 0.88rem;
-    color: var(--text-main);
-    line-height: 1.7;
-    margin-bottom: 10px;
-  }
-  .story-modal-actions {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 20px;
-  }
-  .story-modal-actions .btn-story-women {
-    background: var(--primary);
-    color: white;
-    border: none;
-    border-radius: var(--radius-sm);
-    padding: 13px 20px;
-    font-family: 'Inter', sans-serif;
-    font-size: 0.92rem;
-    font-weight: 600;
-    cursor: pointer;
-    width: 100%;
-    text-align: center;
-  }
-  .story-modal-actions .btn-story-menu {
-    background: transparent;
-    color: var(--primary);
-    border: 1.5px solid var(--primary);
-    border-radius: var(--radius-sm);
-    padding: 12px 20px;
-    font-family: 'Inter', sans-serif;
-    font-size: 0.92rem;
-    font-weight: 600;
-    cursor: pointer;
-    width: 100%;
-    text-align: center;
-  }
-
-  /* ===== MOBILE NAV CART ICON ===== */
-  .nav-cart-mobile {
-    display: none; /* hidden on desktop */
-    position: relative;
-    align-items: center;
-    justify-content: center;
-    color: var(--text-main);
-    text-decoration: none;
-    padding: 4px;
-    flex-shrink: 0;
-  }
-  .nav-cart-mobile svg { width: 22px; height: 22px; }
-  .nav-cart-mobile .order-count-badge {
-    position: absolute;
-    top: -4px; right: -6px;
-    background: var(--primary);
-    color: white;
-    font-size: 0.6rem;
-    font-weight: 700;
-    min-width: 16px;
-    height: 16px;
-    border-radius: 8px;
-    padding: 0 3px;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    line-height: 1;
-  }
+  /* WHATSAPP ORDER DETAILS MODAL */
   .wa-modal-overlay {
     display: none;
     position: fixed;
@@ -1604,12 +1483,6 @@
     .nav-links li { width: auto; text-align: center; }
     .nav-links a { display: inline-block; font-size: 0.95rem; padding: 6px 4px; border-top: none; }
 
-    /* Hide the second nav row (Our Story, Browse Menu, Cart) on mobile */
-    .nav-links { display: none !important; }
-
-    /* Show the mobile cart icon only when items in cart */
-    .nav-cart-mobile.has-items { display: flex; }
-
     .section-inner { padding: 60px 20px; }
     .hbtns { flex-direction: column; width: 100%; max-width: 300px; gap: 12px; }
     .hbtns .btn { width: 100%; }
@@ -1660,31 +1533,15 @@
       font-size: 0.72rem;
       font-weight: 500;
       position: absolute;
-      right: 48px; /* shifted left to give cart icon room */
+      right: 16px;
       left: auto;
       top: 14px;
       height: 22px;
       white-space: nowrap;
-      z-index: 10;
+      z-index: 10; /* Above nav-brand so tap registers correctly */
       pointer-events: all;
     }
     .nav-wa-mobile-center:hover { color: #25D366; }
-
-    /* Mobile cart icon positioning */
-    .nav-cart-mobile {
-      position: absolute;
-      right: 14px;
-      top: 11px;
-      height: 26px;
-      width: 26px;
-      z-index: 10;
-      pointer-events: all;
-      color: var(--text-main);
-    }
-    .nav-cart-mobile svg { width: 20px; height: 20px; }
-    .nav-cart-mobile .order-count-badge {
-      top: -5px; right: -7px;
-    }
 
     .wa-num { display: none; }
     .section-inner { text-align: center; }
@@ -1763,8 +1620,70 @@
 
   }
 
+  /* ===== OUR STORY MODAL (mobile only) ===== */
+  .story-modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(20, 10, 40, 0.78);
+    z-index: 3600;
+    align-items: flex-end;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+  }
+  .story-modal-overlay.open { display: flex; }
+  .story-modal {
+    background: var(--bg-surface);
+    border-radius: 20px 20px 0 0;
+    width: 100%;
+    max-width: 520px;
+    max-height: 82vh;
+    overflow-y: auto;
+    box-shadow: 0 -12px 60px rgba(20,10,40,0.4);
+    animation: slideUp 0.32s cubic-bezier(0.34,1.1,0.64,1) both;
+  }
+  @keyframes slideUp {
+    from { transform: translateY(100%); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+  }
+  .story-modal-handle {
+    width: 36px; height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    margin: 12px auto 0;
+  }
+  .story-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .story-modal-header h3 { font-size: 1rem; font-weight: 700; color: var(--text-main); }
+  .story-modal-close {
+    background: none; border: none;
+    font-size: 1.2rem; cursor: pointer;
+    color: var(--text-muted); padding: 4px 8px; border-radius: 6px;
+  }
+  .story-modal-close:hover { color: var(--primary); }
+  .story-modal-body { padding: 18px 20px 28px; }
+  .story-modal-body p { font-size: 0.88rem; color: var(--text-main); line-height: 1.7; margin-bottom: 10px; }
+  .story-modal-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+  .btn-story-women {
+    background: var(--primary); color: white; border: none;
+    border-radius: var(--radius-sm); padding: 13px 20px;
+    font-family: 'Inter', sans-serif; font-size: 0.92rem; font-weight: 600;
+    cursor: pointer; width: 100%;
+  }
+  .btn-story-menu {
+    background: transparent; color: var(--primary);
+    border: 1.5px solid var(--primary);
+    border-radius: var(--radius-sm); padding: 12px 20px;
+    font-family: 'Inter', sans-serif; font-size: 0.92rem; font-weight: 600;
+    cursor: pointer; width: 100%;
+  }
+
 </style>
-</head>
 <body>
 
 <nav>
@@ -1782,12 +1701,6 @@
   <a href="https://wa.me/919778538410" target="_blank" class="nav-wa-mobile-center" title="WhatsApp">
     <svg viewBox="0 0 24 24" width="20" height="20" fill="#25D366" style="flex-shrink:0;"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
     <span>+91 97785 38410</span>
-  </a>
-
-  <!-- Mobile-only: cart icon — appears after WA when items in cart -->
-  <a href="#s-order" class="nav-cart-mobile" id="navCartMobile" title="View Cart">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
-    <span class="order-count-badge" id="orderCountBadgeMobile"></span>
   </a>
 
   <a href="#s-hero" class="nav-logo" id="navLogo">
@@ -2137,7 +2050,7 @@
   </div>
 </div>
 
-<!-- OUR STORY MODAL -->
+<!-- OUR STORY MODAL (mobile only) -->
 <div id="storyModalOverlay" class="story-modal-overlay" onclick="if(event.target===this)closeStoryModal()">
   <div class="story-modal">
     <div class="story-modal-handle"></div>
@@ -2157,6 +2070,8 @@
     </div>
   </div>
 </div>
+
+<!-- WHATSAPP ORDER DETAILS MODAL -->
 <div id="waModalOverlay" class="wa-modal-overlay" onclick="if(event.target===this)closeWAModal()">
   <div class="wa-modal">
     <div class="wa-modal-header">
@@ -2713,20 +2628,20 @@ function updateMenuBadges() {
 }
 function updateOrderCount() {
   var badge = document.getElementById('orderCountBadge');
-  var mobileBadge = document.getElementById('orderCountBadgeMobile');
-  var mobileCart = document.getElementById('navCartMobile');
-  var navCartItem = document.getElementById('navCartItem');
   var navCartLink = document.getElementById('navCartLink');
-  var cartBtnText = document.getElementById('cartBtnText');
+  var navCartItem = document.getElementById('navCartItem');
+  if (!badge) return;
   var total = orderItems.reduce(function(s, i) { return s + i.qty; }, 0);
-  var label = total > 0 ? (total % 1 === 0 ? String(total) : total.toFixed(1)) : '';
-
-  if (badge) { badge.textContent = label; badge.style.display = total > 0 ? 'inline-block' : 'none'; }
-  if (mobileBadge) { mobileBadge.textContent = label; mobileBadge.style.display = total > 0 ? 'inline-flex' : 'none'; }
-  if (mobileCart) mobileCart.classList.toggle('has-items', total > 0);
-  if (navCartItem) navCartItem.style.display = total > 0 ? 'list-item' : 'none';
-  if (navCartLink) navCartLink.style.color = total > 0 ? 'var(--primary)' : '';
-  if (cartBtnText) cartBtnText.textContent = total > 0 ? 'View / Modify Cart' : 'Add to Cart';
+  if (total > 0) {
+    badge.textContent = total % 1 === 0 ? total : total.toFixed(1);
+    badge.style.display = 'inline-block';
+    if (navCartItem) navCartItem.style.display = 'list-item';
+    if (navCartLink) navCartLink.style.color = 'var(--primary)';
+  } else {
+    badge.style.display = 'none';
+    if (navCartItem) navCartItem.style.display = 'none';
+    if (navCartLink) navCartLink.style.color = '';
+  }
 }
 
 // ===== SCROLL BEHAVIOURS =====
@@ -2793,16 +2708,6 @@ function validateDeliveryDate(input) {
   }
 }
 
-// ===== OUR STORY MODAL =====
-function openStoryModal() {
-  document.getElementById('storyModalOverlay').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-function closeStoryModal() {
-  document.getElementById('storyModalOverlay').classList.remove('open');
-  document.body.style.overflow = '';
-}
-
 // ===== WHATSAPP MODAL =====
 function openWAModal() {
   if (orderItems.length === 0) {
@@ -2816,6 +2721,15 @@ function openWAModal() {
 
 function closeWAModal() {
   document.getElementById('waModalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function openStoryModal() {
+  document.getElementById('storyModalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeStoryModal() {
+  document.getElementById('storyModalOverlay').classList.remove('open');
   document.body.style.overflow = '';
 }
 
