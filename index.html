@@ -1620,70 +1620,8 @@
 
   }
 
-  /* ===== OUR STORY MODAL (mobile only) ===== */
-  .story-modal-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(20, 10, 40, 0.78);
-    z-index: 3600;
-    align-items: flex-end;
-    justify-content: center;
-    backdrop-filter: blur(4px);
-  }
-  .story-modal-overlay.open { display: flex; }
-  .story-modal {
-    background: var(--bg-surface);
-    border-radius: 20px 20px 0 0;
-    width: 100%;
-    max-width: 520px;
-    max-height: 82vh;
-    overflow-y: auto;
-    box-shadow: 0 -12px 60px rgba(20,10,40,0.4);
-    animation: slideUp 0.32s cubic-bezier(0.34,1.1,0.64,1) both;
-  }
-  @keyframes slideUp {
-    from { transform: translateY(100%); opacity: 0; }
-    to   { transform: translateY(0);    opacity: 1; }
-  }
-  .story-modal-handle {
-    width: 36px; height: 4px;
-    background: var(--border);
-    border-radius: 2px;
-    margin: 12px auto 0;
-  }
-  .story-modal-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 16px 20px 12px;
-    border-bottom: 1px solid var(--border);
-  }
-  .story-modal-header h3 { font-size: 1rem; font-weight: 700; color: var(--text-main); }
-  .story-modal-close {
-    background: none; border: none;
-    font-size: 1.2rem; cursor: pointer;
-    color: var(--text-muted); padding: 4px 8px; border-radius: 6px;
-  }
-  .story-modal-close:hover { color: var(--primary); }
-  .story-modal-body { padding: 18px 20px 28px; }
-  .story-modal-body p { font-size: 0.88rem; color: var(--text-main); line-height: 1.7; margin-bottom: 10px; }
-  .story-modal-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
-  .btn-story-women {
-    background: var(--primary); color: white; border: none;
-    border-radius: var(--radius-sm); padding: 13px 20px;
-    font-family: 'Inter', sans-serif; font-size: 0.92rem; font-weight: 600;
-    cursor: pointer; width: 100%;
-  }
-  .btn-story-menu {
-    background: transparent; color: var(--primary);
-    border: 1.5px solid var(--primary);
-    border-radius: var(--radius-sm); padding: 12px 20px;
-    font-family: 'Inter', sans-serif; font-size: 0.92rem; font-weight: 600;
-    cursor: pointer; width: 100%;
-  }
-
 </style>
+</head>
 <body>
 
 <nav>
@@ -1800,7 +1738,7 @@
   
   <div class="hbtns hero-anim">
     <a href="#s-products" class="btn btn-primary">Browse Menu &amp; Order</a>
-    <a href="#s-history" class="btn btn-outline" onclick="if(window.innerWidth<=768){event.preventDefault();openStoryModal();}" style="background:var(--bg-surface);">Our Story</a>
+    <a href="#s-history" class="btn btn-outline" style="background:var(--bg-surface);">Our Story</a>
   </div>
 </div>
 
@@ -2047,27 +1985,6 @@
     <div class="lightbox-name" id="lightboxName"></div>
     <div class="lightbox-price" id="lightboxPrice"></div>
     <div class="lightbox-desc" id="lightboxDesc"></div>
-  </div>
-</div>
-
-<!-- OUR STORY MODAL (mobile only) -->
-<div id="storyModalOverlay" class="story-modal-overlay" onclick="if(event.target===this)closeStoryModal()">
-  <div class="story-modal">
-    <div class="story-modal-handle"></div>
-    <div class="story-modal-header">
-      <h3>🌿 Our Story</h3>
-      <button class="story-modal-close" onclick="closeStoryModal()">✕</button>
-    </div>
-    <div class="story-modal-body">
-      <p>Growing up in a close-knit nuclear family, Ammu often heard stories from her grandmother about <strong>Vavamma</strong>, her great grandmother, and the beautiful food traditions she created in the family. In those days, tea time was always accompanied by freshly prepared snacks from the kitchen. <strong>Vavamma</strong> prepared everything with great care and lots of love.</p>
-      <p>As the years passed, Ammu's grandmother, affectionately known as <strong>Pushpa Kunjamma</strong>, felt that these flavours were too special to remain only within the family. With courage and determination, she began making and selling their traditional snacks in small packs.</p>
-      <p>For the next <strong>25 years</strong> she slowly built the business with care and dedication. Every batch of <strong>Achappam</strong> and <strong>Kuzhalappam</strong> carried a piece of her love and effort. She named the business <strong>Ammu's Food Products</strong> after her dear granddaughter, with the hope that the family legacy would continue for generations.</p>
-      <p>Today, that journey continues with the same pride and gratitude. While much has evolved and the menu has expanded, the core products still follow the old recipes that were passed down in our family. No preservatives, no shortcuts — only time, patience and honest tradition.</p>
-      <div class="story-modal-actions">
-        <button class="btn-story-women" onclick="closeStoryModal(); document.getElementById('s-history').scrollIntoView({behavior:'smooth'});">View the Women Behind the Recipe</button>
-        <button class="btn-story-menu" onclick="closeStoryModal(); document.getElementById('s-products').scrollIntoView({behavior:'smooth'});">Go to Menu →</button>
-      </div>
-    </div>
   </div>
 </div>
 
@@ -2724,15 +2641,6 @@ function closeWAModal() {
   document.body.style.overflow = '';
 }
 
-function openStoryModal() {
-  document.getElementById('storyModalOverlay').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-function closeStoryModal() {
-  document.getElementById('storyModalOverlay').classList.remove('open');
-  document.body.style.overflow = '';
-}
-
 function setupWADate() {
   var dateInput = document.getElementById('waDate');
   var earliestEl = document.getElementById('waDate-earliest');
@@ -2909,7 +2817,6 @@ document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') {
     closeOrderBuilder();
     closeWAModal();
-    closeStoryModal();
   }
 });
 
