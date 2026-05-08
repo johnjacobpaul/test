@@ -617,6 +617,31 @@
     gap: 4px;
   }
 
+  .menu-item-tag {
+    display: inline-block;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 20px;
+    margin-left: 4px;
+    vertical-align: middle;
+    white-space: nowrap;
+    flex-shrink: 0;
+    line-height: 1.6;
+  }
+  .menu-item-tag.tag-bestseller {
+    background: rgba(233, 30, 99, 0.1);
+    color: var(--primary);
+    border: 1px solid rgba(233, 30, 99, 0.25);
+  }
+  .menu-item-tag.tag-favourite {
+    background: rgba(61, 36, 114, 0.1);
+    color: #3d2472;
+    border: 1px solid rgba(61, 36, 114, 0.25);
+  }
+
   .menu-dots {
     flex-grow: 1;
     height: 1px;
@@ -1746,14 +1771,15 @@
   <div class="section-inner">
     <div class="sec-header">
       <span class="badge">Our Story</span>
+      <h2 class="sec-title">A Family Recipe Passed Down</h2>
     </div>
     
     <div class="story-grid">
       <div class="story-text">
-        <p style="font-size: 9pt;">Growing up in a close-knit nuclear family, Ammu often heard stories from her grandmother about <strong>Vavamma</strong>, her great grandmother, and the beautiful food traditions she created in the family. In those days, tea time was always accompanied by freshly prepared snacks from the kitchen. <strong>Vavamma</strong> prepared everything with great care and lots of love.</p>
-        <p style="font-size: 9pt;">As the years passed, Ammu’s grandmother, affectionately known as <strong> Pushpa Kunjamma </strong>, felt that these flavours were too special to remain only within the family. With courage and determination, she began making and selling their traditional snacks is small packs.</p>
-          <p style="font-size: 9pt;"> For the next <strong>25 years</strong> she slowly built the business with care and dedication. Every batch of <strong> Achappam </strong> and <strong> Kuzhalappam </strong> carried a piece of her love and effort. She named the business <strong> Ammu’s Food Products </strong> after her dear granddaughter,with the hope that the family legacy would continue for generations.</p>
-       <p style="font-size: 9pt;">Today, that journey continues with the same pride and gratitude. While much has evolved and the menu has expanded, the core products still follow the old recipes that were passed down in our family.No preservatives, no shortcuts, only time, patience and honest tradition.</p>
+        <p style="font-size: 10pt;">Growing up in a close-knit nuclear family, Ammu often heard stories from her grandmother about <strong>Vavamma</strong>, her great grandmother, and the beautiful food traditions she created in the family. In those days, tea time was always accompanied by freshly prepared snacks from the kitchen. <strong>Vavamma</strong> prepared everything with great care and lots of love.</p>
+        <p style="font-size: 10pt;">As the years passed, Ammu’s grandmother, affectionately known as <strong> Pushpa Kunjamma </strong>, felt that these flavours were too special to remain only within the family. With courage and determination, she began making and selling their traditional snacks in small packs.</p>
+          <p style="font-size: 10pt;"> For the next <strong>25 years</strong> she slowly built the business with care and dedication. Every batch of <strong> Achappam </strong> and <strong> Kuzhalappam </strong> carried a piece of her love and effort. She named the business <strong> Ammu’s Food Products </strong> after her dear granddaughter,with the hope that the family legacy would continue for generations.</p>
+       <p style="font-size: 10pt;">Today, that journey continues with the same pride and gratitude. While much has evolved and the menu has expanded, the core products still follow the old recipes that were passed down in our family.No preservatives, no shortcuts, only time, patience and honest tradition.</p>
       </div>
       
       <!-- 3 Generations Timeline Block -->
@@ -1804,9 +1830,10 @@
   <div class="section-inner">
     <div class="sec-header" style="margin-bottom: 30px;">
       <span class="badge">Menu</span>
-     
+    </div>
+
     <!-- Download Menu Card Button -->
-    <br><div style="text-align: center; margin-bottom: 50px;"></br>
+    <div style="text-align: center; margin-bottom: 50px;">
       <button id="downloadMenuBtn" onclick="downloadMenuCard()" class="btn btn-outline" style="background: var(--bg-surface); padding: 10px 24px;">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
         Download Menu Card
@@ -2129,7 +2156,10 @@ function renderMenu() {
         '</div>' +
         '<div class="menu-info">' +
           '<div class="menu-header">' +
-            '<div class="menu-name">' + item.name + '</div>' +
+            '<div class="menu-name">' + item.name +
+              (item.tag === 'favourite' ? '<span class="menu-item-tag tag-favourite">House Favourite</span>' :
+               item.tag === 'bestseller' ? '<span class="menu-item-tag tag-bestseller">Bestseller</span>' : '') +
+            '</div>' +
             '<div class="menu-dots"></div>' +
             '<div class="menu-price">' + priceDisp + '</div>' +
           '</div>' +
@@ -2283,25 +2313,25 @@ function addItemByData(name, price, unit) {
 // ==========================================================================
 var CS_DATA = [
   { group: '4PM Kadi', catId: 'cat-snacks', items: [
-    { name: 'Sharkara Unda',       price: 720,  unit: 'kg',     emoji: '🍯', img: 'sharkara-unda.jpeg',       desc: 'Sweet jaggery balls with a crispy rice exterior' },
-    { name: 'Panjasara Unda',      price: 700,  unit: 'kg',     emoji: '🍚', img: 'panjasara-unda.jpeg',      desc: 'Melt-in-the-mouth sugar-coated rice flour balls' },
-    { name: 'Achappam',            price: 700,  unit: 'kg',     emoji: '🍘', img: 'achappam.jpeg',            desc: 'Delicate flower-shaped rose cookies' },
-    { name: 'Kuzhalappam',         price: 700,  unit: 'kg',     emoji: '🥖', img: 'kuzhalappam.jpeg',         desc: 'Crispy hollow rice flour rolls with cumin' },
-    { name: 'Cheeda',              price: 650,  unit: 'kg',     emoji: '🍟', img: 'cheeda.jpeg',              desc: 'Thin, crunchy fried rice sticks' },
+    { name: 'Kuzhalappam',         price: 700,  unit: 'kg',     emoji: '🥖', img: 'kuzhalappam.jpeg',         desc: '', tag: 'bestseller' },
+    { name: 'Panjasara Unda',      price: 700,  unit: 'kg',     emoji: '🍚', img: 'panjasara-unda.jpeg',      desc: '', tag: 'bestseller' },
+    { name: 'Achappam',            price: 700,  unit: 'kg',     emoji: '🍘', img: 'achappam.jpeg',            desc: '', tag: 'bestseller' },
     { name: 'Cheeda Vilayichathu', price: 700,  unit: 'kg',     emoji: '🍯', img: 'cheeda-vilayichathu.jpeg', desc: 'Cheeda tossed in sweet jaggery' },
-    { name: 'Banana Chips',        price: 700,  unit: 'kg',     emoji: '🍌', img: 'banana-chips.jpeg',        desc: 'Thick-cut raw Kerala banana fried golden' },
-    { name: 'Chakka Chips',        price: 800,  unit: 'kg',     emoji: '🍈', img: 'chakka-chips.jpeg',        desc: 'Crispy jackfruit chips — a seasonal delicacy' },
     { name: 'Neyyappam',           price: 600,  unit: 'kg',     emoji: '🥞', img: 'neyyappam.jpeg',           desc: 'Deep-fried jaggery & rice pancake balls in ghee' },
+    { name: 'Sharkara Unda',       price: 720,  unit: 'kg',     emoji: '🍯', img: 'sharkara-unda.jpeg',       desc: 'Sweet jaggery balls with a crispy rice exterior' },
+    { name: 'Cheeda',              price: 650,  unit: 'kg',     emoji: '🍟', img: 'cheeda.jpeg',              desc: 'Thin, crunchy fried rice sticks' },
+    { name: 'Banana Chips',        price: 700,  unit: 'kg',     emoji: '🍌', img: 'banana-chips.jpeg',        desc: 'Thick-cut raw Kerala banana fried golden' },
+    { name: 'Chakka Chips',        price: 1000,  unit: 'kg',     emoji: '🍈', img: 'chakka-chips.jpeg',        desc: 'Crispy jackfruit chips — a seasonal delicacy' },
     { name: 'Aval Vilayichathu',   price: 600,  unit: 'kg',     emoji: '🥣', img: 'aval-vilayichathu.jpeg',   desc: 'Flattened rice tossed with jaggery and coconut' },
     { name: 'Vattayappam',         price: 80,   unit: 'piece',  emoji: '🥮', img: 'vattayappam.jpeg',         desc: 'Steamed rice and coconut cake' },
     { name: 'Kinnathappam',        price: 90,   unit: 'piece',  emoji: '🍮', img: 'kinnathappam.jpeg',        desc: 'Steamed plate cake made with rice & coconut milk' }
   ]},
   { group: 'Podi', catId: 'cat-podi', items: [
-    { name: 'Appam Podi',          price: 120,  unit: 'kg',     emoji: '🌾', img: 'appam-podi.jpeg',          desc: 'Finely milled rice flour for lacy Kerala appams' },
+    { name: 'Chammandi Podi',      price: 900,  unit: 'kg',     emoji: '🥥', img: 'chammandi-podi.jpeg',      desc: 'Roasted coconut & spice chutney powder', tag: 'bestseller' },
+    { name: 'Avalose Podi',        price: 600,  unit: 'kg',     emoji: '🥣', img: 'avalose-podi.jpeg',        desc: 'Sweet roasted rice and coconut powder' },
+    { name: 'Appam Podi',          price: 120,  unit: 'kg',     emoji: '🌾', img: 'appam-podi.jpeg',          desc: 'Finely milled rice flour for lacy Kerala appams', tag: 'bestseller' },
     { name: 'Puttu Podi',          price: 120,  unit: 'kg',     emoji: '🌾', img: 'puttu-podi.jpeg',          desc: 'Classic rice flour for the iconic steamed cake' },
     { name: 'Chemba Puttu Podi',   price: 120,  unit: 'kg',     emoji: '🤎', img: 'chemba-puttu-podi.jpeg',   desc: 'Nutritious red rice flour for earthier puttu' },
-    { name: 'Chammandi Podi',      price: 900,  unit: 'kg',     emoji: '🥥', img: 'chammandi-podi.jpeg',      desc: 'Roasted coconut & spice chutney powder' },
-    { name: 'Avalose Podi',        price: 600,  unit: 'kg',     emoji: '🥣', img: 'avalose-podi.jpeg',        desc: 'Sweet roasted rice and coconut powder' },
     { name: 'Chemba Avalose Podi', price: 600,  unit: 'kg',     emoji: '🥣', img: 'chemba-avalose-podi.jpeg', desc: 'Red rice version for wholesome goodness' }
   ]},
   { group: 'Pickles', catId: 'cat-pickles', items: [
@@ -2322,25 +2352,25 @@ var CS_DATA = [
     { name: 'Pavakka Pickle',       price: 300,  unit: 'kg',    emoji: '🥒', img: 'pavakka-pickle.jpeg',       desc: '' }
   ]},
   { group: 'Ready to Eat', catId: 'cat-specials', note: 'Note: All per-person (pp) items include 400g of food (Pidi or Fried Rice) & curry.', items: [
+    { name: 'Pidi & Chicken Varuthara',          price: 250, unit: 'person', emoji: '🍲', img: 'pidi-chicken.jpeg',             desc: '', tag: 'favourite' },
+    { name: 'Pidi & Beef Curry',                 price: 300, unit: 'person', emoji: '🍲', img: 'pidi-beef.jpeg',                desc: '' },
+    { name: 'Pidi & Mushroom Varuthara',         price: 375, unit: 'person', emoji: '🍲', img: 'pidi-mushroom.jpeg',            desc: '' },
+    { name: 'Paal Kappa',     price: 250,  unit: 'kg',     emoji: '🥥', img: 'paal-kappa.jpeg',           desc: '' },
+    { name: 'Paal Kappa & Beef Curry',     price: 375,  unit: 'pp',     emoji: '🥥', img: 'paal-kappa-beef.jpeg',           desc: '' },
+    { name: 'Pidi',          price: 310, unit: 'kg', emoji: '🍲', img: 'pidi.jpeg',             desc: '' },
+    { name: 'Chicken Varuthara',          price: 500, unit: 'kg', emoji: '🍲', img: 'chicken-varuthara.jpeg',             desc: '' },
+    { name: 'Puli Inji',      price: 600,  unit: 'kg',     emoji: '🥣', img: 'puli-inji.jpeg',            desc: '' },
+    { name: 'Thenga Varuthathu', price: 600, unit: 'kg',   emoji: '🥥', img: 'thenga-varuthathu.jpeg',    desc: '' },
     { name: 'Fried Rice & Chilli Gobi',         price: 200,  unit: 'person', emoji: '🍚', img: 'fried-rice-chilli-gobi.jpeg',  desc: '' },
     { name: 'Fried Rice & Paneer Butter Masala', price: 250, unit: 'person', emoji: '🍚', img: 'fried-rice-paneer.jpeg',        desc: '' },
-    { name: 'Pidi', price: 310, unit: 'kg', emoji: '🍚', img: 'fried-rice-paneer.jpeg',        desc: '' },
-    { name: 'Chicken Varuthathu', price: 500, unit: 'kg',   emoji: '🥥', img: 'thenga-varuthathu.jpeg',    desc: '' },
-    { name: 'Pidi & Chicken Varuthara',          price: 250, unit: 'person', emoji: '🍲', img: 'pidi-chicken.jpeg',             desc: '' },
-    { name: 'Pidi & Beef Curry',                 price: 375, unit: 'person', emoji: '🍲', img: 'pidi-beef.jpeg',                desc: '' },
-    { name: 'Pidi & Mushroom Varuthara',         price: 375, unit: 'person', emoji: '🍲', img: 'pidi-mushroom.jpeg',            desc: '' },
     { name: 'Fried Rice & Chilli Chicken',       price: 225, unit: 'person', emoji: '🍚', img: 'fried-rice-chicken.jpeg',       desc: '' },
     { name: 'Beef Fry',       price: 1500, unit: 'kg',     emoji: '🥩', img: 'beef-fry.jpeg',             desc: '' },
     { name: 'Beef Curry',     price: 1000, unit: 'kg',     emoji: '🥩', img: 'beef-curry.jpeg',           desc: '' },
     { name: 'Fish Curry',     price: 600,  unit: 'kg',     emoji: '🐟', img: 'fish-curry.jpeg',           desc: '' },
     { name: 'Chicken Curry',  price: 450,  unit: 'kg',     emoji: '🍗', img: 'chicken-curry.jpeg',        desc: '' },
     { name: 'Mushroom Fry',   price: 2000, unit: 'kg',     emoji: '🍄', img: 'mushroom-fry.jpeg',         desc: '' },
-    { name: 'Prawns Fry',     price: 1500, unit: 'kg',     emoji: '🍤', img: 'prawns-fry.jpeg',           desc: '' },
-    { name: 'Puli Inji',      price: 600,  unit: 'kg',     emoji: '🥣', img: 'puli-inji.jpeg',            desc: '' },
-    { name: 'Paal Kappa',     price: 250,  unit: 'kg',     emoji: '🥥', img: 'paal-kappa.jpeg',           desc: '' },
-    { name: 'Paal Kappa & Beef Curry',     price: 375,  unit: 'pp',     emoji: '🥥', img: 'paal-kappa-beef.jpeg',           desc: '' },
-    { name: 'Veg. Kurma', price: 500, unit: 'kg',   emoji: '🥥', img: 'thenga-varuthathu.jpeg',    desc: '' },
-    { name: 'Thenga Varuthathu', price: 3600, unit: 'kg',   emoji: '🥥', img: 'thenga-varuthathu.jpeg',    desc: '' }
+    { name: 'Veg Kurma',   price: 360, unit: 'kg',     emoji: '🍄', img: 'veg-kurma.jpeg',         desc: '' },
+    { name: 'Prawns Fry',     price: 1500, unit: 'kg',     emoji: '🍤', img: 'prawns-fry.jpeg',           desc: '' }
   ]}
 ];
 
