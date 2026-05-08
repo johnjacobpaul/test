@@ -662,7 +662,25 @@
   /* ORDER SECTION */
   #s-order { background: var(--bg-main); }
   #s-order .section-inner { padding-top: 20px !important; padding-bottom: 60px; }
-  @media (min-width: 769px) { #s-order .section-inner { padding-top: 90px !important; } }
+  /* Desktop: header.png background for menu section */
+  @media (min-width: 769px) {
+    #s-products {
+      position: relative;
+    }
+    #s-products::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url('header.png') center center / cover no-repeat;
+      opacity: 0.07;
+      pointer-events: none;
+      z-index: 0;
+    }
+    #s-products .section-inner {
+      position: relative;
+      z-index: 1;
+    }
+  }
   .order-grid {
     display: flex;
     flex-direction: column;
@@ -1518,7 +1536,12 @@
     .hsub { font-size: 0.9rem; margin-bottom: 16px; }
 
     /* Tighter menu items on mobile */
-    .menu-name { font-size: 0.85rem; }
+    .menu-name {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 3px;
+    }
+    .menu-item-tag { margin-left: 0; }
     .menu-price { font-size: 0.82rem; }
     .menu-dots { margin: 0 6px; }
 
@@ -2157,8 +2180,7 @@ function renderMenu() {
         '<div class="menu-info">' +
           '<div class="menu-header">' +
             '<div class="menu-name">' + item.name +
-              (item.tag === 'favourite' ? '<span class="menu-item-tag tag-favourite">House Favourite</span>' :
-               item.tag === 'bestseller' ? '<span class="menu-item-tag tag-bestseller">Bestseller</span>' : '') +
+              (item.tag === 'bestseller' ? '<span class="menu-item-tag tag-bestseller">Bestseller</span>' : '') +
             '</div>' +
             '<div class="menu-dots"></div>' +
             '<div class="menu-price">' + priceDisp + '</div>' +
@@ -2352,7 +2374,7 @@ var CS_DATA = [
     { name: 'Pavakka Pickle',       price: 300,  unit: 'kg',    emoji: '🥒', img: 'pavakka-pickle.jpeg',       desc: '' }
   ]},
   { group: 'Ready to Eat', catId: 'cat-specials', note: 'Note: All per-person (pp) items include 400g of food (Pidi or Fried Rice) & curry.', items: [
-    { name: 'Pidi & Chicken Varuthara',          price: 250, unit: 'person', emoji: '🍲', img: 'pidi-chicken.jpeg',             desc: '', tag: 'favourite' },
+    { name: 'Pidi & Chicken Varuthara',          price: 250, unit: 'person', emoji: '🍲', img: 'pidi-chicken.jpeg',             desc: '', tag: 'bestseller' },
     { name: 'Pidi & Beef Curry',                 price: 300, unit: 'person', emoji: '🍲', img: 'pidi-beef.jpeg',                desc: '' },
     { name: 'Pidi & Mushroom Varuthara',         price: 375, unit: 'person', emoji: '🍲', img: 'pidi-mushroom.jpeg',            desc: '' },
     { name: 'Paal Kappa',     price: 250,  unit: 'kg',     emoji: '🥥', img: 'paal-kappa.jpeg',           desc: '' },
