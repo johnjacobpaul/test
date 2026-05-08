@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Ammu's Food Products v1.1</title>
+<title>Ammu's Food Products</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
@@ -225,10 +225,9 @@
   /* HERO HEADER IMAGE — desktop only, 1800×500px */
   .hero-header-img {
     display: block;
-    width: 100vw;
-    margin-left: calc(-50vw + 50%);
-    margin-right: calc(-50vw + 50%);
-    height: 700px;
+    width: 2250px;
+    max-width: 100%;
+    height: 500px;
     object-fit: cover;
     border-radius: 0;
     margin-top: 10px;
@@ -239,13 +238,12 @@
 
   /* HERO SECTION */
   #s-hero {
-    min-height: calc(100vh - var(--nav-height));
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
     text-align: center;
-    padding: 6px 20px 8vh 20px;
+    padding: 6px 20px 0 20px;
     position: relative;
     overflow: hidden;
   }
