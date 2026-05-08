@@ -619,6 +619,8 @@
 
   .menu-item-tag {
     display: inline-block;
+    align-self: flex-start;
+    width: fit-content;
     font-size: 0.6rem;
     font-weight: 700;
     letter-spacing: 0.04em;
@@ -655,20 +657,7 @@
   /* ORDER SECTION */
   #s-order { background: var(--bg-main); }
   #s-order .section-inner { padding-top: 20px !important; padding-bottom: 60px; }
-  /* Desktop: header.png background for hero section with gradient */
-  @media (min-width: 769px) {
-    #s-hero::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background:
-        linear-gradient(to bottom, rgba(255,248,240,0.45) 0%, rgba(255,248,240,0.85) 60%, rgba(255,248,240,1) 100%),
-        url('header.png') center center / cover no-repeat;
-      pointer-events: none;
-      z-index: 0;
-    }
-    #s-hero > * { position: relative; z-index: 1; }
-  }
+  @media (min-width: 769px) { #s-order .section-inner { padding-top: 90px !important; } }
   .order-grid {
     display: flex;
     flex-direction: column;
@@ -2334,7 +2323,7 @@ var CS_DATA = [
     { name: 'Chammandi Podi',      price: 900,  unit: 'kg',     emoji: '🥥', img: 'chammandi-podi.jpeg',      desc: 'Roasted coconut & spice chutney powder', tag: 'bestseller' },
     { name: 'Avalose Podi',        price: 600,  unit: 'kg',     emoji: '🥣', img: 'avalose-podi.jpeg',        desc: 'Sweet roasted rice and coconut powder' },
     { name: 'Appam Podi',          price: 120,  unit: 'kg',     emoji: '🌾', img: 'appam-podi.jpeg',          desc: 'Finely milled rice flour for lacy Kerala appams', tag: 'bestseller' },
-    { name: 'Puttu Podi',          price: 120,  unit: 'kg',     emoji: '🌾', img: 'puttu-podi.jpeg',          desc: 'Classic rice flour for the iconic steamed cake' },
+    { name: 'Puttu Podi',          price: 120,  unit: 'kg',     emoji: '🌾', img: 'puttu-podi.jpeg',          desc: 'Classic rice flour for the iconic steamed cake', tag: 'bestseller' },
     { name: 'Chemba Puttu Podi',   price: 120,  unit: 'kg',     emoji: '🤎', img: 'chemba-puttu-podi.jpeg',   desc: 'Nutritious red rice flour for earthier puttu' },
     { name: 'Chemba Avalose Podi', price: 600,  unit: 'kg',     emoji: '🥣', img: 'chemba-avalose-podi.jpeg', desc: 'Red rice version for wholesome goodness' }
   ]},
@@ -2359,9 +2348,9 @@ var CS_DATA = [
     { name: 'Pidi & Chicken Varuthara',          price: 250, unit: 'person', emoji: '🍲', img: 'pidi-chicken.jpeg',             desc: '', tag: 'bestseller' },
     { name: 'Pidi & Beef Curry',                 price: 300, unit: 'person', emoji: '🍲', img: 'pidi-beef.jpeg',                desc: '' },
     { name: 'Pidi & Mushroom Varuthara',         price: 375, unit: 'person', emoji: '🍲', img: 'pidi-mushroom.jpeg',            desc: '' },
-    { name: 'Paal Kappa',     price: 250,  unit: 'kg',     emoji: '🥥', img: 'paal-kappa.jpeg',           desc: '' },
+    { name: 'Paal Kappa',     price: 250,  unit: 'kg',     emoji: '🥥', img: 'paal-kappa.jpeg',           desc: '', tag: 'bestseller' },
     { name: 'Paal Kappa & Beef Curry',     price: 375,  unit: 'pp',     emoji: '🥥', img: 'paal-kappa-beef.jpeg',           desc: '' },
-    { name: 'Pidi',          price: 310, unit: 'kg', emoji: '🍲', img: 'pidi.jpeg',             desc: '' },
+    { name: 'Pidi',          price: 310, unit: 'kg', emoji: '🍲', img: 'pidi.jpeg',             desc: '', tag: 'bestseller' },
     { name: 'Chicken Varuthara',          price: 500, unit: 'kg', emoji: '🍲', img: 'chicken-varuthara.jpeg',             desc: '' },
     { name: 'Puli Inji',      price: 600,  unit: 'kg',     emoji: '🥣', img: 'puli-inji.jpeg',            desc: '' },
     { name: 'Thenga Varuthathu', price: 600, unit: 'kg',   emoji: '🥥', img: 'thenga-varuthathu.jpeg',    desc: '' },
