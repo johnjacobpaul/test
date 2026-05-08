@@ -625,21 +625,14 @@
     text-transform: uppercase;
     padding: 2px 7px;
     border-radius: 20px;
-    margin-left: 4px;
-    vertical-align: middle;
+    margin-top: 4px;
     white-space: nowrap;
-    flex-shrink: 0;
     line-height: 1.6;
   }
   .menu-item-tag.tag-bestseller {
     background: rgba(233, 30, 99, 0.1);
     color: var(--primary);
     border: 1px solid rgba(233, 30, 99, 0.25);
-  }
-  .menu-item-tag.tag-favourite {
-    background: rgba(61, 36, 114, 0.1);
-    color: #3d2472;
-    border: 1px solid rgba(61, 36, 114, 0.25);
   }
 
   .menu-dots {
@@ -662,24 +655,19 @@
   /* ORDER SECTION */
   #s-order { background: var(--bg-main); }
   #s-order .section-inner { padding-top: 20px !important; padding-bottom: 60px; }
-  /* Desktop: header.png background for menu section */
+  /* Desktop: header.png background for hero section with gradient */
   @media (min-width: 769px) {
-    #s-products {
-      position: relative;
-    }
-    #s-products::before {
+    #s-hero::before {
       content: '';
       position: absolute;
       inset: 0;
-      background: url('header.png') center center / cover no-repeat;
-      opacity: 0.07;
+      background:
+        linear-gradient(to bottom, rgba(255,248,240,0.45) 0%, rgba(255,248,240,0.85) 60%, rgba(255,248,240,1) 100%),
+        url('header.png') center center / cover no-repeat;
       pointer-events: none;
       z-index: 0;
     }
-    #s-products .section-inner {
-      position: relative;
-      z-index: 1;
-    }
+    #s-hero > * { position: relative; z-index: 1; }
   }
   .order-grid {
     display: flex;
@@ -1536,12 +1524,7 @@
     .hsub { font-size: 0.9rem; margin-bottom: 16px; }
 
     /* Tighter menu items on mobile */
-    .menu-name {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 3px;
-    }
-    .menu-item-tag { margin-left: 0; }
+    .menu-name { font-size: 0.85rem; }
     .menu-price { font-size: 0.82rem; }
     .menu-dots { margin: 0 6px; }
 
@@ -2179,12 +2162,11 @@ function renderMenu() {
         '</div>' +
         '<div class="menu-info">' +
           '<div class="menu-header">' +
-            '<div class="menu-name">' + item.name +
-              (item.tag === 'bestseller' ? '<span class="menu-item-tag tag-bestseller">Bestseller</span>' : '') +
-            '</div>' +
+            '<div class="menu-name">' + item.name + '</div>' +
             '<div class="menu-dots"></div>' +
             '<div class="menu-price">' + priceDisp + '</div>' +
           '</div>' +
+          (item.tag === 'bestseller' ? '<span class="menu-item-tag tag-bestseller">Bestseller</span>' : '') +
           (item.desc ? '<div class="menu-desc">' + item.desc + '</div>' : '') +
         '</div>';
       grid.appendChild(div);
