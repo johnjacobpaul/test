@@ -222,36 +222,15 @@
     box-shadow: none;
   }
 
-  /* HERO HEADER IMAGE — desktop only */
-  .hero-header-img {
-    display: block;
-    width: 100vw;
-    height: 500px;
-    flex-shrink: 1;
-    min-height: 0;
-    object-fit: cover;
-    border-radius: 0;
-    margin-top: 10px;
-    opacity: 0.8;
-    -webkit-mask-image:
-      linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 25%, rgba(0,0,0,0.85) 60%, rgba(0,0,0,1) 100%),
-      linear-gradient(to right,  transparent 0%, rgba(0,0,0,1) 8%, rgba(0,0,0,1) 92%, transparent 100%);
-    -webkit-mask-composite: source-in;
-    mask-image:
-      linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 25%, rgba(0,0,0,0.85) 60%, rgba(0,0,0,1) 100%),
-      linear-gradient(to right,  transparent 0%, rgba(0,0,0,1) 8%, rgba(0,0,0,1) 92%, transparent 100%);
-    mask-composite: intersect;
-  }
-
   /* HERO SECTION */
   #s-hero {
-    max-height: 100vh;
+    min-height: calc(100vh - var(--nav-height));
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
     text-align: center;
-    padding: 6px 20px 0 20px;
+    padding: 6px 20px 8vh 20px;
     position: relative;
     overflow: hidden;
   }
@@ -638,26 +617,6 @@
     gap: 4px;
   }
 
-  .menu-item-tag {
-    display: inline-block;
-    align-self: flex-start;
-    width: fit-content;
-    font-size: 0.6rem;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    padding: 2px 7px;
-    border-radius: 20px;
-    margin-top: 4px;
-    white-space: nowrap;
-    line-height: 1.6;
-  }
-  .menu-item-tag.tag-bestseller {
-    background: rgba(233, 30, 99, 0.1);
-    color: var(--primary);
-    border: 1px solid rgba(233, 30, 99, 0.25);
-  }
-
   .menu-dots {
     flex-grow: 1;
     height: 1px;
@@ -793,13 +752,17 @@
     flex-shrink: 0;
   }
   .menu-item-qty-badge {
-    font-size: 0.78rem;
+    font-size: 0.75rem;
     font-weight: 700;
-    color: var(--primary);
-    min-width: 18px;
+    color: white;
+    background: var(--primary);
+    min-width: 28px;
     text-align: center;
     display: none;
     line-height: 1;
+    border-radius: var(--radius-pill);
+    padding: 3px 6px;
+    white-space: nowrap;
   }
   .menu-item-qty-badge.visible {
     display: inline-block;
@@ -1449,6 +1412,173 @@
     .ob-table th:nth-child(3), .ob-table td:nth-child(3) { display: none; }
   }
 
+  /* ===== BESTSELLER TAG ===== */
+  .bestseller-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    background: linear-gradient(135deg, #ff6b00 0%, #ffaa00 100%);
+    color: #fff;
+    font-size: 0.58rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 2px 7px 2px 5px;
+    border-radius: 20px;
+    white-space: nowrap;
+    box-shadow: 0 2px 6px rgba(255,107,0,0.30);
+    line-height: 1.5;
+    vertical-align: middle;
+    flex-shrink: 0;
+  }
+  .bestseller-tag::before {
+    content: '★';
+    font-size: 0.65rem;
+    line-height: 1;
+  }
+
+  /* Desktop: tag sits inline on same line as name (flex row, gap handled) */
+  .menu-name-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 5px;
+    min-width: 0;
+  }
+  .menu-name-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+  }
+
+  /* ===== QTY PICKER POPUP ===== */
+  .qty-picker-popup {
+    position: fixed;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    box-shadow: 0 12px 40px rgba(44,31,74,0.18);
+    padding: 12px 14px 14px;
+    z-index: 5000;
+    display: none;
+    width: 230px;
+  }
+  .qty-picker-popup.open { display: block; }
+  .qty-popup-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+  }
+  .qty-presets-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 2px;
+  }
+  .qty-preset-btn {
+    padding: 5px 10px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-pill);
+    background: var(--bg-main);
+    color: var(--text-main);
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .qty-preset-btn:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    background: rgba(233,30,99,0.06);
+  }
+  .qty-preset-btn.qty-custom-toggle {
+    border-style: dashed;
+    color: var(--text-muted);
+  }
+  .qty-preset-btn.qty-custom-toggle:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    background: rgba(233,30,99,0.06);
+  }
+  .qty-custom-row-popup {
+    display: none;
+    align-items: center;
+    gap: 6px;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+  }
+  .qty-custom-row-popup.show { display: flex; }
+  .qty-custom-input-popup {
+    flex: 1;
+    min-width: 0;
+    padding: 6px 8px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 0.88rem;
+    background: var(--bg-main);
+    color: var(--text-main);
+    font-family: 'Inter', sans-serif;
+  }
+  .qty-custom-input-popup:focus {
+    outline: none;
+    border-color: var(--primary);
+  }
+  .qty-custom-unit-label {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    flex-shrink: 0;
+  }
+  .qty-confirm-btn {
+    flex-shrink: 0;
+    padding: 6px 12px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.82rem;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    transition: background 0.15s;
+  }
+  .qty-confirm-btn:hover { background: var(--primary-hover); }
+
+  /* ===== TRASH / DELETE BUTTON ON MENU ITEM ===== */
+  .menu-item-trash-btn {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(192,57,43,0.35);
+    background: transparent;
+    color: #c0392b;
+    font-size: 0.85rem;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    padding: 0;
+  }
+  .menu-item-trash-btn.visible {
+    display: flex;
+  }
+  .menu-item-trash-btn:hover {
+    background: rgba(192,57,43,0.1);
+    border-color: #c0392b;
+    transform: scale(1.1);
+  }
+
+  /* Menu item buttons — + hidden when in cart */
+  .menu-item-btns .add-to-order-btn.hidden-btn { display: none !important; }
+
   /* FOOTER */
   footer {
     background: #3d2472;
@@ -1524,7 +1654,6 @@
     .nav-links li { width: auto; text-align: center; }
     .nav-links a { display: inline-block; font-size: 0.95rem; padding: 6px 4px; border-top: none; }
 
-    .hero-header-img { display: none; }
     .section-inner { padding: 12px 20px; }
     .hbtns { flex-direction: column; width: 100%; max-width: 300px; gap: 12px; }
     .hbtns .btn { width: 100%; }
@@ -1538,6 +1667,18 @@
     .menu-name { font-size: 0.85rem; }
     .menu-price { font-size: 0.82rem; }
     .menu-dots { margin: 0 6px; }
+
+    /* Bestseller tag: stack below name on mobile */
+    .menu-name-row {
+      flex-wrap: wrap;
+      gap: 3px;
+    }
+    .bestseller-tag {
+      flex-basis: 100%;
+      width: fit-content;
+      font-size: 0.56rem;
+      padding: 2px 6px 2px 4px;
+    }
 
     .menu-grid { grid-template-columns: 1fr; gap: 12px; }
 
@@ -1781,8 +1922,6 @@
   <div class="hbtns hero-anim">
     <a href="#s-products" class="btn btn-primary">Browse Menu &amp; Order</a>
   </div>
-
-  <img src="header.png" alt="Ammu's Food Products" class="hero-header-img hero-anim" onerror="this.style.display='none'">
 </div>
 
 <!-- HISTORY -->
@@ -2058,6 +2197,139 @@
     </div>
   </div>
 </div>
+<!-- QUANTITY PICKER POPUP (global singleton) -->
+<div id="qtyPickerPopup" class="qty-picker-popup" role="dialog" aria-label="Select quantity">
+  <div class="qty-popup-title">Select Amount</div>
+  <div class="qty-presets-row" id="qtyPresetsRow"></div>
+  <div class="qty-custom-row-popup" id="qtyCustomRow">
+    <input type="number" id="qtyCustomInput" class="qty-custom-input-popup" min="0.1" step="0.1" placeholder="e.g. 1.5">
+    <span class="qty-custom-unit-label" id="qtyCustomUnitLabel">kg</span>
+    <button class="qty-confirm-btn" id="qtyCustomConfirm">Add</button>
+  </div>
+</div>
+
+<script>
+// ===== QUANTITY PICKER POPUP =====
+var _qtyPopupName = '', _qtyPopupPrice = 0, _qtyPopupUnit = '';
+
+function openQtyPopup(btn, name, price, unit) {
+  var popup = document.getElementById('qtyPickerPopup');
+  var presetsRow = document.getElementById('qtyPresetsRow');
+  var customRow = document.getElementById('qtyCustomRow');
+  var customInput = document.getElementById('qtyCustomInput');
+  var customUnit = document.getElementById('qtyCustomUnitLabel');
+
+  _qtyPopupName  = name;
+  _qtyPopupPrice = price;
+  _qtyPopupUnit  = unit;
+
+  // Build presets
+  presetsRow.innerHTML = '';
+  customRow.classList.remove('show');
+  customInput.value = '';
+
+  var presets = [];
+  var unitDisp = unit === 'person' ? 'pp' : unit;
+  customUnit.textContent = unitDisp;
+  customInput.step = unit === 'kg' ? '0.25' : '1';
+  customInput.min  = unit === 'kg' ? '0.25' : '1';
+
+  if (unit === 'kg') {
+    presets = [
+      { label: '250g', qty: 0.25 },
+      { label: '500g', qty: 0.5 },
+      { label: '1 kg', qty: 1 },
+      { label: '2 kg', qty: 2 },
+      { label: '3 kg', qty: 3 },
+      { label: '4 kg', qty: 4 },
+      { label: '5 kg', qty: 5 }
+    ];
+  } else if (unit === 'person' || unit === 'pp') {
+    presets = [
+      { label: '1 pp', qty: 1 },
+      { label: '2 pp', qty: 2 },
+      { label: '3 pp', qty: 3 },
+      { label: '4 pp', qty: 4 },
+      { label: '5 pp', qty: 5 }
+    ];
+  } else {
+    // piece or other
+    presets = [
+      { label: '1', qty: 1 },
+      { label: '2', qty: 2 },
+      { label: '3', qty: 3 },
+      { label: '4', qty: 4 },
+      { label: '5', qty: 5 }
+    ];
+  }
+
+  presets.forEach(function(p) {
+    var b = document.createElement('button');
+    b.className = 'qty-preset-btn';
+    b.textContent = p.label;
+    b.onclick = function() {
+      addItemByData(name, price, unit, p.qty);
+      closeQtyPopup();
+    };
+    presetsRow.appendChild(b);
+  });
+
+  // Custom button
+  var customBtn = document.createElement('button');
+  customBtn.className = 'qty-preset-btn qty-custom-toggle';
+  customBtn.textContent = 'Custom';
+  customBtn.onclick = function() {
+    customRow.classList.toggle('show');
+    if (customRow.classList.contains('show')) customInput.focus();
+  };
+  presetsRow.appendChild(customBtn);
+
+  // Position popup near the button
+  var rect = btn.getBoundingClientRect();
+  var popupW = 230;
+  var leftPos = rect.right - popupW;
+  if (leftPos < 8) leftPos = 8;
+  var topPos = rect.bottom + 6;
+  // If it would overflow bottom, show above
+  if (topPos + 280 > window.innerHeight) {
+    topPos = rect.top - 6;
+    popup.style.transform = 'translateY(-100%)';
+  } else {
+    popup.style.transform = '';
+  }
+  popup.style.left = leftPos + 'px';
+  popup.style.top  = topPos + window.scrollY + 'px';
+
+  popup.classList.add('open');
+}
+
+function closeQtyPopup() {
+  document.getElementById('qtyPickerPopup').classList.remove('open');
+  document.getElementById('qtyCustomRow').classList.remove('show');
+}
+
+document.getElementById('qtyCustomConfirm').addEventListener('click', function() {
+  var val = parseFloat(document.getElementById('qtyCustomInput').value);
+  if (!val || val <= 0) { alert('Please enter a valid amount.'); return; }
+  addItemByData(_qtyPopupName, _qtyPopupPrice, _qtyPopupUnit, val);
+  closeQtyPopup();
+});
+
+document.getElementById('qtyCustomInput').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') document.getElementById('qtyCustomConfirm').click();
+});
+
+// Close popup when clicking outside
+document.addEventListener('click', function(e) {
+  var popup = document.getElementById('qtyPickerPopup');
+  if (!popup.contains(e.target) && !e.target.classList.contains('add-to-order-btn')) {
+    closeQtyPopup();
+  }
+});
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeQtyPopup();
+});
+</script>
 
 <script>
 // ===== DYNAMIC SCROLL MARGIN =====
@@ -2167,6 +2439,9 @@ function renderMenu() {
       div.className = 'menu-item';
       var thumbClass = imgSrc ? 'menu-thumb-real thumb-clickable' : 'menu-thumb-real';
       var thumbClick = imgSrc ? ' onclick="openThumbLightbox(this,\'' + item.name.replace(/'/g, "\\'") + '\')"' : '';
+      var bestsellerHtml = item.bestseller
+        ? '<span class="bestseller-tag">Best Seller</span>'
+        : '';
       div.innerHTML =
         '<div class="' + thumbClass + '"' + thumbClick + '><span class="thumb-emoji">' + item.emoji + '</span>' +
         (imgSrc ? '<img src="' + imgSrc + '" alt="' + item.name + '" class="thumb-img img-missing"' +
@@ -2175,11 +2450,10 @@ function renderMenu() {
         '</div>' +
         '<div class="menu-info">' +
           '<div class="menu-header">' +
-            '<div class="menu-name">' + item.name + '</div>' +
+            '<div class="menu-name"><div class="menu-name-row"><span class="menu-name-text">' + item.name + '</span>' + bestsellerHtml + '</div></div>' +
             '<div class="menu-dots"></div>' +
             '<div class="menu-price">' + priceDisp + '</div>' +
           '</div>' +
-          (item.tag === 'bestseller' ? '<span class="menu-item-tag tag-bestseller">Bestseller</span>' : '') +
           (item.desc ? '<div class="menu-desc">' + item.desc + '</div>' : '') +
         '</div>';
       grid.appendChild(div);
@@ -2230,62 +2504,60 @@ document.addEventListener("DOMContentLoaded", function() {
   // Load persisted cart from localStorage
   loadCartFromStorage();
 
-  // Inject + / - buttons on every menu item
+  // Inject + button (opens qty popup) and trash button on every menu item
   document.querySelectorAll('.menu-item').forEach(function(item) {
     var nameEl = item.querySelector('.menu-name');
     var priceEl = item.querySelector('.menu-price');
     if (!nameEl || !priceEl) return;
 
-    var name = Array.from(nameEl.childNodes).filter(function(n){return n.nodeType===3;}).map(function(n){return n.textContent.trim();}).join("").trim();
+    var nameText = item.querySelector('.menu-name-text');
+    var name = nameText
+      ? nameText.textContent.trim()
+      : Array.from(nameEl.childNodes).filter(function(n){return n.nodeType===3;}).map(function(n){return n.textContent.trim();}).join("").trim();
     var priceText = priceEl.textContent.trim(); // e.g. "720/kg"
     var parts = priceText.split('/');
     var price = parseFloat(parts[0]);
     var unit = parts[1] || 'unit';
 
-    // Wrapper for both buttons
+    // Wrapper for buttons
     var btnGroup = document.createElement('div');
     btnGroup.className = 'menu-item-btns';
     btnGroup.setAttribute('data-item-name', name);
 
-    // Add (+) button
+    // Add (+) button — opens qty popup
     var btn = document.createElement('button');
     btn.className = 'add-to-order-btn';
-    btn.title = 'Add to Cart';
+    btn.title = 'Add to cart';
     btn.innerHTML = '+';
     btn.setAttribute('data-name', name);
     btn.setAttribute('data-price', price);
     btn.setAttribute('data-unit', unit);
-    btn.onclick = function() {
-      addItemByData(name, price, unit);
-      flashBtn(btn);
+    btn.onclick = function(e) {
+      e.stopPropagation();
+      openQtyPopup(btn, name, price, unit);
     };
 
-    // Quantity badge (shown between + and -)
+    // Quantity badge
     var badge = document.createElement('span');
     badge.className = 'menu-item-qty-badge';
 
-    // Remove (-) button
-    var rmBtn = document.createElement('button');
-    rmBtn.className = 'remove-from-order-btn';
-    rmBtn.title = 'Remove from Cart';
-    rmBtn.innerHTML = '&minus;';
-    rmBtn.setAttribute('data-name', name);
-    rmBtn.onclick = function() {
-      var existing = orderItems.find(function(i) { return i.name === name; });
-      if (!existing) return;
-      if (existing.qty > 1) {
-        existing.qty -= 1;
-      } else {
-        orderItems.splice(orderItems.indexOf(existing), 1);
-      }
+    // Trash button (shown when item is in cart)
+    var trashBtn = document.createElement('button');
+    trashBtn.className = 'menu-item-trash-btn';
+    trashBtn.title = 'Remove from cart';
+    trashBtn.innerHTML = '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>';
+    trashBtn.setAttribute('data-name', name);
+    trashBtn.onclick = function() {
+      orderItems = orderItems.filter(function(i) { return i.name !== name; });
       renderOrderTable();
       updateOrderCount();
       updateMenuBadges();
+      saveCartToStorage();
     };
 
     btnGroup.appendChild(btn);
     btnGroup.appendChild(badge);
-    btnGroup.appendChild(rmBtn);
+    btnGroup.appendChild(trashBtn);
     item.appendChild(btnGroup);
   });
 
@@ -2302,12 +2574,13 @@ function flashBtn(btn) {
 }
 
 // ===== ADD ITEM FROM MENU + BUTTON =====
-function addItemByData(name, price, unit) {
+function addItemByData(name, price, unit, qty) {
+  qty = qty || 1;
   var existing = orderItems.find(function(i) { return i.name === name; });
   if (existing) {
-    existing.qty += 1;
+    existing.qty += qty;
   } else {
-    orderItems.push({ name: name, price: price, unit: unit, qty: 1 });
+    orderItems.push({ name: name, price: price, unit: unit, qty: qty });
   }
   renderOrderTable();
   updateOrderCount();
@@ -2330,9 +2603,9 @@ function addItemByData(name, price, unit) {
 // ==========================================================================
 var CS_DATA = [
   { group: '4PM Kadi', catId: 'cat-snacks', items: [
-    { name: 'Kuzhalappam',         price: 700,  unit: 'kg',     emoji: '🥖', img: 'kuzhalappam.jpeg',         desc: '', tag: 'bestseller' },
-    { name: 'Panjasara Unda',      price: 700,  unit: 'kg',     emoji: '🍚', img: 'panjasara-unda.jpeg',      desc: '', tag: 'bestseller' },
-    { name: 'Achappam',            price: 700,  unit: 'kg',     emoji: '🍘', img: 'achappam.jpeg',            desc: '', tag: 'bestseller' },
+    { name: 'Kuzhalappam',         price: 700,  unit: 'kg',     emoji: '🥖', img: 'kuzhalappam.jpeg',         desc: '', bestseller: true },
+    { name: 'Panjasara Unda',      price: 700,  unit: 'kg',     emoji: '🍚', img: 'panjasara-unda.jpeg',      desc: '', bestseller: true },
+    { name: 'Achappam',            price: 700,  unit: 'kg',     emoji: '🍘', img: 'achappam.jpeg',            desc: '', bestseller: true },
     { name: 'Cheeda Vilayichathu', price: 700,  unit: 'kg',     emoji: '🍯', img: 'cheeda-vilayichathu.jpeg', desc: 'Cheeda tossed in sweet jaggery' },
     { name: 'Neyyappam',           price: 600,  unit: 'kg',     emoji: '🥞', img: 'neyyappam.jpeg',           desc: 'Deep-fried jaggery & rice pancake balls in ghee' },
     { name: 'Sharkara Unda',       price: 720,  unit: 'kg',     emoji: '🍯', img: 'sharkara-unda.jpeg',       desc: 'Sweet jaggery balls with a crispy rice exterior' },
@@ -2344,19 +2617,19 @@ var CS_DATA = [
     { name: 'Kinnathappam',        price: 90,   unit: 'piece',  emoji: '🍮', img: 'kinnathappam.jpeg',        desc: 'Steamed plate cake made with rice & coconut milk' }
   ]},
   { group: 'Podi', catId: 'cat-podi', items: [
-    { name: 'Chammandi Podi',      price: 900,  unit: 'kg',     emoji: '🥥', img: 'chammandi-podi.jpeg',      desc: 'Roasted coconut & spice chutney powder', tag: 'bestseller' },
-    { name: 'Avalose Podi',        price: 600,  unit: 'kg',     emoji: '🥣', img: 'avalose-podi.jpeg',        desc: 'Sweet roasted rice and coconut powder' },
-    { name: 'Appam Podi',          price: 120,  unit: 'kg',     emoji: '🌾', img: 'appam-podi.jpeg',          desc: 'Finely milled rice flour for lacy Kerala appams', tag: 'bestseller' },
-    { name: 'Puttu Podi',          price: 120,  unit: 'kg',     emoji: '🌾', img: 'puttu-podi.jpeg',          desc: 'Classic rice flour for the iconic steamed cake', tag: 'bestseller' },
+    { name: 'Chammandi Podi',      price: 900,  unit: 'kg',     emoji: '🥥', img: 'chammandi-podi.jpeg',      desc: 'Roasted coconut & spice chutney powder', bestseller: true },   
+    { name: 'Appam Podi',          price: 120,  unit: 'kg',     emoji: '🌾', img: 'appam-podi.jpeg',          desc: 'Finely milled rice flour for lacy Kerala appams', bestseller: true },
+    { name: 'Avalose Podi',        price: 600,  unit: 'kg',     emoji: '🥣', img: 'avalose-podi.jpeg',        desc: 'Sweet roasted rice and coconut powder', bestseller: true },
+    { name: 'Puttu Podi',          price: 120,  unit: 'kg',     emoji: '🌾', img: 'puttu-podi.jpeg',          desc: 'Classic rice flour for the iconic steamed cake' },
     { name: 'Chemba Puttu Podi',   price: 120,  unit: 'kg',     emoji: '🤎', img: 'chemba-puttu-podi.jpeg',   desc: 'Nutritious red rice flour for earthier puttu' },
     { name: 'Chemba Avalose Podi', price: 600,  unit: 'kg',     emoji: '🥣', img: 'chemba-avalose-podi.jpeg', desc: 'Red rice version for wholesome goodness' }
   ]},
   { group: 'Pickles', catId: 'cat-pickles', items: [
-    { name: 'Mango Pickle',         price: 360,  unit: 'kg',    emoji: '🥭', img: 'mango-pickle.jpeg',         desc: '' },
+    { name: 'Beef Pickle',          price: 1500, unit: 'kg',    emoji: '🥩', img: 'beef-pickle.jpeg',          desc: '', bestseller: true },  
+    { name: 'Mango Pickle',         price: 360,  unit: 'kg',    emoji: '🥭', img: 'mango-pickle.jpeg',         desc: '', bestseller: true },
+    { name: 'Garlic Pickle',        price: 400,  unit: 'kg',    emoji: '🧄', img: 'garlic-pickle.jpeg',        desc: '', bestseller: true },
     { name: 'Chethu Manga Pickle',  price: 360,  unit: 'kg',    emoji: '🥭', img: 'chethu-manga-pickle.jpeg',  desc: '' },
-    { name: 'Nellikka Pickle',      price: 370,  unit: 'kg',    emoji: '🟢', img: 'nellikka-pickle.jpeg',      desc: '' },
-    { name: 'Garlic Pickle',        price: 400,  unit: 'kg',    emoji: '🧄', img: 'garlic-pickle.jpeg',        desc: '' },
-    { name: 'Beef Pickle',          price: 1500, unit: 'kg',    emoji: '🥩', img: 'beef-pickle.jpeg',          desc: '' },
+    { name: 'Nellikka Pickle',      price: 370,  unit: 'kg',    emoji: '🟢', img: 'nellikka-pickle.jpeg',      desc: '' }, 
     { name: 'Fish (Choora) Pickle', price: 1100, unit: 'kg',    emoji: '🐟', img: 'fish-choora-pickle.jpeg',   desc: '' },
     { name: 'Fish (Kera) Pickle',   price: 1300, unit: 'kg',    emoji: '🐟', img: 'fish-kera-pickle.jpeg',     desc: '' },
     { name: 'Prawns Pickle',        price: 1500, unit: 'kg',    emoji: '🍤', img: 'prawns-pickle.jpeg',        desc: '' },
@@ -2369,12 +2642,12 @@ var CS_DATA = [
     { name: 'Pavakka Pickle',       price: 300,  unit: 'kg',    emoji: '🥒', img: 'pavakka-pickle.jpeg',       desc: '' }
   ]},
   { group: 'Ready to Eat', catId: 'cat-specials', note: 'Note: All per-person (pp) items include 400g of food (Pidi or Fried Rice) & curry.', items: [
-    { name: 'Pidi & Chicken Varuthara',          price: 250, unit: 'person', emoji: '🍲', img: 'pidi-chicken.jpeg',             desc: '', tag: 'bestseller' },
+    { name: 'Pidi & Chicken Varuthara',          price: 250, unit: 'person', emoji: '🍲', img: 'pidi-chicken.jpeg',             desc: '', bestseller: true },
+    { name: 'Paal Kappa',     price: 250,  unit: 'kg',     emoji: '🥥', img: 'paal-kappa.jpeg',           desc: '', bestseller: true },
     { name: 'Pidi & Beef Curry',                 price: 300, unit: 'person', emoji: '🍲', img: 'pidi-beef.jpeg',                desc: '' },
     { name: 'Pidi & Mushroom Varuthara',         price: 375, unit: 'person', emoji: '🍲', img: 'pidi-mushroom.jpeg',            desc: '' },
-    { name: 'Paal Kappa',     price: 250,  unit: 'kg',     emoji: '🥥', img: 'paal-kappa.jpeg',           desc: '', tag: 'bestseller' },
     { name: 'Paal Kappa & Beef Curry',     price: 375,  unit: 'pp',     emoji: '🥥', img: 'paal-kappa-beef.jpeg',           desc: '' },
-    { name: 'Pidi',          price: 310, unit: 'kg', emoji: '🍲', img: 'pidi.jpeg',             desc: '', tag: 'bestseller' },
+    { name: 'Pidi',          price: 310, unit: 'kg', emoji: '🍲', img: 'pidi.jpeg',             desc: '' },
     { name: 'Chicken Varuthara',          price: 500, unit: 'kg', emoji: '🍲', img: 'chicken-varuthara.jpeg',             desc: '' },
     { name: 'Puli Inji',      price: 600,  unit: 'kg',     emoji: '🥣', img: 'puli-inji.jpeg',            desc: '' },
     { name: 'Thenga Varuthathu', price: 600, unit: 'kg',   emoji: '🥥', img: 'thenga-varuthathu.jpeg',    desc: '' },
@@ -2574,16 +2847,26 @@ function updateMenuBadges() {
   document.querySelectorAll('.menu-item-btns[data-item-name]').forEach(function(group) {
     var name = group.getAttribute('data-item-name');
     var badge = group.querySelector('.menu-item-qty-badge');
+    var addBtn = group.querySelector('.add-to-order-btn');
+    var trashBtn = group.querySelector('.menu-item-trash-btn');
     var menuItem = group.closest('.menu-item');
     if (!badge) return;
     var found = orderItems.find(function(i) { return i.name === name; });
     if (found && found.qty > 0) {
-      badge.textContent = found.qty % 1 === 0 ? found.qty : found.qty.toFixed(1);
+      // In cart: show qty badge + trash; hide + button
+      var qtyDisplay = found.unit === 'kg'
+        ? (found.qty < 1 ? (found.qty * 1000) + 'g' : (found.qty % 1 === 0 ? found.qty + 'kg' : found.qty.toFixed(2).replace(/\.?0+$/,'') + 'kg'))
+        : (found.qty % 1 === 0 ? found.qty : found.qty.toFixed(1));
+      badge.textContent = qtyDisplay;
       badge.classList.add('visible');
+      if (addBtn)   addBtn.classList.add('hidden-btn');
+      if (trashBtn) trashBtn.classList.add('visible');
       if (menuItem) menuItem.classList.add('in-cart');
     } else {
       badge.textContent = '';
       badge.classList.remove('visible');
+      if (addBtn)   addBtn.classList.remove('hidden-btn');
+      if (trashBtn) trashBtn.classList.remove('visible');
       if (menuItem) menuItem.classList.remove('in-cart');
     }
   });
