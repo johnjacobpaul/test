@@ -2208,6 +2208,29 @@
     </div>
   </div>
 </div>
+<!-- BULK ORDER INFO MODAL -->
+<div id="bulkOrderOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:9999;align-items:center;justify-content:center;">
+  <div style="background:#fff;border-radius:16px;padding:28px 28px 22px;max-width:340px;width:90%;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,0.18);">
+    <div style="font-size:2rem;margin-bottom:10px;">📦</div>
+    <div style="font-size:1.05rem;font-weight:700;color:#1a1a1a;margin-bottom:8px;">Bulk Order?</div>
+    <div style="font-size:0.9rem;color:#555;line-height:1.5;margin-bottom:20px;">For bulk orders, please contact us directly so we can best assist you.</div>
+    <button onclick="document.getElementById('bulkOrderOverlay').style.display='none';" style="background:var(--primary,#c0392b);color:#fff;border:none;border-radius:8px;padding:10px 28px;font-size:0.95rem;font-weight:600;cursor:pointer;">Got it</button>
+  </div>
+</div>
+
+<!-- KG CORRECTION MODAL -->
+<div id="kgCorrectionOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:9999;align-items:center;justify-content:center;">
+  <div style="background:#fff;border-radius:16px;padding:28px 28px 22px;max-width:360px;width:90%;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,0.18);">
+    <div style="font-size:2rem;margin-bottom:10px;">🤔</div>
+    <div style="font-size:1.05rem;font-weight:700;color:#1a1a1a;margin-bottom:8px;">Did you mean grams?</div>
+    <div id="kgCorrectionMsg" style="font-size:0.9rem;color:#555;line-height:1.5;margin-bottom:20px;"></div>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+      <button id="kgCorrectionApply" style="background:var(--primary,#c0392b);color:#fff;border:none;border-radius:8px;padding:10px 20px;font-size:0.92rem;font-weight:600;cursor:pointer;">Apply Correction</button>
+      <button onclick="document.getElementById('kgCorrectionOverlay').style.display='none';" style="background:#eee;color:#333;border:none;border-radius:8px;padding:10px 20px;font-size:0.92rem;font-weight:600;cursor:pointer;">Keep as kg</button>
+    </div>
+  </div>
+</div>
+
 <!-- QUANTITY PICKER POPUP (global singleton) -->
 <div id="qtyPickerPopup" class="qty-picker-popup" role="dialog" aria-label="Select quantity">
   <div class="qty-popup-title">Select Amount</div>
@@ -2221,9 +2244,17 @@
 
 <script>
 // ===== QUANTITY PICKER POPUP =====
-var _qtyPopupName = '', _qtyPopupPrice = 0, _qtyPopupUnit = '';
+var _qtyPopupName = '', _qtyPopupPrice = 0, _qtyPopupUnit = '', _qtyPopupMode = 'add';
 
-function openQtyPopup(btn, name, price, unit) {
+// Replace item qty (edit mode) instead of stacking
+function setItemQty(name, price, unit, qty) {
+  var existing = orderItems.find(function(i) { return i.name === name; });
+  if (existing) { existing.qty = qty; }
+  else { orderItems.push({ name: name, price: price, unit: unit, qty: qty }); }
+  renderOrderTable(); updateOrderCount(); updateMenuBadges(); saveCartToStorage();
+}
+
+function openQtyPopup(btn, name, price, unit, mode) {
   var popup = document.getElementById('qtyPickerPopup');
   var presetsRow = document.getElementById('qtyPresetsRow');
   var customRow = document.getElementById('qtyCustomRow');
@@ -2233,6 +2264,13 @@ function openQtyPopup(btn, name, price, unit) {
   _qtyPopupName  = name;
   _qtyPopupPrice = price;
   _qtyPopupUnit  = unit;
+  _qtyPopupMode  = mode || 'add';
+
+  // Update popup title and confirm button label for context
+  var titleEl   = document.querySelector('.qty-popup-title');
+  var confirmBtn = document.getElementById('qtyCustomConfirm');
+  if (titleEl)    titleEl.textContent    = _qtyPopupMode === 'edit' ? 'Edit Quantity' : 'Select Amount';
+  if (confirmBtn) confirmBtn.textContent = _qtyPopupMode === 'edit' ? 'Set' : 'Add';
 
   // Build presets
   presetsRow.innerHTML = '';
@@ -2280,7 +2318,8 @@ function openQtyPopup(btn, name, price, unit) {
     b.className = 'qty-preset-btn';
     b.textContent = p.label;
     b.onclick = function() {
-      addItemByData(name, price, unit, p.qty);
+      if (_qtyPopupMode === 'edit') setItemQty(name, price, unit, p.qty);
+      else addItemByData(name, price, unit, p.qty);
       closeQtyPopup();
     };
     presetsRow.appendChild(b);
@@ -2323,7 +2362,30 @@ function closeQtyPopup() {
 document.getElementById('qtyCustomConfirm').addEventListener('click', function() {
   var val = parseFloat(document.getElementById('qtyCustomInput').value);
   if (!val || val <= 0) { alert('Please enter a valid amount.'); return; }
-  addItemByData(_qtyPopupName, _qtyPopupPrice, _qtyPopupUnit, val);
+
+  // Kg correction: if user enters ≥100 for a kg item, they probably meant grams
+  if (_qtyPopupUnit === 'kg' && val >= 100) {
+    var correctedKg = val / 1000;
+    document.getElementById('kgCorrectionMsg').textContent =
+      'Oops. I think you meant ' + val + 'g and not ' + val + 'kg. That\'s a lot of food! 😄';
+    document.getElementById('kgCorrectionApply').onclick = function() {
+      document.getElementById('kgCorrectionOverlay').style.display = 'none';
+      if (_qtyPopupMode === 'edit') setItemQty(_qtyPopupName, _qtyPopupPrice, _qtyPopupUnit, correctedKg);
+      else addItemByData(_qtyPopupName, _qtyPopupPrice, _qtyPopupUnit, correctedKg);
+      closeQtyPopup();
+    };
+    document.getElementById('kgCorrectionOverlay').style.display = 'flex';
+    return;
+  }
+
+  // Bulk order warning: if value is between 50 and 100 (exclusive)
+  if (val > 50 && val < 100) {
+    document.getElementById('bulkOrderOverlay').style.display = 'flex';
+    return;
+  }
+
+  if (_qtyPopupMode === 'edit') setItemQty(_qtyPopupName, _qtyPopupPrice, _qtyPopupUnit, val);
+  else addItemByData(_qtyPopupName, _qtyPopupPrice, _qtyPopupUnit, val);
   closeQtyPopup();
 });
 
@@ -2544,9 +2606,10 @@ document.addEventListener("DOMContentLoaded", function() {
     btn.setAttribute('data-name', name);
     btn.setAttribute('data-price', price);
     btn.setAttribute('data-unit', unit);
+    btn.setAttribute('data-mode', 'add');
     btn.onclick = function(e) {
       e.stopPropagation();
-      openQtyPopup(btn, name, price, unit);
+      openQtyPopup(btn, name, price, unit, btn.dataset.mode || 'add');
     };
 
     // Quantity badge — shows "View Cart" and scrolls to cart on click
@@ -2633,9 +2696,9 @@ var CS_DATA = [
     { name: 'Kinnathappam',        price: 90,   unit: 'piece',  emoji: '🍮', img: 'kinnathappam.jpeg',        desc: 'Steamed plate cake made with rice & coconut milk' }
   ]},
   { group: 'Podi', catId: 'cat-podi', items: [
-    { name: 'Chammandi Podi',      price: 900,  unit: 'kg',     emoji: '🥥', img: 'chammandi-podi.jpeg',      desc: 'Roasted coconut & spice chutney powder', bestseller: true },
-    { name: 'Avalose Podi',        price: 600,  unit: 'kg',     emoji: '🥣', img: 'avalose-podi.jpeg',        desc: 'Sweet roasted rice and coconut powder', bestseller: true },	
+    { name: 'Chammandi Podi',      price: 900,  unit: 'kg',     emoji: '🥥', img: 'chammandi-podi.jpeg',      desc: 'Roasted coconut & spice chutney powder', bestseller: true },   
     { name: 'Appam Podi',          price: 120,  unit: 'kg',     emoji: '🌾', img: 'appam-podi.jpeg',          desc: 'Finely milled rice flour for lacy Kerala appams', bestseller: true },
+    { name: 'Avalose Podi',        price: 600,  unit: 'kg',     emoji: '🥣', img: 'avalose-podi.jpeg',        desc: 'Sweet roasted rice and coconut powder', bestseller: true },
     { name: 'Puttu Podi',          price: 120,  unit: 'kg',     emoji: '🌾', img: 'puttu-podi.jpeg',          desc: 'Classic rice flour for the iconic steamed cake', bestseller: true },
     { name: 'Chemba Puttu Podi',   price: 120,  unit: 'kg',     emoji: '🤎', img: 'chemba-puttu-podi.jpeg',   desc: 'Nutritious red rice flour for earthier puttu' },
     { name: 'Chemba Avalose Podi', price: 600,  unit: 'kg',     emoji: '🥣', img: 'chemba-avalose-podi.jpeg', desc: 'Red rice version for wholesome goodness' }
@@ -2879,16 +2942,25 @@ function updateMenuBadges() {
     if (!badge) return;
     var found = orderItems.find(function(i) { return i.name === name; });
     if (found && found.qty > 0) {
-      // In cart: show qty badge + trash; hide + button
+      // In cart: show qty badge + pencil (edit) + trash
       badge.textContent = fmtQty(found.qty, found.unit);
       badge.classList.add('visible');
-      // + button stays visible so user can keep adding more
+      if (addBtn) {
+        addBtn.innerHTML = '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>';
+        addBtn.title = 'Edit quantity';
+        addBtn.dataset.mode = 'edit';
+      }
       if (trashBtn) trashBtn.classList.add('visible');
       if (menuItem) menuItem.classList.add('in-cart');
     } else {
       badge.textContent = '';
       badge.classList.remove('visible');
-      if (addBtn)   addBtn.classList.remove('hidden-btn');
+      if (addBtn) {
+        addBtn.innerHTML = '+';
+        addBtn.title = 'Add to cart';
+        addBtn.dataset.mode = 'add';
+        addBtn.classList.remove('hidden-btn');
+      }
       if (trashBtn) trashBtn.classList.remove('visible');
       if (menuItem) menuItem.classList.remove('in-cart');
     }
@@ -2985,6 +3057,13 @@ function openWAModal() {
   document.getElementById('waModalOverlay').classList.add('open');
   document.body.style.overflow = 'hidden';
   setupWADate();
+  // Restore saved name/phone
+  try {
+    var savedName  = localStorage.getItem('ammu_customer_name');
+    var savedPhone = localStorage.getItem('ammu_customer_phone');
+    if (savedName)  document.getElementById('waName').value  = savedName;
+    if (savedPhone) document.getElementById('waPhone').value = savedPhone;
+  } catch(e) {}
 }
 
 function closeWAModal() {
@@ -3016,6 +3095,8 @@ function sendWAFromModal() {
   if (!n) { alert('Please enter your name.'); return; }
   if (!p) { alert('Please enter your phone / WhatsApp number.'); return; }
   if (orderItems.length === 0) { alert('Your cart is empty.'); return; }
+  // Persist name and phone for next time
+  try { localStorage.setItem('ammu_customer_name', n); localStorage.setItem('ammu_customer_phone', p); } catch(e) {}
 
   var orderLines = orderItems.map(function(item) {
     return '  \u2022 ' + item.name + ' \u00D7 ' + item.qty + ' ' + item.unit + ' = \u20B9' + (item.price * item.qty).toLocaleString();
