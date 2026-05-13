@@ -754,17 +754,21 @@
     flex-shrink: 0;
   }
   .menu-item-qty-badge {
-    font-size: 0.75rem;
+    font-size: 0.68rem;
     font-weight: 700;
     color: white;
     background: var(--primary);
-    min-width: 28px;
     text-align: center;
     display: none;
     line-height: 1;
     border-radius: var(--radius-pill);
-    padding: 3px 6px;
+    padding: 4px 9px;
     white-space: nowrap;
+    letter-spacing: 0.01em;
+    transition: background 0.2s;
+  }
+  .menu-item-qty-badge:hover {
+    background: var(--primary-hover);
   }
   .menu-item-qty-badge.visible {
     display: inline-block;
@@ -2254,11 +2258,11 @@ function openQtyPopup(btn, name, price, unit) {
     ];
   } else if (unit === 'person' || unit === 'pp') {
     presets = [
-      { label: '1 pp', qty: 1 },
-      { label: '2 pp', qty: 2 },
-      { label: '3 pp', qty: 3 },
-      { label: '4 pp', qty: 4 },
-      { label: '5 pp', qty: 5 }
+      { label: '1', qty: 1 },
+      { label: '2', qty: 2 },
+      { label: '3', qty: 3 },
+      { label: '4', qty: 4 },
+      { label: '5', qty: 5 }
     ];
   } else {
     // piece or other
@@ -2545,9 +2549,13 @@ document.addEventListener("DOMContentLoaded", function() {
       openQtyPopup(btn, name, price, unit);
     };
 
-    // Quantity badge
+    // Quantity badge — shows "View Cart" and scrolls to cart on click
     var badge = document.createElement('span');
     badge.className = 'menu-item-qty-badge';
+    badge.style.cursor = 'pointer';
+    badge.onclick = function() {
+      document.getElementById('s-order').scrollIntoView({ behavior: 'smooth' });
+    };
 
     // Trash button (shown when item is in cart)
     var trashBtn = document.createElement('button');
@@ -2862,10 +2870,7 @@ function updateMenuBadges() {
     var found = orderItems.find(function(i) { return i.name === name; });
     if (found && found.qty > 0) {
       // In cart: show qty badge + trash; hide + button
-      var qtyDisplay = found.unit === 'kg'
-        ? (found.qty < 1 ? (found.qty * 1000) + 'g' : (found.qty % 1 === 0 ? found.qty + 'kg' : found.qty.toFixed(2).replace(/\.?0+$/,'') + 'kg'))
-        : (found.qty % 1 === 0 ? found.qty : found.qty.toFixed(1));
-      badge.textContent = qtyDisplay;
+      badge.textContent = 'View Cart';
       badge.classList.add('visible');
       if (addBtn)   addBtn.classList.add('hidden-btn');
       if (trashBtn) trashBtn.classList.add('visible');
