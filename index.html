@@ -1668,14 +1668,13 @@
     .menu-price { font-size: 0.82rem; }
     .menu-dots { margin: 0 6px; }
 
-    /* Bestseller tag: stack below name on mobile */
+    /* Bestseller tag: stack below name on mobile, only as wide as its content */
     .menu-name-row {
-      flex-wrap: wrap;
-      gap: 3px;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 2px;
     }
     .bestseller-tag {
-      flex-basis: 100%;
-      width: fit-content;
       font-size: 0.56rem;
       padding: 2px 6px 2px 4px;
     }
