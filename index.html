@@ -2633,9 +2633,9 @@ var CS_DATA = [
     { name: 'Kinnathappam',        price: 90,   unit: 'piece',  emoji: '🍮', img: 'kinnathappam.jpeg',        desc: 'Steamed plate cake made with rice & coconut milk' }
   ]},
   { group: 'Podi', catId: 'cat-podi', items: [
-    { name: 'Chammandi Podi',      price: 900,  unit: 'kg',     emoji: '🥥', img: 'chammandi-podi.jpeg',      desc: 'Roasted coconut & spice chutney powder', bestseller: true },   
-    { name: 'Avalose Podi',        price: 600,  unit: 'kg',     emoji: '🥣', img: 'avalose-podi.jpeg',        desc: 'Sweet roasted rice and coconut powder', bestseller: true },
-	{ name: 'Appam Podi',          price: 120,  unit: 'kg',     emoji: '🌾', img: 'appam-podi.jpeg',          desc: 'Finely milled rice flour for lacy Kerala appams', bestseller: true },
+    { name: 'Chammandi Podi',      price: 900,  unit: 'kg',     emoji: '🥥', img: 'chammandi-podi.jpeg',      desc: 'Roasted coconut & spice chutney powder', bestseller: true },
+    { name: 'Avalose Podi',        price: 600,  unit: 'kg',     emoji: '🥣', img: 'avalose-podi.jpeg',        desc: 'Sweet roasted rice and coconut powder', bestseller: true },	
+    { name: 'Appam Podi',          price: 120,  unit: 'kg',     emoji: '🌾', img: 'appam-podi.jpeg',          desc: 'Finely milled rice flour for lacy Kerala appams', bestseller: true },
     { name: 'Puttu Podi',          price: 120,  unit: 'kg',     emoji: '🌾', img: 'puttu-podi.jpeg',          desc: 'Classic rice flour for the iconic steamed cake', bestseller: true },
     { name: 'Chemba Puttu Podi',   price: 120,  unit: 'kg',     emoji: '🤎', img: 'chemba-puttu-podi.jpeg',   desc: 'Nutritious red rice flour for earthier puttu' },
     { name: 'Chemba Avalose Podi', price: 600,  unit: 'kg',     emoji: '🥣', img: 'chemba-avalose-podi.jpeg', desc: 'Red rice version for wholesome goodness' }
@@ -2858,6 +2858,16 @@ function clearAllOrderItems() {
   }
 }
 
+// ===== FORMAT QUANTITY LABEL =====
+function fmtQty(qty, unit) {
+  if (unit === 'kg') {
+    if (qty < 1) return Math.round(qty * 1000) + 'g';
+    return qty + 'kg';
+  }
+  // piece / person / pp — whole numbers only
+  return qty % 1 === 0 ? qty : qty.toFixed(1);
+}
+
 // ===== UPDATE PER-ITEM QUANTITY BADGES IN MENU =====
 function updateMenuBadges() {
   document.querySelectorAll('.menu-item-btns[data-item-name]').forEach(function(group) {
@@ -2870,9 +2880,9 @@ function updateMenuBadges() {
     var found = orderItems.find(function(i) { return i.name === name; });
     if (found && found.qty > 0) {
       // In cart: show qty badge + trash; hide + button
-      badge.textContent = found.qty % 1 === 0 ? found.qty : found.qty.toFixed(1);
+      badge.textContent = fmtQty(found.qty, found.unit);
       badge.classList.add('visible');
-      if (addBtn)   addBtn.classList.add('hidden-btn');
+      // + button stays visible so user can keep adding more
       if (trashBtn) trashBtn.classList.add('visible');
       if (menuItem) menuItem.classList.add('in-cart');
     } else {
