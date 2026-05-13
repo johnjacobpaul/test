@@ -2870,7 +2870,7 @@ function updateMenuBadges() {
     var found = orderItems.find(function(i) { return i.name === name; });
     if (found && found.qty > 0) {
       // In cart: show qty badge + trash; hide + button
-      badge.textContent = 'View Cart';
+      badge.textContent = found.qty % 1 === 0 ? found.qty : found.qty.toFixed(1);
       badge.classList.add('visible');
       if (addBtn)   addBtn.classList.add('hidden-btn');
       if (trashBtn) trashBtn.classList.add('visible');
