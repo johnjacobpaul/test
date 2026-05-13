@@ -1417,7 +1417,7 @@
     display: inline-flex;
     align-items: center;
     gap: 3px;
-    background: linear-gradient(135deg, #ff6b00 0%, #ffaa00 100%);
+    background: linear-gradient(135deg, #e91e63 0%, #c2185b 100%);
     color: #fff;
     font-size: 0.58rem;
     font-weight: 800;
@@ -1426,7 +1426,7 @@
     padding: 2px 7px 2px 5px;
     border-radius: 20px;
     white-space: nowrap;
-    box-shadow: 0 2px 6px rgba(255,107,0,0.30);
+    box-shadow: 0 2px 6px rgba(233,30,99,0.28);
     line-height: 1.5;
     vertical-align: middle;
     flex-shrink: 0;
@@ -2284,21 +2284,21 @@ function openQtyPopup(btn, name, price, unit) {
   };
   presetsRow.appendChild(customBtn);
 
-  // Position popup near the button
+  // Position popup near the button (position:fixed, so coords are viewport-relative — no scrollY)
   var rect = btn.getBoundingClientRect();
   var popupW = 230;
   var leftPos = rect.right - popupW;
   if (leftPos < 8) leftPos = 8;
+  if (leftPos + popupW > window.innerWidth - 8) leftPos = window.innerWidth - popupW - 8;
   var topPos = rect.bottom + 6;
-  // If it would overflow bottom, show above
-  if (topPos + 280 > window.innerHeight) {
+  popup.style.transform = '';
+  // If popup would overflow bottom of viewport, show it above the button instead
+  if (topPos + 300 > window.innerHeight) {
     topPos = rect.top - 6;
     popup.style.transform = 'translateY(-100%)';
-  } else {
-    popup.style.transform = '';
   }
   popup.style.left = leftPos + 'px';
-  popup.style.top  = topPos + window.scrollY + 'px';
+  popup.style.top  = topPos + 'px';
 
   popup.classList.add('open');
 }
