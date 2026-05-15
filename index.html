@@ -1684,7 +1684,12 @@
     }
     .menu-name-text {
       white-space: normal;
-      word-break: break-word;
+      word-break: normal;
+      overflow-wrap: break-word;
+    }
+    /* Slightly smaller name text when qty badge is showing, to prevent overflow */
+    .menu-item.in-cart .menu-name {
+      font-size: 0.78rem;
     }
     .bestseller-tag {
       font-size: 0.56rem;
@@ -2280,8 +2285,9 @@ function openQtyPopup(btn, name, price, unit, mode) {
   var presets = [];
   var unitDisp = unit === 'person' ? 'pp' : unit;
   customUnit.textContent = unitDisp;
-  customInput.step = unit === 'kg' ? '0.25' : '1';
-  customInput.min  = unit === 'kg' ? '0.25' : '1';
+  customInput.step = unit === 'kg' ? '0.05' : '1';
+  customInput.min  = unit === 'kg' ? '0.1'  : '1';
+  customInput.placeholder = unit === 'kg' ? 'min 100g, steps of 50g' : 'e.g. 2';
 
   if (unit === 'kg') {
     presets = [
@@ -2362,6 +2368,16 @@ function closeQtyPopup() {
 document.getElementById('qtyCustomConfirm').addEventListener('click', function() {
   var val = parseFloat(document.getElementById('qtyCustomInput').value);
   if (!val || val <= 0) { alert('Please enter a valid amount.'); return; }
+
+  // Kg rules: minimum 100g, must be in 50g increments
+  if (_qtyPopupUnit === 'kg') {
+    if (val < 0.1) { alert('Minimum order is 100g.'); return; }
+    var grams = Math.round(val * 1000);
+    if (grams % 50 !== 0) {
+      alert('Please enter in 50g steps — e.g. 100g, 150g, 200g…');
+      return;
+    }
+  }
 
   // Kg correction: if user enters ≥100 for a kg item, they probably meant grams
   if (_qtyPopupUnit === 'kg' && val >= 100) {
