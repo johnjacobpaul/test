@@ -2381,9 +2381,14 @@ document.getElementById('qtyCustomConfirm').addEventListener('click', function()
 
   // Kg correction: if user enters ≥100 for a kg item, they probably meant grams
   if (_qtyPopupUnit === 'kg' && val >= 100) {
-    var correctedKg = val / 1000;
-    document.getElementById('kgCorrectionMsg').textContent =
-      'Oops. I think you meant ' + val + 'g and not ' + val + 'kg. That\'s a lot of food! 😄';
+    var rawGrams    = val;
+    var snappedGrams = Math.round(rawGrams / 50) * 50;
+    var correctedKg  = snappedGrams / 1000;
+    var corrMsg = 'Oops. I think you meant ' + rawGrams + 'g and not ' + rawGrams + 'kg. That\'s a lot of food! 😄';
+    if (snappedGrams !== rawGrams) {
+      corrMsg += '\n\nWe\'ve also rounded to the nearest 50g — so we\'ll apply ' + snappedGrams + 'g.';
+    }
+    document.getElementById('kgCorrectionMsg').textContent = corrMsg;
     document.getElementById('kgCorrectionApply').onclick = function() {
       document.getElementById('kgCorrectionOverlay').style.display = 'none';
       if (_qtyPopupMode === 'edit') setItemQty(_qtyPopupName, _qtyPopupPrice, _qtyPopupUnit, correctedKg);
