@@ -6,7 +6,7 @@
 <title>Ammu's Food Products</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Lora:ital,wght@0,400;0,500;1,400&family=Satisfy&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   
@@ -299,9 +299,20 @@
     animation: slideUpFade 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
   .hero-logo.hero-anim { animation-delay: 0.1s; }
-  .htitle.hero-anim { animation-delay: 0.3s; }
-  .hsub.hero-anim { animation-delay: 0.5s; }
+  .hero-tagline.hero-anim { animation-delay: 0.25s; }
+  .htitle.hero-anim { animation-delay: 0.4s; }
+  .hsub.hero-anim { animation-delay: 0.55s; }
   .hbtns.hero-anim { animation-delay: 0.7s; }
+
+  .hero-tagline {
+    font-family: 'Satisfy', cursive;
+    font-size: clamp(1.05rem, 2.5vw, 1.3rem);
+    color: #c7718a;
+    letter-spacing: 0.02em;
+    margin-bottom: 2px;
+    position: relative;
+    z-index: 2;
+  }
 
   /* Decorative blobs/leaves for Hero */
   @keyframes pulseBlob {
@@ -1931,7 +1942,7 @@
   </div>
   
   <img src="logo.png" alt="Ammu's Food Products Logo" class="hero-logo hero-anim" onerror="this.onerror=null; this.src='https://placehold.co/350x350/e91e63/ffffff?text=Ammu\'s+Logo&font=inter'">
-  
+  <p class="hero-tagline hero-anim">Crafted from Tradition, Served with Love</p>
   <h1 class="htitle hero-anim">Welcome to Ammu's Food Products</h1>
   <p class="hsub hero-anim">Traditional Kerala flavours, freshly crafted in small batches.</p>
   
