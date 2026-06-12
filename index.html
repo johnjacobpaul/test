@@ -249,10 +249,10 @@
     font-size: clamp(1.05rem, 2.5vw, 1.3rem);
     color: #c7718a;
     letter-spacing: 0.02em;
-    margin-top: 0;
-    margin-bottom: 18px;
+    margin: 0 0 18px;
     position: relative;
     z-index: 2;
+    line-height: 1.2;
   }
 
   .badge {
@@ -1543,10 +1543,14 @@
   }
 
   /* Responsive tweaks */
-  @media (max-width: 480px) {
-    .hero-stats-row { gap: 18px; }
-    .hero-stat-num { font-size: 1.1rem; }
-    .hero-leaf-divider { width: 75%; }
+  @media (max-width: 600px) {
+    .hero-stats-row { gap: 14px; }
+    .hero-stat-num { font-size: 1rem; }
+    .hero-stat-lbl { font-size: 0.58rem; }
+    .hero-stats-block { margin: 18px 0 20px; gap: 12px; }
+    /* Hide pills and divider on mobile to keep button above the fold */
+    .hero-trust-pills { display: none; }
+    .hero-leaf-divider { display: none; }
   }
 
   /* ===== QTY PICKER POPUP ===== */
