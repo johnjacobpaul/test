@@ -239,9 +239,20 @@
     width: 100%;
     max-width: 350px; 
     height: auto;
-    margin-bottom: 8px; 
+    margin-bottom: 0px; 
     z-index: 2; 
     position: relative;
+  }
+
+  .hero-tagline {
+    font-family: 'Satisfy', cursive;
+    font-size: clamp(1.05rem, 2.5vw, 1.3rem);
+    color: #c7718a;
+    letter-spacing: 0.02em;
+    margin-top: 0;
+    margin-bottom: 18px;
+    position: relative;
+    z-index: 2;
   }
 
   .badge {
@@ -301,18 +312,10 @@
   .hero-logo.hero-anim { animation-delay: 0.1s; }
   .hero-tagline.hero-anim { animation-delay: 0.25s; }
   .htitle.hero-anim { animation-delay: 0.4s; }
+  .hero-stats-block.hero-anim { animation-delay: 0.55s; }
   .hsub.hero-anim { animation-delay: 0.55s; }
-  .hbtns.hero-anim { animation-delay: 0.7s; }
+  .hbtns.hero-anim { animation-delay: 0.75s; }
 
-  .hero-tagline {
-    font-family: 'Satisfy', cursive;
-    font-size: clamp(1.05rem, 2.5vw, 1.3rem);
-    color: #c7718a;
-    letter-spacing: 0.02em;
-    margin-bottom: 2px;
-    position: relative;
-    z-index: 2;
-  }
 
   /* Decorative blobs/leaves for Hero */
   @keyframes pulseBlob {
@@ -1469,6 +1472,83 @@
     min-width: 0;
   }
 
+  .hero-stats-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    margin: 28px 0 32px;
+    position: relative;
+    z-index: 2;
+  }
+  .hero-stats-row {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+  }
+  .hero-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+  }
+  .hero-stat-num {
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: #a81c4a;
+    line-height: 1;
+  }
+  .hero-stat-lbl {
+    font-size: 0.65rem;
+    color: #9a7a8a;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+  }
+  .hero-stat-divider {
+    width: 0.5px;
+    height: 32px;
+    background: rgba(199,113,138,0.35);
+  }
+  .hero-leaf-divider {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 55%;
+  }
+  .hero-div-line {
+    flex: 1;
+    height: 0.5px;
+    background: rgba(199,113,138,0.28);
+    display: block;
+  }
+  .hero-div-leaf {
+    font-size: 0.85rem;
+    opacity: 0.55;
+  }
+  .hero-trust-pills {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .hero-pill {
+    font-size: 0.72rem;
+    padding: 5px 12px;
+    border-radius: 20px;
+    background: rgba(199,113,138,0.1);
+    color: #a04a72;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    border: 0.5px solid rgba(199,113,138,0.25);
+  }
+
+  /* Responsive tweaks */
+  @media (max-width: 480px) {
+    .hero-stats-row { gap: 18px; }
+    .hero-stat-num { font-size: 1.1rem; }
+    .hero-leaf-divider { width: 75%; }
+  }
+
   /* ===== QTY PICKER POPUP ===== */
   .qty-picker-popup {
     position: fixed;
@@ -1944,8 +2024,38 @@
   <img src="logo.png" alt="Ammu's Food Products Logo" class="hero-logo hero-anim" onerror="this.onerror=null; this.src='https://placehold.co/350x350/e91e63/ffffff?text=Ammu\'s+Logo&font=inter'">
   <p class="hero-tagline hero-anim">Crafted from Tradition, Served with Love</p>
   <h1 class="htitle hero-anim">Welcome to Ammu's Food Products</h1>
-  <p class="hsub hero-anim">Traditional Kerala flavours, freshly crafted in small batches.</p>
-  
+
+  <!-- Heritage stats + trust pills -->
+  <div class="hero-stats-block hero-anim">
+    <div class="hero-stats-row">
+      <div class="hero-stat">
+        <span class="hero-stat-num">25+</span>
+        <span class="hero-stat-lbl">Years of Tradition</span>
+      </div>
+      <div class="hero-stat-divider"></div>
+      <div class="hero-stat">
+        <span class="hero-stat-num">3</span>
+        <span class="hero-stat-lbl">Generations</span>
+      </div>
+      <div class="hero-stat-divider"></div>
+      <div class="hero-stat">
+        <span class="hero-stat-num">20+</span>
+        <span class="hero-stat-lbl">Recipes</span>
+      </div>
+    </div>
+    <div class="hero-leaf-divider">
+      <span class="hero-div-line"></span>
+      <span class="hero-div-leaf">🌿</span>
+      <span class="hero-div-line"></span>
+    </div>
+    <div class="hero-trust-pills">
+      <span class="hero-pill">🌿 No Preservatives</span>
+      <span class="hero-pill">🏡 Home Kitchen</span>
+      <span class="hero-pill">🫙 Small Batches</span>
+      <span class="hero-pill">❤️ Kerala Recipes</span>
+    </div>
+  </div>
+
   <div class="hbtns hero-anim">
     <a href="#s-products" class="btn btn-primary">Browse Menu &amp; Order</a>
   </div>
